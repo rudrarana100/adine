@@ -228,3 +228,42 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/*
+ * Obsidian dark mode — swaps the brand tokens at the CSS variable level so
+ * every utility (bg-canvas-white, text-graphite, ring-mist, …) adapts.
+ */
+.dark {
+  color-scheme: dark;
+
+  --color-canvas-white: #1a1a1a;
+  --color-graphite: #f5f5f5;
+  --color-ash: #151515;
+  --color-fog: #222222;
+  --color-ivory: #2b251c;
+  --color-steel: #b3b3b3;
+  --color-slate: #8a8a8a;
+  --color-mist: #2b2b2b;
+  --color-ember: #ff7847;
+  --color-brass: #c9a15e;
+
+  --background: oklch(0.17 0 0);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.19 0 0);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.19 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.95 0 0);
+  --primary-foreground: oklch(0.17 0 0);
+  --secondary: oklch(0.23 0 0);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.23 0 0);
+  --muted-foreground: oklch(0.68 0 0);
+  --accent: oklch(0.23 0 0);
+  --accent-foreground: oklch(0.95 0 0);
+  --destructive: oklch(0.66 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.24 0 0);
+  --input: oklch(0.24 0 0);
+  --ring: oklch(0.75 0.15 28);
+}

@@ -8,15 +8,14 @@ import FeaturesGrid from "@/components/sections/FeaturesGrid";
 import AnalyticsProof from "@/components/sections/AnalyticsProof";
 import DashboardPreview from "@/components/sections/DashboardPreview";
 import IntegrationEcosystem from "@/components/sections/IntegrationEcosystem";
-import Pricing from "@/components/sections/Pricing";
 import Testimonials from "@/components/sections/Testimonials";
 import FAQ from "@/components/sections/FAQ";
 import FinalCTA from "@/components/sections/FinalCTA";
 import { faqSchema, howToSchema, orgSchema, softwareSchema } from "@/lib/schema";
 
-const TITLE = "SalesTracker CRM — Close Deals 2.4× Faster | B2B Sales Intelligence";
+const TITLE = "SalesTracker — Outbound B2B Sales Execution & CRM Platform";
 const DESCRIPTION =
-  "SalesTracker CRM gives B2B revenue teams AI-powered pipeline visibility, lead scoring, and forecasting. Used by 10,000+ teams. Close deals 2.4× faster. Start free.";
+  "SalesTracker is an outbound B2B sales execution and CRM platform for SDRs, business development managers, and high-velocity sales teams. Scrape leads from Google Maps, power-dial them sequentially, send WhatsApp follow-ups, book Google Meets, and track your pipeline — all in one dashboard.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,22 +25,23 @@ export const Route = createFileRoute("/")({
       {
         name: "keywords",
         content:
-          "B2B CRM software, sales pipeline management, lead scoring AI, revenue forecasting tool, sales intelligence platform, deal tracking software, CRM for startups, enterprise CRM",
+          "outbound sales CRM, power dialer software, Google Maps lead scraper, lead generation software, WhatsApp sales messaging, Google Meet booking, appointment setting software, B2B sales pipeline, sales analytics, SDR outreach tool, sales automation platform, outbound sales execution",
       },
-      { property: "og:title", content: "SalesTracker CRM — Close Deals 2.4× Faster" },
+      { property: "og:title", content: "SalesTracker — Outbound B2B Sales Execution Platform" },
       {
         property: "og:description",
         content:
-          "AI-powered B2B sales intelligence. Pipeline visibility, lead scoring, and revenue forecasting in one platform.",
+          "Scrape leads from Google Maps, power-dial them sequentially, dispatch WhatsApp follow-ups, and book Google Meets — all in one platform.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "SalesTracker CRM" },
+      { property: "og:site_name", content: "SalesTracker" },
       { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "SalesTracker CRM — Close Deals 2.4× Faster" },
+      { name: "twitter:title", content: "SalesTracker — Outbound B2B Sales Execution Platform" },
       {
         name: "twitter:description",
-        content: "AI-powered pipeline visibility and lead scoring for B2B revenue teams.",
+        content:
+          "Google Maps lead scraping, power dialing, WhatsApp dispatch, and Google Meet booking in one platform.",
       },
       { name: "robots", content: "index, follow, max-image-preview:large, max-video-preview:-1" },
     ],
@@ -71,10 +71,9 @@ function Index() {
         <LogoStrip />
         <ProblemStatement />
         <FeaturesGrid />
-        <AnalyticsProof />
         <DashboardPreview />
+        <AnalyticsProof />
         <IntegrationEcosystem />
-        <Pricing />
         <Testimonials />
         <FAQ />
         <FinalCTA />

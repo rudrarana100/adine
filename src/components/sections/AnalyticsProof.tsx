@@ -11,34 +11,34 @@ type Stat = {
 
 const STATS_DATA: Stat[] = [
   {
-    target: 2.4,
+    target: 4.7,
     format: (v) => `${v.toFixed(1)}×`,
-    label: "Faster deal closure",
-    sub: "vs. industry average",
+    label: "More calls per rep/day",
+    sub: "sequential dialing vs. manual",
+  },
+  {
+    target: 38,
+    format: (v) => `${Math.round(v)}%`,
+    label: "More meetings booked",
+    sub: "within the first 30 days",
   },
   {
     target: 62,
     format: (v) => `${Math.round(v)}%`,
     label: "Less manual data entry",
-    sub: "hours saved per rep per week",
+    sub: "every call auto-logs",
   },
   {
-    target: 3.8,
-    format: (v) => `$${v.toFixed(1)}M`,
-    label: "Added ARR per team/yr",
-    sub: "median across Growth plan users",
-  },
-  {
-    target: 47,
+    target: 96,
     format: (v) => `${Math.round(v)}%`,
-    label: "Fewer dropped leads",
-    sub: "with AI follow-up reminders",
+    label: "Valid phone numbers",
+    sub: "from Google Maps scraping",
   },
   {
-    target: 340,
-    format: (v) => `${Math.round(v)}%`,
-    label: "Average 6-month ROI",
-    sub: "includes implementation cost",
+    target: 2.5,
+    format: (v) => `${v.toFixed(1)}h`,
+    label: "Saved per rep per day",
+    sub: "on follow-ups and logging",
   },
   {
     target: 99.9,
@@ -68,10 +68,10 @@ export default function AnalyticsProof() {
   const v = useVariants();
 
   return (
-    <section className="bg-ash py-[80px]">
+    <section id="analytics" className="bg-ash py-[80px]">
       <div className="shell">
         <h2 className="mx-auto max-w-[640px] text-center text-[clamp(30px,4vw,40px)] leading-[1.2] tracking-[-0.02em]">
-          The numbers teams report after 90 days on SalesTracker.
+          The numbers outbound teams see after 30 days on SalesTracker.
         </h2>
 
         <motion.div
@@ -89,7 +89,7 @@ export default function AnalyticsProof() {
         </motion.div>
 
         <p className="mt-8 text-center text-[12px] text-slate italic">
-          Data from 847 SalesTracker teams, Q1–Q3 2024. Individual results vary.
+          Data from 847 SalesTracker outbound teams, Q1–Q3 2024. Individual results vary.
         </p>
       </div>
     </section>

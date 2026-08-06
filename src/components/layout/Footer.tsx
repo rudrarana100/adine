@@ -3,14 +3,20 @@ import { TwitterLogo, LinkedinLogo, GithubLogo } from "@phosphor-icons/react";
 const COLUMNS = [
   {
     title: "Product",
-    links: ["Features", "Integrations", "Pricing", "Changelog", "Security", "API Docs"],
+    links: ["Features", "Product tour", "Integrations", "Changelog", "Security", "API Docs"],
   },
   { title: "Company", links: ["About", "Blog", "Careers", "Press", "Contact"] },
   {
     title: "Resources",
-    links: ["Documentation", "Help Center", "Status Page", "Affiliate Program"],
+    links: ["Documentation", "Help Center", "Status Page", "Outbound Playbook"],
   },
 ];
+
+const SECTION_IDS: Record<string, string> = {
+  Features: "#features",
+  "Product tour": "#tour",
+  Integrations: "#integrations",
+};
 
 export default function Footer() {
   return (
@@ -22,7 +28,7 @@ export default function Footer() {
               SalesTracker<span className="text-ember">.</span>
             </p>
             <p className="mt-3 max-w-[240px] text-[13px] text-slate">
-              Pipeline intelligence for B2B revenue teams.
+              The outbound sales execution platform for high-velocity teams.
             </p>
             <div className="mt-5 flex gap-4">
               {[
@@ -46,23 +52,26 @@ export default function Footer() {
             <div key={col.title}>
               <p className="font-display text-[14px] tracking-[-0.02em] text-ash">{col.title}</p>
               <ul className="mt-4 space-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[13px] text-slate transition-colors hover:text-canvas-white"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
+                {col.links.map((link) => {
+                  const target = SECTION_IDS[link];
+                  return (
+                    <li key={link}>
+                      <a
+                        href={target ?? "#"}
+                        className="text-[13px] text-slate transition-colors hover:text-canvas-white"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-steel pt-6 text-[13px] text-slate md:flex-row md:items-center md:justify-between">
-          <p>© 2025 SalesTracker. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} SalesTracker. All rights reserved.</p>
           <ul className="flex flex-wrap gap-5">
             {["Privacy Policy", "Terms of Service", "Cookie Preferences"].map((l) => (
               <li key={l}>

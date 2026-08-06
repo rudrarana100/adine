@@ -2,38 +2,44 @@ export const SITE_URL = "https://salestrackercrm.vercel.app";
 
 export const FAQ_ITEMS = [
   {
-    q: "What is SalesTracker CRM?",
-    a: "SalesTracker CRM is an AI-powered B2B sales intelligence platform that helps revenue teams manage pipelines, score leads automatically, and forecast revenue with machine learning. It reduces manual CRM data entry by 62% and helps teams close deals 2.4× faster.",
+    q: "What is SalesTracker?",
+    a: "SalesTracker is an end-to-end outbound B2B sales execution platform. It combines automated Google Maps lead scraping, sequential power-dialing call sessions, automated WhatsApp dispatch, Google Meet scheduling, a visual deal pipeline, and sales analytics in one responsive web interface.",
   },
   {
-    q: "How does SalesTracker CRM differ from Salesforce or HubSpot?",
-    a: "SalesTracker CRM is purpose-built for B2B sales velocity rather than CRM breadth. It prioritises pipeline intelligence and AI lead scoring over feature sprawl, with a 4-hour onboarding vs. 4-week implementation timelines typical of enterprise CRMs.",
+    q: "How does the Google Maps lead scraper work?",
+    a: "You enter a search query, location, and target count, and the scraper runs in the background using stealth automation. It extracts business name, contact person, phone number, email, website, business category, Google Maps link, and location — then imports them into batches with automatic duplicate detection.",
   },
   {
-    q: "Does SalesTracker CRM integrate with existing tools?",
-    a: "Yes. SalesTracker integrates natively with Gmail, Outlook, Slack, HubSpot, Salesforce, LinkedIn Sales Navigator, Zoom, Zapier, and 40+ more tools via REST API and webhooks.",
+    q: "Is scraping business data from Google Maps compliant?",
+    a: "SalesTracker only collects publicly-listed business contact information that businesses already display for customers to contact them. We recommend following Google's terms of service and your local privacy regulations, and we provide opt-out and deletion workflows for any prospect on request.",
   },
   {
-    q: "What is the pricing for SalesTracker CRM?",
-    a: "SalesTracker offers a free Starter plan for up to 3 users, a Growth plan at $29/user/month, and a custom Enterprise plan. Annual billing saves 20%.",
+    q: "How does sequential power dialing work?",
+    a: "Leads are presented one at a time in a distraction-free interface. With one click you can start a call, mark the lead interested, book a Google Meet, schedule a callback, mark them not interested, or skip. Every action auto-advances the queue and logs an activity to the lead's timeline.",
   },
   {
-    q: "Is my data secure in SalesTracker CRM?",
-    a: "Yes. SalesTracker is SOC 2 Type II certified, GDPR compliant, and ISO 27001 aligned. Data is encrypted at rest (AES-256) and in transit (TLS 1.3). We maintain 99.9% uptime SLA with zero data sharing with third parties.",
+    q: "How do Google Meet bookings work?",
+    a: "SalesTracker connects to Google via OAuth and uses the Google Calendar API to generate official Google Meet links. When you book a meeting, a calendar event with the Meet URL is created automatically and a confirmation message can be dispatched over WhatsApp.",
+  },
+  {
+    q: "How does WhatsApp integration work?",
+    a: "Local 10-digit numbers are automatically formatted into clean international format. Pre-built templates handle initial outreach, meeting confirmations, and follow-up reminders, so reps can dispatch a proper WhatsApp message in a single tap.",
+  },
+  {
+    q: "Is my data secure in SalesTracker?",
+    a: "Yes. Google refresh tokens are stored securely and only accessed server-side. Data is encrypted at rest (AES-256) and in transit (TLS 1.3), with 99.9% uptime SLA and no sharing of your prospect data with third parties.",
   },
 ];
 
 export const softwareSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "SalesTracker CRM",
+  name: "SalesTracker",
   applicationCategory: "BusinessApplication",
-  operatingSystem: "Web, iOS, Android",
+  operatingSystem: "Web",
   offers: {
     "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
-    description: "Free tier available. Paid plans from $29/user/month.",
+    description: "Outbound B2B sales execution platform.",
   },
   aggregateRating: {
     "@type": "AggregateRating",
@@ -42,13 +48,15 @@ export const softwareSchema = {
     bestRating: "5",
   },
   featureList: [
-    "AI Lead Scoring",
-    "Pipeline Visualization",
-    "Revenue Forecasting",
-    "Contact Intelligence",
-    "Team Collaboration",
-    "Custom Reporting",
-    "CRM Integrations",
+    "Sequential Power Dialing",
+    "Google Maps Lead Scraping",
+    "Lead Management and Directory",
+    "360-Degree Lead Inspector",
+    "Guided Follow-Up Hub",
+    "Visual Deal Pipeline",
+    "Google Meet and Calendar Integration",
+    "Automated WhatsApp Messaging",
+    "Sales Analytics and Tasks",
   ],
   url: SITE_URL,
 };
@@ -82,33 +90,33 @@ export const faqSchema = {
 export const howToSchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  name: "How to close deals faster with SalesTracker CRM",
-  totalTime: "PT4H",
+  name: "How to run an outbound call session with SalesTracker",
+  totalTime: "PT1H",
   step: [
     {
       "@type": "HowToStep",
-      name: "Import contacts",
-      text: "Import your existing contacts from CSV or sync directly from Gmail/Outlook in under 5 minutes.",
+      name: "Scrape leads from Google Maps",
+      text: "Enter a search query, location, and target count. The scraper imports business name, phone, email, and website into your lead batches automatically.",
     },
     {
       "@type": "HowToStep",
-      name: "Build your pipeline",
-      text: "Create custom deal stages that match your real sales process using drag-and-drop pipeline builder.",
+      name: "Build a dialing queue",
+      text: "Select leads from your directory and queue them into a sequential power-dialing session that presents one lead at a time.",
     },
     {
       "@type": "HowToStep",
-      name: "Activate AI scoring",
-      text: "Turn on AI Lead Scoring and let the model rank your leads by conversion probability using 47 behavioural signals.",
+      name: "Work the call",
+      text: "Call the lead, mark them interested, book a Google Meet, or schedule a callback. Every action auto-advances the queue and logs the activity.",
     },
     {
       "@type": "HowToStep",
-      name: "Track activities automatically",
-      text: "Connect your email and calendar. SalesTracker logs calls, emails, and meetings automatically — no manual entry.",
+      name: "Dispatch WhatsApp follow-ups",
+      text: "Send a pre-formatted WhatsApp confirmation or follow-up message in one tap, with phone numbers auto-formatted to international format.",
     },
     {
       "@type": "HowToStep",
-      name: "Forecast and close",
-      text: "Review the AI-generated weekly revenue forecast and focus your team on the deals most likely to close this quarter.",
+      name: "Track and close",
+      text: "Watch the pipeline kanban, follow-up queue, and analytics dashboard update in real time as your team works the leads.",
     },
   ],
 };

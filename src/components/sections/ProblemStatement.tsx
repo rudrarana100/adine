@@ -4,16 +4,16 @@ import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 
 const PROBLEMS = [
   {
-    stat: "62% of deals never enter your CRM",
-    body: "Reps work from inboxes and notebooks, so your pipeline is a partial record from day one.",
+    stat: "Hours wasted copy-pasting leads from Google Maps",
+    body: "Reps hand-scrape business data into spreadsheets that go stale the moment they're saved — before a single dial is made.",
   },
   {
-    stat: "Sales reps spend 31% of their week on data entry",
-    body: "That is a day and a half of selling time lost to logging calls, emails, and meetings.",
+    stat: "Calls happen in chaos, not in sequence",
+    body: "No one knows who was dialed, who needs a callback, or when. High-intent leads slip through the gaps between tabs and tools.",
   },
   {
-    stat: "Average CRM data accuracy: 47%",
-    body: "Forecasts built on half-true data miss quarter targets they were never able to predict.",
+    stat: "Follow-ups live in three different apps",
+    body: "WhatsApp DMs, calendar invites, and sticky notes. Meetings get missed, warm leads go cold, and pipeline is guesswork.",
   },
 ];
 
@@ -24,9 +24,9 @@ export default function ProblemStatement() {
     <section className="bg-ash py-[80px]">
       <div className="shell grid gap-12 lg:grid-cols-2">
         <h2 className="text-[clamp(30px,4vw,40px)] leading-[1.2] tracking-[-0.02em] text-graphite">
-          Your pipeline is full.
+          Your outbound motion
           <br />
-          Your forecast is fiction.
+          is leaking deals.
         </h2>
 
         <motion.div
@@ -50,7 +50,7 @@ export default function ProblemStatement() {
       </div>
 
       <p className="font-display mt-12 flex items-center justify-center gap-3 text-[clamp(24px,3vw,32px)] tracking-[-0.02em] text-graphite">
-        SalesTracker fixes all three.
+        SalesTracker runs the whole motion for you.
         <ArrowRight size={28} color="var(--color-ember)" aria-hidden="true" />
       </p>
     </section>

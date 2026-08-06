@@ -15,7 +15,6 @@ export const scaleIn: Variants = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
 };
 
-/* eslint-disable react-refresh/only-export-components */
 export function useVariants() {
   const reduce = useReducedMotion();
   return (v: Variants): Variants => (reduce ? {} : v);

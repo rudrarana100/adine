@@ -1,19 +1,230 @@
 import { motion } from "framer-motion";
-import { Kanban, Target, ChartLineUp, IdentificationCard, UsersThree } from "@phosphor-icons/react";
+import {
+  PhoneCall,
+  MapPin,
+  Database,
+  ClockCounterClockwise,
+  Kanban,
+  CalendarCheck,
+  ChatCircleText,
+  ChartLineUp,
+  CheckSquare,
+  UserCircleGear,
+  Moon,
+} from "@phosphor-icons/react";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 
-const LEADS = [
-  { name: "Meridian Technologies", score: 87 },
-  { name: "Coralth Systems", score: 71 },
-  { name: "Opacus Group", score: 55 },
-  { name: "Runewell Labs", score: 23 },
-];
+const STATUS_BADGES = ["Warm", "Hot", "Qualified", "Meeting Booked"];
 
-const STAGES = [
-  { name: "Qualify", deals: ["Fenwick", "Cerida"] },
-  { name: "Demo", deals: ["Paravox"] },
-  { name: "Proposal", deals: ["Tenloft", "Vortex"] },
-  { name: "Closed", deals: ["Brightledge"] },
+function DialingVisual() {
+  const queue = [
+    { name: "Rahul M.", state: "Connected", active: false },
+    { name: "Sarah C.", state: "Next", active: true },
+    { name: "Marcus W.", state: "Queued", active: false },
+    { name: "Priya N.", state: "Queued", active: false },
+  ];
+  return (
+    <div className="mt-6 space-y-2">
+      {queue.map((q) => (
+        <div
+          key={q.name}
+          className={`flex items-center justify-between rounded-sm px-3 py-2 text-[13px] ${
+            q.active ? "bg-canvas-white ring-1 ring-ember" : "bg-canvas-white"
+          }`}
+        >
+          <span className="text-graphite">{q.name}</span>
+          <span
+            className={`rounded-2xl px-2 py-[2px] text-[11px] ${
+              q.state === "Connected"
+                ? "bg-ember text-canvas-white"
+                : q.state === "Next"
+                  ? "bg-ivory text-brass"
+                  : "bg-mist text-steel"
+            }`}
+          >
+            {q.state}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ScraperVisual() {
+  const fields = ["Business name", "Phone", "Email", "Website", "Category", "Maps link"];
+  return (
+    <div className="mt-6 flex flex-wrap gap-1.5">
+      {fields.map((f) => (
+        <span
+          key={f}
+          className="rounded-sm bg-canvas-white px-2.5 py-1.5 text-[12px] text-graphite"
+        >
+          {f}
+        </span>
+      ))}
+      <span className="rounded-sm bg-ember px-2.5 py-1.5 text-[12px] text-canvas-white">
+        1,240 leads
+      </span>
+    </div>
+  );
+}
+
+function TimelineVisual() {
+  return (
+    <div className="mt-6 rounded-sm bg-canvas-white p-3">
+      <p className="font-display text-[13px] tracking-[-0.02em] text-graphite">Activity log</p>
+      <ul className="mt-2 space-y-1.5 text-[12px] text-steel">
+        <li>10:42 · Call connected — 4m 12s</li>
+        <li>10:47 · Status → Warm</li>
+        <li>10:48 · WhatsApp follow-up sent</li>
+      </ul>
+    </div>
+  );
+}
+
+function FollowUpVisual() {
+  return (
+    <div className="mt-6 flex gap-2">
+      {[
+        { label: "Overdue", n: 3, tone: "bg-ember text-canvas-white" },
+        { label: "Today", n: 5, tone: "bg-ivory text-brass" },
+        { label: "Upcoming", n: 12, tone: "bg-mist text-steel" },
+      ].map((t) => (
+        <div key={t.label} className="flex-1 rounded-sm bg-canvas-white p-3 text-center">
+          <p className={`inline-block rounded-2xl px-2 py-[2px] text-[11px] ${t.tone}`}>{t.n}</p>
+          <p className="mt-2 text-[11px] text-slate">{t.label}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MeetVisual() {
+  return (
+    <div className="mt-6 rounded-sm bg-canvas-white p-3">
+      <p className="font-display text-[13px] tracking-[-0.02em] text-graphite">
+        meet.google.com/abc-xyz
+      </p>
+      <p className="mt-1 text-[12px] text-slate">Thu 9:30 AM · 45 min · Google Calendar</p>
+    </div>
+  );
+}
+
+function WhatsAppVisual() {
+  return (
+    <div className="mt-6 rounded-sm bg-canvas-white p-3">
+      <p className="font-display text-[13px] tracking-[-0.02em] text-graphite">Message preview</p>
+      <p className="mt-1 rounded-sm bg-fog p-2 text-[12px] leading-[1.5] text-steel">
+        Hi Rahul, here&apos;s your meeting link for Thursday 9:30 AM…
+      </p>
+      <p className="mt-2 text-[11px] text-slate">+91 98204 55123 → formatted automatically</p>
+    </div>
+  );
+}
+
+function TasksVisual() {
+  return (
+    <div className="mt-6 space-y-2">
+      {[
+        { label: "Call Meridian follow-up", tone: "bg-ember text-canvas-white" },
+        { label: "Send deck to Coralth", tone: "bg-ivory text-brass" },
+        { label: "Log Paravox meeting", tone: "bg-mist text-steel" },
+      ].map((t) => (
+        <div key={t.label} className="flex items-center gap-2 rounded-sm bg-canvas-white p-2.5">
+          <span className={`h-2 w-2 rounded-full ${t.tone.split(" ")[0]}`} aria-hidden="true" />
+          <span className="text-[12px] text-graphite">{t.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function PipelineVisual() {
+  const cols = [
+    { name: "Cold", n: 4, active: false },
+    { name: "Warm", n: 3, active: true },
+    { name: "Meet", n: 2, active: false },
+    { name: "Won", n: 1, active: false },
+  ];
+  return (
+    <div className="mt-6 grid grid-cols-4 gap-2">
+      {cols.map((c) => (
+        <div
+          key={c.name}
+          className={`rounded-sm p-2.5 ${c.active ? "bg-canvas-white ring-1 ring-ember" : "bg-canvas-white"}`}
+        >
+          <p className="text-[11px] tracking-[0.04em] text-slate uppercase">{c.name}</p>
+          <p className="font-display mt-1 text-[18px] leading-none tracking-[-0.02em]">{c.n}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const FEATURES = [
+  {
+    icon: PhoneCall,
+    title: "Sequential power dialing",
+    body: "Cold leads present one at a time. Call, mark interested, book a Google Meet, or skip — every action advances the queue automatically.",
+    visual: <DialingVisual />,
+    wide: true,
+  },
+  {
+    icon: MapPin,
+    title: "Google Maps lead scraper",
+    body: "Scrape real business data by query, location, and target count in the background — name, phone, email, website, category, and maps link.",
+    visual: <ScraperVisual />,
+    wide: true,
+  },
+  {
+    icon: Database,
+    title: "Lead directory & 360° inspector",
+    body: "Search every prospect across name, phone, and email. Open any record to see notes, activity, and status at a glance.",
+    visual: <TimelineVisual />,
+    wide: false,
+  },
+  {
+    icon: ClockCounterClockwise,
+    title: "Guided follow-up hub",
+    body: "Overdue, today, and upcoming touchpoints in one queue. Complete, reschedule, or escalate without leaving the screen.",
+    visual: <FollowUpVisual />,
+    wide: false,
+  },
+  {
+    icon: Kanban,
+    title: "Visual deal pipeline",
+    body: "Drag deals across stages from Cold to Closed Won. See counts and value per column, plus conversion health.",
+    visual: <PipelineVisual />,
+    wide: false,
+  },
+  {
+    icon: CalendarCheck,
+    title: "Google Meet + Calendar",
+    body: "Generate official Google Meet links via Google Calendar API. See every callback and meeting on a monthly calendar view.",
+    visual: <MeetVisual />,
+    wide: false,
+  },
+  {
+    icon: ChatCircleText,
+    title: "WhatsApp messaging",
+    body: "Local numbers auto-format to international. Send pre-built meeting confirmations and follow-up templates with one tap.",
+    visual: <WhatsAppVisual />,
+    wide: false,
+  },
+  {
+    icon: ChartLineUp,
+    title: "Sales analytics",
+    body: "Call outcomes, conversion trends, activity volume, and pipeline distribution — all rendered in real time.",
+    visual: null,
+    wide: false,
+  },
+  {
+    icon: CheckSquare,
+    title: "Task management",
+    body: "Tag tasks high, medium, or low. Filter by pending, completed, or priority, and tie every task to a specific lead.",
+    visual: <TasksVisual />,
+    wide: false,
+  },
 ];
 
 export default function FeaturesGrid() {
@@ -22,132 +233,65 @@ export default function FeaturesGrid() {
   return (
     <section id="features" className="bg-canvas-white py-[80px]">
       <div className="shell">
-        <p className="eyebrow">Platform capabilities</p>
-        <h2 className="mt-3 text-[clamp(30px,4vw,40px)] leading-[1.2] tracking-[-0.02em]">
-          Everything your revenue team needs.
-          <br />
-          Nothing they don&apos;t.
-        </h2>
+        <div className="grid gap-6 lg:grid-cols-[auto_1fr] lg:items-end">
+          <div>
+            <p className="eyebrow">Platform capabilities</p>
+            <h2 className="mt-3 text-[clamp(30px,4vw,40px)] leading-[1.2] tracking-[-0.02em]">
+              Everything an outbound team needs.
+              <br />
+              Nothing it doesn&apos;t.
+            </h2>
+          </div>
+          <p className="max-w-[440px] text-[15px] leading-[1.6] text-steel lg:justify-self-end">
+            Ten tightly-integrated modules, one workflow: scrape, dial, book, follow up, and track —
+            without switching apps.
+          </p>
+        </div>
+
+        <div className="mt-12 flex flex-wrap gap-1.5">
+          {STATUS_BADGES.map((s, i) => (
+            <span
+              key={s}
+              className={`rounded-2xl px-3 py-1 text-[12px] ${
+                i === 1
+                  ? "bg-ember text-canvas-white"
+                  : i === 3
+                    ? "bg-graphite text-canvas-white"
+                    : "bg-fog text-steel"
+              }`}
+            >
+              {s}
+            </span>
+          ))}
+          <span className="flex items-center gap-1.5 rounded-2xl bg-ivory px-3 py-1 text-[12px] text-brass">
+            <UserCircleGear size={13} aria-hidden="true" /> 360° lead inspector
+          </span>
+          <span className="flex items-center gap-1.5 rounded-2xl bg-ivory px-3 py-1 text-[12px] text-brass">
+            <Moon size={13} aria-hidden="true" /> Obsidian dark mode
+          </span>
+        </div>
 
         <motion.div
           variants={v(staggerContainer)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          className="mt-10 grid gap-4"
+          viewport={{ once: true, amount: 0.1 }}
+          className="mt-8 grid gap-4 lg:grid-cols-3"
         >
-          <div className="grid gap-4 lg:grid-cols-[60%_1fr]">
+          {FEATURES.map((f) => (
             <motion.article
+              key={f.title}
               variants={v(fadeUp)}
-              className="bg-ivory p-8 lg:p-12"
-              style={{ borderRadius: "6px 0px 0px" }}
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 300, damping: 24 }}
+              className={`rounded-data bg-fog p-7 ${f.wide ? "lg:col-span-1" : ""}`}
             >
-              <Kanban size={24} weight="thin" aria-hidden="true" />
-              <h3 className="mt-4 text-[24px] tracking-[-0.02em]">Pipeline Intelligence</h3>
-              <p className="mt-3 max-w-[460px] text-[14px] leading-[1.6] text-steel">
-                Drag-and-drop deal stages, weighted probability, and AI-suggested next actions. Your
-                pipeline finally reflects reality.
-              </p>
-              <div className="mt-8 grid grid-cols-4 gap-2">
-                {STAGES.map((stage) => (
-                  <div key={stage.name}>
-                    <p className="text-[11px] font-medium tracking-[0.04em] text-slate uppercase">
-                      {stage.name}
-                    </p>
-                    <div className="mt-2 space-y-2">
-                      {stage.deals.map((d) => (
-                        <div
-                          key={d}
-                          className="rounded-sm bg-canvas-white px-2.5 py-2 text-[12px] text-graphite"
-                        >
-                          {d}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <f.icon size={24} weight="thin" aria-hidden="true" />
+              <h3 className="mt-4 text-[19px] tracking-[-0.02em]">{f.title}</h3>
+              <p className="mt-2.5 text-[14px] leading-[1.6] text-steel">{f.body}</p>
+              {f.visual && <div>{f.visual}</div>}
             </motion.article>
-
-            <motion.article variants={v(fadeUp)} className="rounded-data bg-fog p-8">
-              <Target size={24} weight="thin" aria-hidden="true" />
-              <h3 className="mt-4 text-[24px] tracking-[-0.02em]">AI Lead Scoring</h3>
-              <p className="mt-3 text-[14px] leading-[1.6] text-steel">
-                47 behavioural signals. Prioritise every lead in seconds.
-              </p>
-              <ul className="mt-6 space-y-3">
-                {LEADS.map((lead, i) => (
-                  <li key={lead.name} className="flex items-center gap-3">
-                    <div className="h-1.5 flex-1 rounded-sm bg-mist">
-                      <div
-                        className={`h-full rounded-sm ${i === 0 ? "bg-ember" : "bg-graphite"}`}
-                        style={{ width: `${lead.score}%` }}
-                      />
-                    </div>
-                    <span className="font-display w-8 text-right text-[14px] tracking-[-0.02em]">
-                      {lead.score}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.article>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            <motion.article variants={v(fadeUp)} className="rounded-card bg-fog p-6">
-              <ChartLineUp size={24} weight="thin" aria-hidden="true" />
-              <h3 className="mt-4 text-[18px] tracking-[-0.02em]">Revenue Forecasting</h3>
-              <p className="mt-2 text-[14px] leading-[1.6] text-steel">
-                ML-based quarterly revenue forecasting, refreshed every weekday morning.
-              </p>
-              <svg viewBox="0 0 160 40" className="mt-5 h-10 w-full" aria-hidden="true">
-                <polyline
-                  points="2,34 34,26 66,29 98,14 130,18 158,4"
-                  fill="none"
-                  stroke="var(--color-brass)"
-                  strokeWidth="2"
-                />
-              </svg>
-            </motion.article>
-
-            <motion.article variants={v(fadeUp)} className="rounded-card bg-fog p-6">
-              <IdentificationCard size={24} weight="thin" aria-hidden="true" />
-              <h3 className="mt-4 text-[18px] tracking-[-0.02em]">Contact Intelligence</h3>
-              <p className="mt-2 text-[14px] leading-[1.6] text-steel">
-                Auto-enriched profiles with role, tenure, and buying-committee position.
-              </p>
-              <div className="mt-5 rounded-sm bg-canvas-white p-3">
-                <p className="font-display text-[13px] tracking-[-0.02em]">Sarah Chen</p>
-                <p className="text-[12px] text-slate">VP Sales · Meridian Technologies</p>
-                <span className="mt-2 inline-block rounded-2xl bg-ivory px-2 py-[2px] text-[11px] text-brass">
-                  Decision maker
-                </span>
-              </div>
-            </motion.article>
-
-            <motion.article variants={v(fadeUp)} className="rounded-card bg-fog p-6">
-              <UsersThree size={24} weight="thin" aria-hidden="true" />
-              <h3 className="mt-4 text-[18px] tracking-[-0.02em]">Team Collaboration</h3>
-              <p className="mt-2 text-[14px] leading-[1.6] text-steel">
-                Shared notes, @mentions, and explicit deal ownership on every record.
-              </p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  {["MW", "PN", "JO"].map((initials) => (
-                    <span
-                      key={initials}
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-graphite text-[10px] text-canvas-white ring-2 ring-fog"
-                    >
-                      {initials}
-                    </span>
-                  ))}
-                </div>
-                <p className="rounded-sm bg-canvas-white px-3 py-2 text-[12px] text-steel">
-                  @marcus can you loop in legal?
-                </p>
-              </div>
-            </motion.article>
-          </div>
+          ))}
         </motion.div>
       </div>
     </section>

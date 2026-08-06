@@ -8,6 +8,7 @@ export default function FAQ() {
 
   return (
     <section
+      id="faq"
       className="bg-canvas-white py-[80px]"
       itemScope
       itemType="https://schema.org/FAQPage"

@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -77,15 +78,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SalesTracker CRM — B2B Sales Intelligence" },
+      { title: "SalesTracker — Outbound B2B Sales Execution & CRM Platform" },
       {
         name: "description",
         content:
-          "AI-powered pipeline visibility, lead scoring, and revenue forecasting for B2B revenue teams.",
+          "Google Maps lead scraping, sequential power dialing, WhatsApp dispatch, Google Meet booking, deal pipeline, and analytics — in one outbound sales platform.",
       },
       { name: "author", content: "SalesTracker" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "SalesTracker CRM" },
+      { property: "og:site_name", content: "SalesTracker" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -127,6 +128,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster position="top-center" />
     </QueryClientProvider>
   );
 }

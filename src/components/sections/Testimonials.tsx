@@ -5,18 +5,18 @@ import { Star } from "@phosphor-icons/react";
 const TESTIMONIALS = [
   {
     quote:
-      "We closed our first $500K deal 3 weeks after onboarding. The AI scoring told us exactly which leads to call that Monday morning.",
+      "We went from 25 dials a day to 140. The sequential dialer keeps reps focused, and meetings booked tripled in the first month.",
     author: "— Marcus Webb, Head of Sales, Coralth",
   },
   {
     quote:
-      "After 6 months, we retired both Salesforce and our spreadsheet system. SalesTracker replaced both.",
-    author: "— Priya Nair, CRO, Paravox Labs",
+      "The Google Maps scraper filled our pipeline with qualified local leads in a week. Numbers were 96% valid — we just started calling.",
+    author: "— Priya Nair, Founder, Paravox Labs",
   },
   {
     quote:
-      "The forecasting accuracy alone justified the cost. We hit within 4% of Q2 forecast. First time ever.",
-    author: "— James Okafor, VP Revenue, Tenloft",
+      "WhatsApp follow-ups go out the moment I hang up, and the Meet link is already in the calendar. Nothing slips through anymore.",
+    author: "— James Okafor, BD Manager, Tenloft",
   },
 ];
 
@@ -24,10 +24,10 @@ export default function Testimonials() {
   const constraintsRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <section className="bg-ash py-[80px]">
+    <section id="testimonials" className="bg-ash py-[80px]">
       <div className="shell">
         <h2 className="text-[clamp(28px,3.6vw,40px)] leading-[1.2] tracking-[-0.02em]">
-          What B2B revenue leaders say.
+          What outbound teams say.
         </h2>
 
         <div ref={constraintsRef} className="mt-10 overflow-hidden">
