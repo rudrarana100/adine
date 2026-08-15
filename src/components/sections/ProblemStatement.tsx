@@ -1,58 +1,64 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "@phosphor-icons/react";
+import { PhoneCall, MapPin, ChatCircleText, VideoCamera } from "@phosphor-icons/react";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 
-const PROBLEMS = [
+const HIGHLIGHTS = [
   {
-    stat: "Hours wasted copy-pasting leads from Google Maps",
-    body: "Reps hand-scrape business data into spreadsheets that go stale the moment they're saved — before a single dial is made.",
+    Icon: MapPin,
+    title: "Leads from Google Maps",
+    body: "Pull real business data with name, phone, and the maps link.",
   },
   {
-    stat: "Calls happen in chaos, not in sequence",
-    body: "No one knows who was dialed, who needs a callback, or when. High-intent leads slip through the gaps between tabs and tools.",
+    Icon: PhoneCall,
+    title: "Sequential dialing",
+    body: "One lead at a time, every call auto-logged as you go.",
   },
   {
-    stat: "Follow-ups live in three different apps",
-    body: "WhatsApp DMs, calendar invites, and sticky notes. Meetings get missed, warm leads go cold, and pipeline is guesswork.",
+    Icon: ChatCircleText,
+    title: "WhatsApp follow-ups",
+    body: "Confirmations and touches sent the moment you hang up.",
+  },
+  {
+    Icon: VideoCamera,
+    title: "Google Meet booking",
+    body: "Meeting links generated and added to the calendar.",
   },
 ];
 
 export default function ProblemStatement() {
   const v = useVariants();
-
   return (
-    <section className="bg-ash py-[80px]">
-      <div className="shell grid gap-12 lg:grid-cols-2">
-        <h2 className="text-[clamp(30px,4vw,40px)] leading-[1.2] tracking-[-0.02em] text-graphite">
-          Your outbound motion
-          <br />
-          is leaking deals.
-        </h2>
+    <section id="why" className="bg-ash py-[96px]">
+      <div className="shell">
+        <div className="mx-auto max-w-[640px] text-center">
+          <p className="eyebrow !text-ember">Why SalesTracker</p>
+          <h2 className="mt-4 text-[clamp(32px,4.2vw,44px)] leading-[1.1] tracking-[-0.02em]">
+            Built for the work that actually books meetings.
+          </h2>
+          <p className="mt-4 text-[16px] leading-[1.6] text-steel">
+            The tools outbound reps already use — wired into one clean workflow, so the pipeline
+            reads itself and follow-ups never slip.
+          </p>
+        </div>
 
         <motion.div
           variants={v(staggerContainer)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="flex flex-col gap-4"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {PROBLEMS.map((p) => (
-            <motion.article
-              key={p.stat}
-              variants={v(fadeUp)}
-              className="rounded-card border-l-[3px] border-ember bg-canvas-white p-6"
-            >
-              <p className="text-[14px] text-graphite">{p.stat}</p>
-              <p className="mt-2 text-[13px] leading-[1.6] text-steel">{p.body}</p>
+          {HIGHLIGHTS.map(({ Icon, title, body }) => (
+            <motion.article key={title} variants={v(fadeUp)} className="card-premium p-6">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ivory">
+                <Icon size={20} className="text-graphite" aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 text-[16px] font-bold tracking-tight text-graphite">{title}</h3>
+              <p className="mt-2 text-[14px] leading-[1.6] text-steel">{body}</p>
             </motion.article>
           ))}
         </motion.div>
       </div>
-
-      <p className="font-display mt-12 flex items-center justify-center gap-3 text-[clamp(24px,3vw,32px)] tracking-[-0.02em] text-graphite">
-        SalesTracker runs the whole motion for you.
-        <ArrowRight size={28} color="var(--color-ember)" aria-hidden="true" />
-      </p>
     </section>
   );
 }

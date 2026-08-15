@@ -4,10 +4,6 @@ import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
 import LogoStrip from "@/components/sections/LogoStrip";
 import ProblemStatement from "@/components/sections/ProblemStatement";
-import FeaturesGrid from "@/components/sections/FeaturesGrid";
-import AnalyticsProof from "@/components/sections/AnalyticsProof";
-import DashboardPreview from "@/components/sections/DashboardPreview";
-import IntegrationEcosystem from "@/components/sections/IntegrationEcosystem";
 import Testimonials from "@/components/sections/Testimonials";
 import FAQ from "@/components/sections/FAQ";
 import FinalCTA from "@/components/sections/FinalCTA";
@@ -70,10 +66,6 @@ function Index() {
         <Hero />
         <LogoStrip />
         <ProblemStatement />
-        <FeaturesGrid />
-        <DashboardPreview />
-        <AnalyticsProof />
-        <IntegrationEcosystem />
         <Testimonials />
         <FAQ />
         <FinalCTA />

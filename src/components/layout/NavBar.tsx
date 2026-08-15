@@ -2,10 +2,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { List, X, Sun, Moon } from "@phosphor-icons/react";
 
 const LINKS = [
-  { label: "Features", href: "#features" },
-  { label: "Product tour", href: "#tour" },
-  { label: "Integrations", href: "#integrations" },
-  { label: "Testimonials", href: "#testimonials" },
+  { label: "Why SalesTracker", href: "#why" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -43,33 +40,35 @@ export default function NavBar() {
   const { dark, toggle } = useTheme();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <header className="sticky top-5 z-50">
-      <nav aria-label="Primary" className="shell flex items-center justify-between gap-4">
+    <header
+      className={`sticky top-0 z-50 transition-colors ${
+        scrolled
+          ? "border-b border-mist bg-canvas-white/90 backdrop-blur-[12px]"
+          : "bg-canvas-white"
+      }`}
+    >
+      <nav aria-label="Primary" className="shell flex h-[72px] items-center justify-between gap-4">
         <a
           href="#top"
-          className="font-display text-[18px] tracking-[-0.02em] text-graphite"
+          className="font-display text-[19px] tracking-[-0.02em] text-graphite"
           aria-label="SalesTracker home"
         >
           SalesTracker<span className="text-ember">.</span>
         </a>
 
-        <ul
-          className={`hidden items-center gap-5 rounded-pill px-[18px] py-2 transition-colors md:flex ${
-            scrolled ? "bg-ash/85 backdrop-blur-[12px]" : "bg-ash"
-          }`}
-        >
+        <ul className="hidden items-center gap-8 md:flex">
           {LINKS.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
-                className="font-display text-[16px] tracking-[-0.02em] text-graphite transition-colors hover:text-ember"
+                className="text-[15px] text-graphite transition-colors hover:text-ember"
               >
                 {link.label}
               </a>
@@ -77,23 +76,28 @@ export default function NavBar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={toggle}
             aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-            className="flex h-12 w-12 items-center justify-center rounded-pill bg-ash transition-colors hover:bg-mist"
+            className="flex h-11 w-11 items-center justify-center rounded-sm border border-mist text-graphite transition-colors hover:bg-ash"
           >
-            {dark ? <Sun size={19} aria-hidden="true" /> : <Moon size={19} aria-hidden="true" />}
+            {dark ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
           </button>
-          <a href="#demo" className="btn-solid hidden !min-h-0 !py-2.5 md:inline-flex">
-            Request demo
+          <a
+            href="https://salestrackercrm.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-solid hidden !min-h-0 !px-5 !py-2.5 md:inline-flex"
+          >
+            Open the app
           </a>
           <button
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open menu"
-            className="flex h-12 w-12 items-center justify-center rounded-pill bg-ash md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-sm border border-mist text-graphite md:hidden"
           >
             <List size={20} aria-hidden="true" />
           </button>
@@ -112,7 +116,7 @@ export default function NavBar() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="mb-8 flex h-12 w-12 items-center justify-center self-end rounded-pill bg-ash"
+              className="mb-8 flex h-12 w-12 items-center justify-center self-end rounded-sm border border-mist"
             >
               <X size={20} aria-hidden="true" />
             </button>
@@ -133,7 +137,7 @@ export default function NavBar() {
               <button
                 type="button"
                 onClick={toggle}
-                className="flex h-12 w-12 items-center justify-center rounded-pill bg-ash"
+                className="flex h-12 w-12 items-center justify-center rounded-sm border border-mist"
                 aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
               >
                 {dark ? (
@@ -143,8 +147,14 @@ export default function NavBar() {
                 )}
               </button>
             </div>
-            <a href="#demo" onClick={() => setOpen(false)} className="btn-solid mt-auto w-full">
-              Request demo
+            <a
+              href="https://salestrackercrm.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="btn-solid mt-auto w-full"
+            >
+              Open the app
             </a>
           </div>
         </div>

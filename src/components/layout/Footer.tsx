@@ -13,9 +13,9 @@ const COLUMNS = [
 ];
 
 const SECTION_IDS: Record<string, string> = {
-  Features: "#features",
-  "Product tour": "#tour",
-  Integrations: "#integrations",
+  Features: "#why",
+  "Product tour": "#why",
+  "Why SalesTracker": "#why",
 };
 
 export default function Footer() {
