@@ -1,61 +1,62 @@
-@import "tailwindcss" source(none);
-@source "../src";
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
 @import "tw-animate-css";
+@import "tailwindcss" source(none);
 
+@source "../src";
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Ventriloc design system — editorial data observatory.
- * Warm paper canvas, monochrome precision, a single Ember Orange accent.
+ * Adine design system — outbound CRM for agency founders and solo salespeople.
+ * Cool canvas, monochrome precision, accent-blue highlight.
  * All colours are tokens; never hardcode hex in components.
  */
 
 @theme {
-  /* Brand palette — mirrored from the SalesTracker CRM app itself.
-   * Cool Pearl light (soft #f4f5f8 canvas, white cards, slate ink)
-   * and Obsidian midnight dark (navy #090d16, slate cards, sky accents). */
-  --color-graphite: #0f172a;
-  --color-canvas-white: #ffffff;
-  --color-ash: #f4f5f8;
-  --color-fog: #f8fafc;
-  --color-ivory: #f1f5f9;
-  --color-steel: #475569;
-  --color-slate: #64748b;
-  --color-mist: #e2e8f0;
-  --color-ember: #0ea5e9;
-  --color-ember-foreground: #0f172a;
-  --color-brass: #0ea5e9;
+  /* Brand palette — Adine outbound CRM */
+  --color-canvas: #f6f7f9;
+  --color-surface-white: #ffffff;
+  --color-text-primary: #111318;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #9ca3af;
+  --color-border-subtle: #e5e7eb;
+  --color-accent-blue: #3b6ff0;
+  --color-accent-soft: #eaf0fe;
+  --color-success-green: #16a34a;
+  --color-warning-amber: #f59e0b;
+  --color-accent-purple: #8b5cf6;
 
-  /* Typography — matching the CRM UI (Plus Jakarta Sans) */
-  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  /* Typography — Inter, matching the CRM UI */
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
   /* Type scale */
-  --text-caption: 14px;
-  --text-caption--line-height: 1.43;
-  --text-subheading: 18px;
-  --text-subheading--line-height: 1.25;
-  --text-heading: 32px;
-  --text-heading--line-height: 1.19;
-  --text-heading--letter-spacing: -0.64px;
+  --text-hero-title: 36px;
+  --text-hero-title--line-height: 1.15;
   --text-heading-lg: 40px;
   --text-heading-lg--line-height: 1.2;
-  --text-heading-lg--letter-spacing: -0.8px;
-  --text-display: 66px;
-  --text-display--line-height: 0.91;
-  --text-display--letter-spacing: -1.32px;
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-stat: 28px;
+  --text-stat--line-height: 1;
+  --text-caption: 11px;
+  --text-caption--line-height: 1.2;
+  --text-caption--letter-spacing: 0.06em;
 
-  /* Radius hierarchy — from the CRM */
+  /* Radius hierarchy */
   --radius-sm: 8px;
   --radius-md: 10px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 20px;
-  --radius-3xl: 24px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
   --radius-full: 9999px;
-  --radius-card: 16px;
-  --radius-data: 20px;
   --radius-pill: 9999px;
+
+  /* Shadow — subtle only */
+  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-none: 0px 0px 0px rgba(0, 0, 0, 0);
+
+  --section-gap: 24px;
+  --page-max-width: 1200px;
 }
 
 @theme inline {
@@ -81,33 +82,27 @@
 }
 
 :root {
-  --radius: 1rem;
-  --background: #f4f5f8;
-  --foreground: #0f172a;
+  --background: #f6f7f9;
+  --foreground: #111318;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #111318;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #0f172a;
+  --popover-foreground: #111318;
+  --primary: #3b6ff0;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f8fafc;
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
+  --secondary: #f6f7f9;
+  --secondary-foreground: #111318;
+  --muted: #6b7280;
+  --muted-foreground: #9ca3af;
+  --accent: #eaf0fe;
+  --accent-foreground: #3b6ff0;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #0f172a;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #3b6ff0;
 
-  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --shadow-card: 0 2px 8px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
-  --shadow-card-hover: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px 0 rgba(15, 23, 42, 0.04);
-
-  --section-gap: 80px;
-  --page-max-width: 1200px;
+  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 @layer base {
@@ -127,27 +122,78 @@
   }
 
   body {
-    background-color: var(--color-ash);
-    color: var(--color-graphite);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
     font-family: var(--font-sans);
+    font-feature-settings: "rlig" "calt";
   }
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: -0.02em;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-ember);
+    outline: 2px solid var(--color-accent-blue);
     outline-offset: 2px;
   }
 
   button,
   a {
     touch-action: manipulation;
+  }
+}
+
+@layer utilities {
+  .font-caveat {
+    font-family: "Caveat", sans-serif;
+  }
+  .font-jetbmono {
+    font-family: "JetBrains Mono", monospace;
+  }
+}
+
+@layer elements {
+  .bg-canvas {
+    background-color: var(--color-canvas);
+  }
+  .bg-surface-white {
+    background-color: var(--color-surface-white);
+  }
+  .text-text-primary {
+    color: var(--color-text-primary);
+  }
+  .text-text-secondary {
+    color: var(--color-text-secondary);
+  }
+  .text-text-tertiary {
+    color: var(--color-text-tertiary);
+  }
+  .border-border-subtle {
+    border-color: var(--color-border-subtle);
+  }
+  .accent-blue {
+    color: var(--color-accent-blue);
+    background-color: var(--color-accent-soft);
+  }
+  .accent-blue-bg {
+    background-color: var(--color-accent-blue);
+    color: white;
+  }
+  .success-green {
+    color: var(--color-success-green);
+  }
+  .warning-amber {
+    color: var(--color-warning-amber);
+  }
+  .accent-purple {
+    color: var(--color-accent-purple);
   }
 }
 
@@ -164,7 +210,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-slate);
+  color: var(--color-text-secondary);
 }
 
 @utility btn-solid {
@@ -173,17 +219,18 @@
   justify-content: center;
   gap: 8px;
   border-radius: var(--radius-md);
-  background: var(--color-graphite);
-  color: var(--color-canvas-white);
+  background: var(--color-accent-blue);
+  color: var(--color-surface-white);
   font-family: var(--font-display);
   font-size: 16px;
   letter-spacing: -0.02em;
   padding: 12px 24px;
   min-height: 48px;
-  transition: opacity 0.2s ease;
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
 
   &:hover {
-    opacity: 0.85;
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -193,61 +240,89 @@
   justify-content: center;
   gap: 8px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-graphite);
-  color: var(--color-graphite);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
   font-family: var(--font-display);
   font-size: 16px;
-  letter-spacing: -0.02em;
   padding: 12px 24px;
   min-height: 48px;
-  transition: background 0.2s ease;
+  transition: border-color 150ms ease-out, color 150ms ease-out;
 
   &:hover {
-    background: var(--color-mist);
+    border-color: var(--color-accent-blue);
+    color: var(--color-accent-blue);
+  }
+}
+
+@utility btn-ghost-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  padding: 8px 16px;
+  min-height: 40px;
+  transition: border-color 150ms ease-out, color 150ms ease-out;
+
+  &:hover {
+    border-color: var(--color-accent-blue);
+    color: var(--color-accent-blue);
   }
 }
 
 @utility ember-underline {
   text-decoration: underline;
-  text-decoration-color: var(--color-ember);
+  text-decoration-color: var(--color-accent-blue);
   text-underline-offset: 6px;
   text-decoration-thickness: 3px;
 }
 
-@keyframes ember-pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    opacity: 0.45;
-    transform: scale(0.8);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@utility ember-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: var(--color-ember);
-  animation: ember-pulse 1.8s ease-in-out infinite;
+@keyframes count-up {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* From the CRM app: soft elevated cards and glass surfaces */
 @utility card-premium {
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-card);
   background: var(--color-card);
-  color: var(--color-card-foreground);
-  border: 1px solid var(--color-mist);
-  box-shadow: var(--shadow-card);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-subtle);
+}
+
+@utility card-premium-hover {
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 150ms ease-out;
 }
 
 @utility glass {
-  background: var(--color-canvas-white);
+  background: var(--color-surface-white);
 }
 
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -256,59 +331,4 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-}
-
-/*
- * Obsidian Midnight dark mode — mirrors the CRM app's dark theme.
- */
-.dark {
-  color-scheme: dark;
-
-  --color-canvas-white: #111827;
-  --color-graphite: #f8fafc;
-  --color-ash: #090d16;
-  --color-fog: #111827;
-  --color-ivory: #1e293b;
-  --color-steel: #cbd5e1;
-  --color-slate: #94a3b8;
-  --color-mist: #1e293b;
-  --color-ember: #38bdf8;
-  --color-ember-foreground: #0f172a;
-  --color-brass: #38bdf8;
-
-  --background: #090d16;
-  --foreground: #f8fafc;
-  --card: #111827;
-  --card-foreground: #f8fafc;
-  --popover: #111827;
-  --popover-foreground: #f8fafc;
-  --primary: #38bdf8;
-  --primary-foreground: #0f172a;
-  --secondary: #1e293b;
-  --secondary-foreground: #f8fafc;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #38bdf8;
-}
-
-/* Ultra-thin aesthetic scrollbars — from the CRM app */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.25);
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
 }
