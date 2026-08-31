@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import NavBar from "@/components/layout/NavBarAdine";
-import Footer from "@/components/layout/Footer";
+import FooterAdine from "@/components/layout/FooterAdine";
 import HeroAdine from "@/components/sections/HeroAdine";
 import QuickActionCardsAdine from "@/components/sections/QuickActionCardsAdine";
 import HowItWorksAdine from "@/components/sections/HowItWorksAdine";
@@ -63,7 +63,7 @@ function Index() {
         <MakerStoryAdine />
         <FinalCTAAdine />
       </main>
-      <Footer />
+      <FooterAdine />
     </div>
   );
 }

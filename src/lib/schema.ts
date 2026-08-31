@@ -1,45 +1,41 @@
-export const SITE_URL = "https://salestrackercrm.vercel.app";
+export const SITE_URL = "https://adine-crm.vercel.app";
 
 export const FAQ_ITEMS = [
   {
-    q: "What is SalesTracker?",
-    a: "SalesTracker is an end-to-end outbound B2B sales execution platform. It combines automated Google Maps lead scraping, sequential power-dialing call sessions, automated WhatsApp dispatch, Google Meet scheduling, a visual deal pipeline, and sales analytics in one responsive web interface.",
+    q: "What is Adine?",
+    a: "Adine is an outbound CRM built for agency founders and solo salespeople doing high-volume cold calling. It combines cold call sessions, automatic status logging, one-click WhatsApp follow-ups, and a follow-up center in a single clean interface.",
   },
   {
-    q: "How does the Google Maps lead scraper work?",
-    a: "You enter a search query, location, and target count, and the scraper runs in the background using stealth automation. It extracts business name, contact person, phone number, email, website, business category, Google Maps link, and location — then imports them into batches with automatic duplicate detection.",
+    q: "How do cold call sessions work?",
+    a: "Import leads from any source and start a dialing session immediately. Calls are presented one at a time in a distraction-free interface. Every action — call, interested, callback, not interested — auto-advances the queue and logs the activity.",
   },
   {
-    q: "Is scraping business data from Google Maps compliant?",
-    a: "SalesTracker only collects publicly-listed business contact information that businesses already display for customers to contact them. We recommend following Google's terms of service and your local privacy regulations, and we provide opt-out and deletion workflows for any prospect on request.",
+    q: "How does auto status logging work?",
+    a: "Every call outcome is automatically logged with duration, disposition, and timestamp. No manual data entry is required — your CRM stays current in real time as you work through your session.",
   },
   {
-    q: "How does sequential power dialing work?",
-    a: "Leads are presented one at a time in a distraction-free interface. With one click you can start a call, mark the lead interested, book a Google Meet, schedule a callback, mark them not interested, or skip. Every action auto-advances the queue and logs an activity to the lead's timeline.",
+    q: "How does the WhatsApp follow-up work?",
+    a: "After a call, send a follow-up message or appointment confirmation to your lead with a single click. Phone numbers are auto-formatted and messages are pre-built, so you stay in touch instantly without copy-pasting.",
   },
   {
-    q: "How do Google Meet bookings work?",
-    a: "SalesTracker connects to Google via OAuth and uses the Google Calendar API to generate official Google Meet links. When you book a meeting, a calendar event with the Meet URL is created automatically and a confirmation message can be dispatched over WhatsApp.",
+    q: "Is my data secure in Adine?",
+    a: "Yes. Your data is encrypted at rest and in transit. We never share prospect data with third parties, and all session data is stored securely with industry-standard practices.",
   },
   {
-    q: "How does WhatsApp integration work?",
-    a: "Local 10-digit numbers are automatically formatted into clean international format. Pre-built templates handle initial outreach, meeting confirmations, and follow-up reminders, so reps can dispatch a proper WhatsApp message in a single tap.",
-  },
-  {
-    q: "Is my data secure in SalesTracker?",
-    a: "Yes. Google refresh tokens are stored securely and only accessed server-side. Data is encrypted at rest (AES-256) and in transit (TLS 1.3), with 99.9% uptime SLA and no sharing of your prospect data with third parties.",
+    q: "Who is Adine built for?",
+    a: "Adine is designed for agency founders, solo salespeople, and small outbound teams doing high-volume cold calling. If you make 50+ calls a week and need a CRM that stays out of your way, Adine is for you.",
   },
 ];
 
 export const softwareSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "SalesTracker",
+  name: "Adine",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   offers: {
     "@type": "Offer",
-    description: "Outbound B2B sales execution platform.",
+    description: "Outbound CRM for agency founders and solo salespeople.",
   },
   aggregateRating: {
     "@type": "AggregateRating",
@@ -48,15 +44,13 @@ export const softwareSchema = {
     bestRating: "5",
   },
   featureList: [
-    "Sequential Power Dialing",
-    "Google Maps Lead Scraping",
-    "Lead Management and Directory",
-    "360-Degree Lead Inspector",
-    "Guided Follow-Up Hub",
-    "Visual Deal Pipeline",
-    "Google Meet and Calendar Integration",
-    "Automated WhatsApp Messaging",
-    "Sales Analytics and Tasks",
+    "Cold Call Sessions",
+    "Auto Status Logging",
+    "WhatsApp One-Click Follow-ups",
+    "Follow-up Center",
+    "Lead Import and Management",
+    "Call Disposition Tracking",
+    "Real-time Pipeline Updates",
   ],
   url: SITE_URL,
 };
@@ -64,14 +58,14 @@ export const softwareSchema = {
 export const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "SalesTracker",
+  name: "Adine",
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
-  sameAs: ["https://twitter.com/salestrackercrm", "https://linkedin.com/company/salestrackercrm"],
+  sameAs: [],
   contactPoint: {
     "@type": "ContactPoint",
-    contactType: "sales",
-    email: "sales@salestrackercrm.com",
+    contactType: "support",
+    email: "support@adine-crm.vercel.app",
     areaServed: "Worldwide",
     availableLanguage: "English",
   },
@@ -90,33 +84,33 @@ export const faqSchema = {
 export const howToSchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  name: "How to run an outbound call session with SalesTracker",
+  name: "How to run a cold call session with Adine",
   totalTime: "PT1H",
   step: [
     {
       "@type": "HowToStep",
-      name: "Scrape leads from Google Maps",
-      text: "Enter a search query, location, and target count. The scraper imports business name, phone, email, and website into your lead batches automatically.",
+      name: "Import your leads",
+      text: "Upload a CSV or import leads from your existing source. Adine auto-detects duplicates and organizes them into batches.",
     },
     {
       "@type": "HowToStep",
-      name: "Build a dialing queue",
-      text: "Select leads from your directory and queue them into a sequential power-dialing session that presents one lead at a time.",
+      name: "Start a cold call session",
+      text: "Select a batch and start dialing. Leads are presented one at a time in a clean, distraction-free interface.",
     },
     {
       "@type": "HowToStep",
       name: "Work the call",
-      text: "Call the lead, mark them interested, book a Google Meet, or schedule a callback. Every action auto-advances the queue and logs the activity.",
+      text: "Call the lead, mark them interested, schedule a callback, or skip. Every action auto-advances the queue and logs the outcome.",
     },
     {
       "@type": "HowToStep",
-      name: "Dispatch WhatsApp follow-ups",
-      text: "Send a pre-formatted WhatsApp confirmation or follow-up message in one tap, with phone numbers auto-formatted to international format.",
+      name: "Send WhatsApp follow-ups",
+      text: "After the call, send a one-click WhatsApp follow-up or appointment confirmation. Phone numbers are auto-formatted.",
     },
     {
       "@type": "HowToStep",
-      name: "Track and close",
-      text: "Watch the pipeline kanban, follow-up queue, and analytics dashboard update in real time as your team works the leads.",
+      name: "Track and repeat",
+      text: "Your pipeline and follow-up center update in real time. Come back the next day and start a new session with fresh leads.",
     },
   ],
 };

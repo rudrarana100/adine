@@ -1,5 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
 @import "tw-animate-css";
 @import "tailwindcss" source(none);
 
@@ -7,107 +7,95 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Adine design system — outbound CRM for agency founders and solo salespeople.
- * Cool canvas, monochrome precision, accent-blue highlight.
- * All colours are tokens; never hardcode hex in components.
+ * Adine design system — premium outbound CRM for agency founders and solo
+ * salespeople doing high-volume cold calling. monday.com-inspired rounded,
+ * colorful-but-controlled language with entirely original layout and copy.
  */
 
 @theme {
-  /* Brand palette — Adine outbound CRM */
-  --color-canvas: #f6f7f9;
-  --color-surface-white: #ffffff;
-  --color-text-primary: #111318;
-  --color-text-secondary: #6b7280;
-  --color-text-tertiary: #9ca3af;
-  --color-border-subtle: #e5e7eb;
-  --color-accent-blue: #3b6ff0;
-  --color-accent-soft: #eaf0fe;
-  --color-success-green: #16a34a;
-  --color-warning-amber: #f59e0b;
-  --color-accent-purple: #8b5cf6;
+  /* ── Brand ── */
+  --color-violet: #6161ff;
+  --color-violet-hover: #5050e6;
+  --color-violet-soft: #e7ecff;
+  --color-ultraviolet: #9450fd;
 
-  /* Typography — Inter, matching the CRM UI */
-  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* ── Text ── */
+  --color-ink: #333333;
+  --color-slate: #535768;
+  --color-iron: #808080;
 
-  /* Type scale */
-  --text-hero-title: 36px;
-  --text-hero-title--line-height: 1.15;
-  --text-heading-lg: 40px;
-  --text-heading-lg--line-height: 1.2;
-  --text-body: 16px;
-  --text-body--line-height: 1.5;
-  --text-stat: 28px;
-  --text-stat--line-height: 1;
-  --text-caption: 11px;
-  --text-caption--line-height: 1.2;
-  --text-caption--letter-spacing: 0.06em;
+  /* ── Borders ── */
+  --color-fog: #cacbcd;
+  --color-mist: #d0d4e4;
+  --color-pebble: #dddfeb;
 
-  /* Radius hierarchy */
-  --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-card: 12px;
+  /* ── Surfaces ── */
+  --color-canvas: #f5f6f8;
+  --color-card: #ffffff;
+  --color-shadow-dust: #e6e7ea;
+
+  /* ── Accent washes (decorative, one per section) ── */
+  --color-mint: #bcfe90;
+  --color-sky: #abf0ff;
+  --color-apricot: #ff8940;
+  --color-lavender: #eddff7;
+  --color-periwinkle: #e7ecff;
+  --color-cornflower: #93beff;
+  --color-aqua: #d1faff;
+  --color-cotton-candy: #e98dfe;
+  --color-electric-cyan: #3ac9ff;
+  --color-peony: #fcd0f8;
+  --color-periwinkle-wash: #dbdbff;
+
+  /* ── Typography ── */
+  --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Radius ── */
+  --radius-sm: 6px;
+  --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-card: 24px;
+  --radius-panel: 40px;
+  --radius-pill: 100px;
   --radius-full: 9999px;
-  --radius-pill: 9999px;
 
-  /* Shadow — subtle only */
-  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-none: 0px 0px 0px rgba(0, 0, 0, 0);
+  /* ── Shadows (soft, diffused, colored-tinted) ── */
+  --shadow-card: 0px 2px 48px rgba(205, 208, 223, 0.4);
+  --shadow-elevated: 0px 5px 45px rgba(0, 0, 0, 0.15);
+  --shadow-pill: 0px 2px 16px rgba(97, 97, 255, 0.18);
+  --shadow-card-hover: 0px 8px 32px rgba(205, 208, 223, 0.55);
 
-  --section-gap: 24px;
+  --section-gap: 80px;
   --page-max-width: 1200px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-}
-
 :root {
-  --background: #f6f7f9;
-  --foreground: #111318;
+  --background: #f5f6f8;
+  --foreground: #333333;
   --card: #ffffff;
-  --card-foreground: #111318;
+  --card-foreground: #333333;
   --popover: #ffffff;
-  --popover-foreground: #111318;
-  --primary: #3b6ff0;
+  --popover-foreground: #333333;
+  --primary: #6161ff;
   --primary-foreground: #ffffff;
-  --secondary: #f6f7f9;
-  --secondary-foreground: #111318;
-  --muted: #6b7280;
-  --muted-foreground: #9ca3af;
-  --accent: #eaf0fe;
-  --accent-foreground: #3b6ff0;
+  --secondary: #f5f6f8;
+  --secondary-foreground: #333333;
+  --muted: #535768;
+  --muted-foreground: #808080;
+  --accent: #e7ecff;
+  --accent-foreground: #6161ff;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --ring: #3b6ff0;
+  --border: #d0d4e4;
+  --input: #d0d4e4;
+  --ring: #6161ff;
 
-  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0px 2px 48px rgba(205, 208, 223, 0.4);
 }
 
 @layer base {
   * {
-    border-color: var(--color-border);
+    border-color: var(--color-mist);
   }
 
   html {
@@ -122,9 +110,9 @@
   }
 
   body {
-    background-color: var(--color-background);
-    color: var(--color-text-primary);
-    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-poppins);
     font-feature-settings: "rlig" "calt";
   }
 
@@ -134,13 +122,13 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-display);
-    font-weight: 700;
+    font-family: var(--font-poppins);
+    font-weight: 400;
     letter-spacing: -0.02em;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent-blue);
+    outline: 2px solid var(--color-violet);
     outline-offset: 2px;
   }
 
@@ -151,178 +139,108 @@
 }
 
 @layer utilities {
+  .font-poppins {
+    font-family: var(--font-poppins);
+  }
   .font-caveat {
     font-family: "Caveat", sans-serif;
   }
-  .font-jetbmono {
-    font-family: "JetBrains Mono", monospace;
-  }
 }
 
-@layer elements {
-  .bg-canvas {
-    background-color: var(--color-canvas);
-  }
-  .bg-surface-white {
-    background-color: var(--color-surface-white);
-  }
-  .text-text-primary {
-    color: var(--color-text-primary);
-  }
-  .text-text-secondary {
-    color: var(--color-text-secondary);
-  }
-  .text-text-tertiary {
-    color: var(--color-text-tertiary);
-  }
-  .border-border-subtle {
-    border-color: var(--color-border-subtle);
-  }
-  .accent-blue {
-    color: var(--color-accent-blue);
-    background-color: var(--color-accent-soft);
-  }
-  .accent-blue-bg {
-    background-color: var(--color-accent-blue);
-    color: white;
-  }
-  .success-green {
-    color: var(--color-success-green);
-  }
-  .warning-amber {
-    color: var(--color-warning-amber);
-  }
-  .accent-purple {
-    color: var(--color-accent-purple);
-  }
-}
+/* ── Utility classes ── */
 
 @utility shell {
   width: 100%;
   max-width: var(--page-max-width);
   margin-inline: auto;
-  padding-inline: 20px;
+  padding-inline: 24px;
 }
 
-@utility eyebrow {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-}
-
-@utility btn-solid {
+@utility btn-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: var(--radius-md);
-  background: var(--color-accent-blue);
-  color: var(--color-surface-white);
-  font-family: var(--font-display);
-  font-size: 16px;
-  letter-spacing: -0.02em;
-  padding: 12px 24px;
-  min-height: 48px;
-  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+  border-radius: var(--radius-pill);
+  background: var(--color-violet);
+  color: #ffffff;
+  font-family: var(--font-poppins);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 14px 32px;
+  min-height: 52px;
+  box-shadow: var(--shadow-pill);
+  transition:
+    transform 180ms ease-out,
+    box-shadow 180ms ease-out;
 
   &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: scale(1.03);
+    box-shadow: 0px 4px 24px rgba(97, 97, 255, 0.28);
   }
 }
 
-@utility btn-ghost {
+@utility btn-ghost-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-subtle);
-  color: var(--color-text-secondary);
-  font-family: var(--font-display);
-  font-size: 16px;
-  padding: 12px 24px;
-  min-height: 48px;
-  transition: border-color 150ms ease-out, color 150ms ease-out;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-pebble);
+  background: transparent;
+  color: var(--color-slate);
+  font-family: var(--font-poppins);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 13px 30px;
+  min-height: 52px;
+  transition:
+    border-color 180ms ease-out,
+    color 180ms ease-out,
+    background 180ms ease-out;
 
   &:hover {
-    border-color: var(--color-accent-blue);
-    color: var(--color-accent-blue);
+    border-color: var(--color-violet);
+    color: var(--color-violet);
+    background: var(--color-violet-soft);
   }
 }
 
-@utility btn-ghost-sm {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-subtle);
-  color: var(--color-text-secondary);
+@utility card-surface {
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  border: 1px solid var(--color-pebble);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+@utility card-surface-hover {
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  border: 1px solid var(--color-pebble);
+  box-shadow: var(--shadow-card-hover);
+}
+
+@utility section-eyebrow {
+  font-family: var(--font-poppins);
   font-size: 13px;
-  padding: 8px 16px;
-  min-height: 40px;
-  transition: border-color 150ms ease-out, color 150ms ease-out;
-
-  &:hover {
-    border-color: var(--color-accent-blue);
-    color: var(--color-accent-blue);
-  }
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-violet);
 }
 
-@utility ember-underline {
-  text-decoration: underline;
-  text-decoration-color: var(--color-accent-blue);
-  text-underline-offset: 6px;
-  text-decoration-thickness: 3px;
+@utility gradient-text {
+  background: linear-gradient(135deg, var(--color-violet), var(--color-apricot));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes count-up {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* From the CRM app: soft elevated cards and glass surfaces */
-@utility card-premium {
-  border-radius: var(--radius-card);
-  background: var(--color-card);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border-subtle);
-  box-shadow: var(--shadow-subtle);
-}
-
-@utility card-premium-hover {
-  border-radius: var(--radius-card);
-  background: var(--color-card);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border-subtle);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 150ms ease-out;
-}
-
-@utility glass {
-  background: var(--color-surface-white);
-}
-
-/* Reduced motion */
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
