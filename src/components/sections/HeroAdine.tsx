@@ -2,10 +2,11 @@ import { useRef, useEffect, useState } from "react";
 import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
-import { fadeUp, staggerContainer, scaleIn } from "@/lib/motion";
+import { fadeUp, staggerContainer } from "@/lib/motion";
+import { PhoneIcon, ChatIcon, MapPinIcon } from "@/components/icons/FeatureIcons";
 
-/* ─── Typewriter accent ─── */
-const accentWords = ["actually pick up the phone", "never miss a follow-up", "close more deals"];
+/* Typewriter gradient accent — the cold-calling differentiator */
+const accentWords = ["actually pick up the phone", "close more deals", "never miss a call"];
 const getWord = (i: number) => accentWords[i % accentWords.length]!;
 
 function TypewriterAccent({ reduce }: { reduce: boolean }) {
@@ -35,7 +36,7 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   const text = reduce ? accentWords[0] : getWord(wordIdx).slice(0, charIdx);
 
   return (
-    <span className="mt-2 block min-h-[1.2em] text-[clamp(36px,5vw,52px)] font-light leading-[1.12] tracking-[-0.03em] gradient-text">
+    <span className="mt-2 block min-h-[1.2em] text-[clamp(36px,5vw,56px)] font-light leading-[1.12] tracking-[-0.03em] gradient-text">
       {text}
       {!reduce && (
         <span className="ml-0.5 inline-block h-[1em] w-[3px] align-middle bg-violet opacity-60 animate-pulse" />
@@ -44,8 +45,8 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   );
 }
 
-/* ─── Floating orb ─── */
-function FloatingOrb({
+/* Floating orb */
+function Orb({
   className,
   delay = 0,
   reduce,
@@ -59,113 +60,169 @@ function FloatingOrb({
     <motion.div
       className={className}
       aria-hidden="true"
-      animate={{
-        y: [0, -16, 0, 12, 0],
-        x: [0, 8, -5, 6, 0],
-        scale: [1, 1.06, 0.97, 1.03, 1],
-      }}
-      transition={{
-        duration: 12 + delay * 2,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay,
-      }}
+      animate={{ y: [0, -14, 0], opacity: [0.6, 1, 0.6] }}
+      transition={{ duration: 8 + delay, repeat: Infinity, ease: "easeInOut", delay }}
     />
   );
 }
 
-/* ─── Product mockup (floating, breathing) ─── */
-function ProductMockup({ reduce }: { reduce: boolean }) {
+/* ── Call Session UI mock ── */
+const OUTCOMES = [
+  { key: "1", label: "No Answer" },
+  { key: "2", label: "Invalid" },
+  { key: "3", label: "Gatekeeper" },
+  { key: "4", label: "Not Interested" },
+  { key: "5", label: "Interested" },
+  { key: "6", label: "Schedule" },
+];
+
+function CallSessionMock({ reduce }: { reduce: boolean }) {
+  const [pressed, setPressed] = useState(4);
+  const [inCall, setInCall] = useState(true);
+
+  // Loop: outcome button 5 ("Interested") appears pressed, then advance
+  useEffect(() => {
+    if (reduce) return;
+    const cycle = () => {
+      setPressed(4);
+      setInCall(true);
+      const t1 = setTimeout(() => setPressed(5), 1800);
+      const t2 = setTimeout(() => setInCall(false), 2600);
+      const t3 = setTimeout(cycle, 3600);
+      return [t1, t2, t3];
+    };
+    const timers = cycle();
+    return () => timers.forEach((t) => typeof t === "number" && clearTimeout(t));
+  }, [reduce]);
+
   return (
     <motion.div
-      className="relative mx-auto mt-16 max-w-[720px]"
+      className="relative mx-auto mt-16 max-w-[640px]"
       animate={reduce ? {} : { y: [0, -8, 0] }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     >
-      <div className="card-surface overflow-hidden rounded-[24px] p-1">
-        {/* Mockup chrome bar */}
-        <div className="flex items-center gap-2 rounded-t-[20px] bg-canvas px-5 py-3">
-          <span className="h-3 w-3 rounded-full bg-peony" />
-          <span className="h-3 w-3 rounded-full bg-mint" />
-          <span className="h-3 w-3 rounded-full bg-sky" />
-          <span className="ml-4 h-2.5 flex-1 rounded-full bg-pebble/60" />
+      <div className="card-surface overflow-hidden rounded-[24px] bg-card p-5 sm:p-6">
+        {/* Session header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span
+              className={`relative flex h-2.5 w-2.5 rounded-full ${inCall ? "bg-red-500" : "bg-slate-300"}`}
+              aria-hidden="true"
+            >
+              {inCall && !reduce && (
+                <span className="absolute inset-0 rounded-full bg-red-500 opacity-60 [animation:outcome-pulse_1.8s_ease-in-out_infinite]" />
+              )}
+            </span>
+            <p className="text-[15px] font-medium text-ink">Cold call session</p>
+          </div>
+          <span className="rounded-full bg-violet/10 px-3 py-1 text-[12px] font-semibold text-violet">
+            Lead 3 of 26
+          </span>
         </div>
-        {/* Mockup content area */}
-        <div
-          className="relative flex items-stretch rounded-b-[20px] bg-card"
-          style={{ height: 320 }}
-        >
-          {/* Sidebar */}
-          <div className="hidden w-[200px] flex-col gap-3 border-r border-pebble/40 p-4 sm:flex">
-            <div className="h-3 w-20 rounded-full bg-violet/15" />
-            <div className="h-2.5 w-28 rounded-full bg-canvas" />
-            <div className="h-2.5 w-24 rounded-full bg-canvas" />
-            <div className="h-2.5 w-32 rounded-full bg-canvas" />
-            <div className="mt-auto h-2.5 w-20 rounded-full bg-canvas" />
-          </div>
-          {/* Main area */}
-          <div className="flex-1 p-5">
-            {/* Header row */}
-            <div className="mb-4 flex items-center gap-3">
-              <div className="h-4 w-32 rounded-full bg-ink/8" />
-              <div className="ml-auto h-7 w-24 rounded-full bg-violet/10" />
-            </div>
-            {/* Call row 1 — active */}
-            <div className="mb-2 flex items-center gap-3 rounded-[12px] bg-violet/5 px-4 py-3">
-              <div className="relative">
-                <div className="h-9 w-9 rounded-full bg-violet/20" />
-                <motion.span
-                  className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 border-2 border-card"
-                  animate={reduce ? {} : { scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </div>
-              <div className="flex-1">
-                <div className="h-2.5 w-24 rounded-full bg-ink/10" />
-                <div className="mt-1.5 h-2 w-16 rounded-full bg-ink/6" />
-              </div>
-              <span className="rounded-full bg-green-500/10 px-3 py-1 text-[11px] font-medium text-green-600">
-                In call
+
+        {/* Lead card */}
+        <div className="mt-4 rounded-[16px] border border-pebble/60 bg-canvas/60 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet/15 text-[13px] font-semibold text-violet">
+                RM
               </span>
-            </div>
-            {/* Call row 2 */}
-            <div className="mb-2 flex items-center gap-3 rounded-[12px] px-4 py-3">
-              <div className="h-9 w-9 rounded-full bg-sky/30" />
-              <div className="flex-1">
-                <div className="h-2.5 w-28 rounded-full bg-ink/8" />
-                <div className="mt-1.5 h-2 w-20 rounded-full bg-ink/5" />
+              <div>
+                <p className="text-[15px] font-medium text-ink">Rahul Mehta</p>
+                <p className="text-[13px] text-slate">Meridian Technologies</p>
               </div>
-              <span className="rounded-full bg-canvas px-3 py-1 text-[11px] font-medium text-iron">
-                Completed
-              </span>
-            </div>
-            {/* Call row 3 */}
-            <div className="mb-2 flex items-center gap-3 rounded-[12px] px-4 py-3">
-              <div className="h-9 w-9 rounded-full bg-mint/30" />
-              <div className="flex-1">
-                <div className="h-2.5 w-20 rounded-full bg-ink/8" />
-                <div className="mt-1.5 h-2 w-14 rounded-full bg-ink/5" />
-              </div>
-              <span className="rounded-full bg-canvas px-3 py-1 text-[11px] font-medium text-iron">
-                Scheduled
-              </span>
-            </div>
-            {/* Call row 4 */}
-            <div className="flex items-center gap-3 rounded-[12px] px-4 py-3">
-              <div className="h-9 w-9 rounded-full bg-lavender/40" />
-              <div className="flex-1">
-                <div className="h-2.5 w-24 rounded-full bg-ink/8" />
-                <div className="mt-1.5 h-2 w-16 rounded-full bg-ink/5" />
-              </div>
-              <span className="rounded-full bg-canvas px-3 py-1 text-[11px] font-medium text-iron">
-                No answer
-              </span>
             </div>
           </div>
+          <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[13px] text-slate sm:grid-cols-4">
+            <div className="flex items-center gap-1.5">
+              <PhoneIcon size={14} />
+              <dd className="truncate">+91 98204 55123</dd>
+            </div>
+            <dd className="text-iron">Software</dd>
+            <dd className="text-iron">Mumbai</dd>
+            <dd className="text-iron">Est. ₹4.2L</dd>
+          </dl>
+        </div>
+
+        {/* Quick actions */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-violet px-3.5 py-2 text-[13px] font-medium text-white">
+            <PhoneIcon size={15} /> Call lead
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-mint/40 px-3.5 py-2 text-[13px] font-medium text-green-700">
+            <ChatIcon size={15} /> WhatsApp
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-sky/40 px-3.5 py-2 text-[13px] font-medium text-sky-700">
+            <MapPinIcon size={15} /> Maps
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-lavender/50 px-3.5 py-2 text-[13px] font-medium text-ultraviolet">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <rect x="3" y="5" width="14" height="14" rx="3" />
+              <path d="M17 7l4-2v12l-4-2" />
+            </svg>
+            Gmail
+          </span>
+        </div>
+
+        {/* Outcome row with keyboard shortcuts */}
+        <div className="mt-4 rounded-[16px] bg-canvas p-3">
+          <p className="mb-2.5 px-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-iron">
+            Call outcome
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {OUTCOMES.map((o, i) => {
+              const isPressed = pressed === i;
+              return (
+                <span
+                  key={o.key}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] transition-all duration-150 ${
+                    isPressed
+                      ? "scale-105 border-violet bg-violet text-white shadow-pill"
+                      : "border-pebble bg-card text-slate"
+                  }`}
+                >
+                  <span
+                    className={`flex h-4 w-4 items-center justify-center rounded text-[10px] font-bold ${
+                      isPressed ? "bg-white/20 text-white" : "bg-canvas text-iron"
+                    }`}
+                  >
+                    {o.key}
+                  </span>
+                  {o.label}
+                </span>
+              );
+            })}
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-pebble bg-card px-3 py-1.5 text-[12.5px] text-slate">
+              <span className="flex h-4 w-4 items-center justify-center rounded bg-canvas text-[10px] font-bold text-iron">
+                S
+              </span>
+              Skip
+            </span>
+          </div>
+        </div>
+
+        {/* Queue progress */}
+        <div className="mt-4 flex gap-1.5" aria-hidden="true">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 flex-1 rounded-full ${
+                i < 2 ? "bg-violet/50" : i === 2 ? "bg-violet" : "bg-canvas"
+              }`}
+            />
+          ))}
         </div>
       </div>
-      {/* Shadow beneath */}
-      <div className="absolute -bottom-4 left-[10%] right-[10%] h-8 rounded-full bg-violet/8 blur-2xl" />
+
+      {/* Elevation shadow */}
+      <div className="absolute -bottom-5 left-[10%] right-[10%] h-10 rounded-full bg-violet/8 blur-2xl" />
     </motion.div>
   );
 }
@@ -210,12 +267,6 @@ export default function HeroAdine() {
           animate={reduce ? {} : { scale: [1, 1.08, 0.96, 1], rotate: [0, -5, 3, 0] }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         />
-        <motion.div
-          className="absolute bottom-[10%] left-[50%] h-[300px] w-[300px] rounded-full blur-[100px]"
-          style={{ background: "rgba(171,240,255,0.2)" }}
-          animate={reduce ? {} : { scale: [1, 1.1, 0.95, 1] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-        />
       </div>
 
       {/* Mouse spotlight */}
@@ -229,31 +280,24 @@ export default function HeroAdine() {
         />
       )}
 
-      {/* Floating orbs */}
-      <FloatingOrb
+      <Orb
         reduce={reduce}
-        delay={0}
-        className="absolute top-[18%] left-[6%] h-2.5 w-2.5 rounded-full bg-violet/15"
+        className="absolute top-[16%] left-[6%] h-2.5 w-2.5 rounded-full bg-violet/15"
       />
-      <FloatingOrb
+      <Orb
         reduce={reduce}
-        delay={2.5}
-        className="absolute top-[28%] right-[10%] h-3 w-3 rounded-full bg-cotton-candy/20"
+        delay={2}
+        className="absolute top-[30%] right-[10%] h-3 w-3 rounded-full bg-cotton-candy/20"
       />
-      <FloatingOrb
+      <Orb
         reduce={reduce}
-        delay={5}
-        className="absolute bottom-[35%] left-[18%] h-2 w-2 rounded-full bg-mint/25"
+        delay={4}
+        className="absolute bottom-[40%] left-[16%] h-2 w-2 rounded-full bg-mint/25"
       />
-      <FloatingOrb
+      <Orb
         reduce={reduce}
-        delay={3.5}
-        className="absolute top-[12%] right-[28%] h-2 w-2 rounded-full bg-sky/20"
-      />
-      <FloatingOrb
-        reduce={reduce}
-        delay={7}
-        className="absolute bottom-[25%] right-[22%] h-1.5 w-1.5 rounded-full bg-apricot/15"
+        delay={3}
+        className="absolute top-[12%] right-[26%] h-2 w-2 rounded-full bg-sky/20"
       />
 
       {/* Content */}
@@ -262,15 +306,15 @@ export default function HeroAdine() {
           variants={v(staggerContainer)}
           initial="hidden"
           animate="visible"
-          className="mx-auto max-w-[800px] text-center"
+          className="mx-auto max-w-[820px] text-center"
         >
           <motion.div variants={v(fadeUp)}>
-            <span className="section-eyebrow">Outbound sales, in one place</span>
+            <span className="section-eyebrow">Cold-calling CRM for India</span>
           </motion.div>
 
           <motion.h1
             variants={v(fadeUp)}
-            className="mt-6 text-[clamp(36px,5vw,56px)] font-light leading-[1.1] tracking-[-0.03em] text-ink"
+            className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em] text-ink"
           >
             Adine
             <TypewriterAccent reduce={reduce} />
@@ -278,10 +322,10 @@ export default function HeroAdine() {
 
           <motion.p
             variants={v(fadeUp)}
-            className="mx-auto mt-8 max-w-[520px] text-[17px] font-light leading-[1.6] text-slate"
+            className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate"
           >
-            The outbound CRM built for high-volume cold calling. Manage sessions, auto-log calls,
-            and follow up instantly — without the busywork.
+            A call session queue, one-keypress call logging, and automatic WhatsApp follow-ups —
+            built for founders who dial 100+ prospects a week.
           </motion.p>
 
           <motion.div
@@ -294,7 +338,7 @@ export default function HeroAdine() {
               rel="noopener noreferrer"
               className="btn-pill"
             >
-              Start free
+              Open the app
               <ArrowRight size={16} aria-hidden="true" />
             </a>
             <a href="#how" className="btn-ghost-pill">
@@ -302,31 +346,28 @@ export default function HeroAdine() {
             </a>
           </motion.div>
 
-          {/* Trust stats */}
+          {/* Concrete capability hints (no invented stats) */}
           <motion.div
-            variants={v(staggerContainer)}
-            initial="hidden"
-            animate="visible"
-            className="mt-10 flex flex-wrap items-center justify-center gap-4"
+            variants={v(fadeUp)}
+            className="mt-8 flex flex-wrap items-center justify-center gap-2.5"
           >
             {[
-              { value: "150+", label: "calls per week" },
-              { value: "30s", label: "to first call" },
-              { value: "2.4×", label: "pipeline growth" },
-            ].map((stat) => (
-              <motion.div
-                key={stat.label}
-                variants={v(scaleIn)}
-                className="flex items-center gap-2 rounded-full border border-pebble bg-card px-5 py-2.5"
+              "Google Maps lead import",
+              "6-key outcome logging",
+              "Google Meet booking",
+              "WhatsApp follow-ups",
+            ].map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate"
               >
-                <span className="text-[16px] font-semibold text-violet">{stat.value}</span>
-                <span className="text-[13px] font-medium text-iron">{stat.label}</span>
-              </motion.div>
+                {item}
+              </span>
             ))}
           </motion.div>
         </motion.div>
 
-        <ProductMockup reduce={reduce} />
+        <CallSessionMock reduce={reduce} />
       </div>
     </section>
   );

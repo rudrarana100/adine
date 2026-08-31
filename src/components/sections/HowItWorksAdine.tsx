@@ -1,43 +1,66 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
+import {
+  MapPinIcon,
+  PhoneIcon,
+  CheckIcon,
+  CalendarMeetIcon,
+} from "@/components/icons/FeatureIcons";
 
 const STEPS = [
   {
     number: "01",
-    title: "Import your leads",
+    title: "Build your list",
     description:
-      "Upload a CSV or paste leads from any source. Adine auto-detects duplicates and organizes them into ready-to-dial batches.",
-    accent: "bg-violet/10 text-violet",
+      "Scrape verified business leads from Google Maps by category, city, and target count — or import a CSV with automatic column-mapping and phone de-duplication.",
+    Icon: MapPinIcon,
+    accent: "bg-mint/30 text-green-700",
+    iconColor: "text-green-600",
   },
   {
     number: "02",
-    title: "Start a session",
+    title: "Run a call session",
     description:
-      "Hit start and begin dialing. Leads are presented one at a time in a clean, distraction-free interface built for speed.",
-    accent: "bg-sky/30 text-[#2563eb]",
+      "Work through a single-lead-at-a-time dialing queue, filterable by collection, with one-tap call, website, Maps, email, and WhatsApp actions.",
+    Icon: PhoneIcon,
+    accent: "bg-sky/30 text-sky-700",
+    iconColor: "text-sky-600",
   },
   {
     number: "03",
-    title: "Follow up instantly",
+    title: "Log with one keypress",
     description:
-      "After each call, send a one-click WhatsApp follow-up or schedule a callback — no copy-pasting, no tab switching.",
-    accent: "bg-mint/30 text-green-600",
+      "Six outcome types triggered by number keys 1–6 — No Answer, Invalid, Gatekeeper, Not Interested, Interested, Schedule. No manual data entry.",
+    Icon: CheckIcon,
+    accent: "bg-violet/10 text-violet",
+    iconColor: "text-violet",
+  },
+  {
+    number: "04",
+    title: "Follow up automatically",
+    description:
+      "Interested leads branch into a Google Meet booking or a scheduled follow-up. No-answers auto-schedule a next-day retry for you.",
+    Icon: CalendarMeetIcon,
+    accent: "bg-lavender/50 text-ultraviolet",
+    iconColor: "text-ultraviolet",
   },
 ];
 
 export default function HowItWorksAdine() {
   const v = useVariants();
+  const reduce = useReducedMotion() ?? false;
 
   return (
-    <section id="how" className="bg-card py-[96px]">
+    <section id="how" className="bg-canvas py-[96px]">
       <div className="shell">
         <div className="mx-auto max-w-[720px] text-center">
           <span className="section-eyebrow">How It Works</span>
           <h2 className="mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink">
-            From import to follow-up in three steps
+            From a raw list to a booked meeting
           </h2>
           <p className="mt-4 text-[17px] font-light leading-[1.6] text-slate">
-            No complex setup. No training required. Just import, call, and close.
+            Four steps that map to how you actually sell on the phone — import, dial, log, and
+            follow up.
           </p>
         </div>
 
@@ -45,27 +68,28 @@ export default function HowItWorksAdine() {
           variants={v(staggerContainer)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mx-auto mt-16 grid max-w-[960px] grid-cols-1 gap-8 md:grid-cols-3"
+          viewport={{ once: true, amount: 0.15 }}
+          className="mx-auto mt-16 grid max-w-[980px] grid-cols-1 gap-6 md:grid-cols-2"
         >
-          {STEPS.map(({ number, title, description, accent }, i) => (
-            <motion.div key={title} variants={v(fadeUp)} className="relative text-center">
-              {/* Connector line (desktop) */}
-              {i < STEPS.length - 1 && (
-                <div
-                  className="absolute top-8 left-[60%] hidden h-[1px] w-[calc(100%-20%)] md:block"
-                  style={{ background: "linear-gradient(90deg, var(--color-pebble), transparent)" }}
-                  aria-hidden="true"
-                />
-              )}
-
+          {STEPS.map(({ number, title, description, Icon, accent, iconColor }) => (
+            <motion.div
+              key={title}
+              variants={v(fadeUp)}
+              {...(!reduce ? { whileHover: { y: -4, transition: { duration: 0.2 } } } : {})}
+              className="card-surface flex gap-5 p-6"
+            >
               <div
-                className={`mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-[20px] font-semibold text-[18px] ${accent}`}
+                className={`flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-[20px] ${accent}`}
               >
-                {number}
+                <Icon size={30} className={iconColor} />
+                <span className="mt-1 text-[12px] font-bold">{number}</span>
               </div>
-              <h3 className="text-[18px] font-medium text-ink">{title}</h3>
-              <p className="mt-2 text-[15px] font-light leading-[1.6] text-slate">{description}</p>
+              <div>
+                <h3 className="text-[18px] font-medium text-ink">{title}</h3>
+                <p className="mt-2 text-[15px] font-light leading-[1.6] text-slate">
+                  {description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </motion.div>

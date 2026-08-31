@@ -1,19 +1,19 @@
 const COLUMNS = [
   {
-    title: "Product",
+    title: "Features",
     links: [
-      { label: "Features", href: "#features" },
+      { label: "Google Maps Scraping", href: "#features" },
+      { label: "Call Session", href: "#calls" },
+      { label: "Analytics & Streaks", href: "#analytics" },
       { label: "How It Works", href: "#how" },
-      { label: "Why Adine", href: "#why" },
-      { label: "Open the App", href: "https://adine-crm.vercel.app/", external: true },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#why" },
+      { label: "Our Story", href: "#story" },
       { label: "Contact", href: "mailto:support@adine-crm.vercel.app" },
-      { label: "Careers", href: "#why" },
+      { label: "Open the App", href: "https://adine-crm.vercel.app/", external: true },
     ],
   },
   {
@@ -21,7 +21,7 @@ const COLUMNS = [
     links: [
       { label: "Documentation", href: "https://adine-crm.vercel.app/", external: true },
       { label: "Help Center", href: "mailto:support@adine-crm.vercel.app" },
-      { label: "Outbound Playbook", href: "#how" },
+      { label: "Follow-up Re-Engagement", href: "#reengage" },
     ],
   },
 ];
@@ -54,27 +54,9 @@ export default function FooterAdine() {
               Adine<span className="text-violet">.</span>
             </a>
             <p className="mt-3 max-w-[260px] text-[14px] font-light leading-[1.6] text-white/50">
-              The outbound CRM built for agency founders and solo salespeople doing high-volume cold
-              calling.
+              The outbound CRM for high-volume cold calling in India — scrape, dial, log, and follow
+              up in one place.
             </p>
-            <div className="mt-5 flex gap-4">
-              {["Twitter", "LinkedIn"].map((label) => (
-                <a
-                  key={label}
-                  href={
-                    label === "Twitter"
-                      ? "https://twitter.com/adine_crm"
-                      : "https://linkedin.com/company/adine"
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="text-white/40 transition-colors hover:text-white"
-                >
-                  <span className="text-[13px] font-medium">{label}</span>
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Link columns */}

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "How It Works", href: "#how" },
-  { label: "Why Adine", href: "#why" },
+  { label: "Call Session", href: "#calls" },
 ];
 
 export default function NavBarAdine() {
@@ -22,11 +22,10 @@ export default function NavBarAdine() {
         aria-label="Primary"
         className={`flex w-full max-w-[1080px] items-center justify-between gap-4 rounded-[40px] px-6 py-3 transition-all duration-300 ${
           scrolled
-            ? "bg-card/90 backdrop-blur-xl shadow-card border border-pebble/50"
+            ? "bg-card/90 backdrop-blur-xl border border-pebble/50 shadow-card"
             : "bg-transparent"
         }`}
       >
-        {/* Logo */}
         <a
           href="#top"
           className="text-[20px] font-semibold tracking-[-0.02em] text-ink"
@@ -35,7 +34,6 @@ export default function NavBarAdine() {
           Adine<span className="text-violet">.</span>
         </a>
 
-        {/* Nav links — desktop */}
         <ul className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
@@ -49,7 +47,6 @@ export default function NavBarAdine() {
           ))}
         </ul>
 
-        {/* CTA */}
         <div className="flex items-center gap-3">
           <a
             href="https://adine-crm.vercel.app/"
