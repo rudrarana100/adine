@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, scaleIn, staggerContainer, useVariants } from "@/lib/motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ConicSheen, ShimmerField } from "@/components/backgrounds/AnimatedBackgrounds";
+import { Ambient } from "@/components/backgrounds/Ambient";
 
 const NEXT_STEPS = ["Sign up free", "Connect Google", "Import your first list"];
 
@@ -10,19 +11,30 @@ function CtaBackdrop({ reduce }: { reduce: boolean }) {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
       <ConicSheen />
-      {/* soft white blobs */}
+      {/* soft white blobs — radial gradients, no expensive filters */}
       <motion.div
-        className="absolute -top-24 -right-24 h-[340px] w-[340px] rounded-full bg-white/[0.07] blur-[90px]"
+        className="absolute -top-24 -right-24 h-[340px] w-[340px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(340px circle at 50% 50%, rgba(255,255,255,0.07), transparent 65%)",
+        }}
         animate={reduce ? {} : { scale: [1, 1.2, 1], x: [0, 20, 0], y: [0, -12, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute -bottom-20 -left-20 h-[300px] w-[300px] rounded-full bg-cotton-candy/[0.16] blur-[90px]"
+        className="absolute -bottom-20 -left-20 h-[300px] w-[300px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(300px circle at 50% 50%, rgba(233,141,254,0.16), transparent 65%)",
+        }}
         animate={reduce ? {} : { scale: [1, 1.15, 1], x: [0, -18, 0], y: [0, 14, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
       <motion.div
-        className="absolute top-[40%] left-[40%] h-[200px] w-[200px] rounded-full bg-sky/[0.12] blur-[80px]"
+        className="absolute top-[40%] left-[40%] h-[200px] w-[200px] rounded-full"
+        style={{
+          background: "radial-gradient(200px circle at 50% 50%, rgba(59,201,255,0.14), transparent 65%)",
+        }}
         animate={reduce ? {} : { scale: [1, 1.3, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
       />
