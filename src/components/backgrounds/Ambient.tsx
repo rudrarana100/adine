@@ -1,6 +1,13 @@
 import { useInView, useReducedMotion } from "framer-motion";
 import { useRef, type ReactNode } from "react";
 
+type MarginValue = `${number}${"px" | "%"}`;
+type MarginType =
+  | MarginValue
+  | `${MarginValue} ${MarginValue}`
+  | `${MarginValue} ${MarginValue} ${MarginValue}`
+  | `${MarginValue} ${MarginValue} ${MarginValue} ${MarginValue}`;
+
 /* Ambient — mounts decorative animation layers only while they're close to
    the viewport (plus a margin), and unmounts them far off-screen. Framer
    Motion's infinite loops keep running and burning frames when they're not
@@ -11,7 +18,7 @@ export function Ambient({
   className,
 }: {
   children: ReactNode;
-  rootMargin?: string;
+  rootMargin?: MarginType;
   className?: string;
 }) {
   const reduce = useReducedMotion() ?? false;
