@@ -48,7 +48,7 @@ export default function FinalCTAAdine() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <section className="bg-canvas py-[96px]">
+    <section className="section-cv bg-canvas py-[96px]">
       <div className="shell">
         <motion.div
           variants={v(staggerContainer)}
@@ -57,7 +57,9 @@ export default function FinalCTAAdine() {
           viewport={{ once: true, amount: 0.2 }}
           className="relative overflow-hidden rounded-[40px] bg-violet px-8 py-[80px] text-center md:px-16"
         >
-          <CtaBackdrop reduce={reduce} />
+          <Ambient className="absolute inset-0 overflow-hidden">
+            <CtaBackdrop reduce={reduce} />
+          </Ambient>
 
           <motion.span
             variants={v(fadeUp)}

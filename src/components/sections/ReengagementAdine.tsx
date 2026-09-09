@@ -16,7 +16,7 @@ export default function ReengagementAdine() {
   const hover = !reduce ? { whileHover: { y: -3, transition: { duration: 0.2 } } } : {};
 
   return (
-    <section id="reengage" className="bg-card py-[96px]">
+    <section id="reengage" className="section-cv bg-card py-[96px]">
       <div className="shell">
         <SectionHeading
           eyebrow="Never Lost After the First Call"

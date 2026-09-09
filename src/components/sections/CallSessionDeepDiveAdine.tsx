@@ -18,7 +18,7 @@ export default function CallSessionDeepDiveAdine() {
   const hover = !reduce ? { whileHover: { y: -4, transition: { duration: 0.2 } } } : {};
 
   return (
-    <section id="calls" className="bg-canvas py-[96px]">
+    <section id="calls" className="section-cv bg-canvas py-[96px]">
       <div className="shell">
         <SectionHeading
           eyebrow="The Call Session"

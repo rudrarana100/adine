@@ -4,7 +4,7 @@ import SectionHeading from "@/components/sections/SectionHeading";
 
 export default function MakerStoryAdine() {
   return (
-    <section id="story" className="bg-canvas py-[96px]">
+    <section id="story" className="section-cv bg-canvas py-[96px]">
       <div className="shell">
         <SectionHeading eyebrow="Maker Story" title="Built from 150+ real cold calls" />
 
