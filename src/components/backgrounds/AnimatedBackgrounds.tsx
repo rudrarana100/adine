@@ -49,7 +49,7 @@ export function AuroraField() {
       {AURORA_PANES.map((p, i) => (
         <motion.div
           key={i}
-          className={`absolute rounded-full blur-[110px] ${p.className}`}
+          className={`absolute rounded-full ${p.className}`}
           style={{ background: p.color }}
           animate={reduce ? {} : { scale: p.scale, rotate: p.rotate }}
           transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
@@ -160,13 +160,14 @@ export function GridField({
       </svg>
       {!reduce && (
         <motion.div
-          className="absolute inset-0"
+          className="absolute top-0 bottom-0 left-0 w-[200%]"
           style={{
             background:
               "linear-gradient(120deg, transparent 30%, rgba(97,97,255,0.12) 50%, transparent 70%)",
-            backgroundSize: "220% 100%",
+            backgroundSize: "50% 100%",
+            backgroundRepeat: "repeat-x",
           }}
-          animate={{ backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"] }}
+          animate={{ x: ["-50%", "0%", "-50%"] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         />
       )}
@@ -192,7 +193,7 @@ export function ConicSheen({ className = "" }: { className?: string }) {
           style={{
             background:
               "conic-gradient(from 0deg, transparent 0deg, rgba(97,97,255,0.10) 40deg, transparent 90deg, transparent 180deg, rgba(237,223,247,0.35) 220deg, transparent 270deg)",
-            filter: "blur(60px)",
+            filter: "blur(40px)",
             borderRadius: "9999px",
           }}
           animate={{ rotate: [0, 360] }}
