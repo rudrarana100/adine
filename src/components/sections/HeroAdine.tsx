@@ -358,7 +358,7 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         <motion.div
           animate={reduce ? {} : { y: [0, 6, 0] }}
           transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
-          className={`flex items-center rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm`}
+          className="flex items-center rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm"
         >
           <WhatsAppBadge reduce={reduce} />
         </motion.div>
@@ -369,7 +369,7 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         <motion.div
           animate={reduce ? {} : { y: [0, -8, 0] }}
           transition={{ duration: 7.4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className={`flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 ${badges[2]!.brightness} backdrop-blur-sm`}
+          className="flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm"
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-apricot/15 text-apricot">
             <FlameIcon size={18} />
@@ -386,7 +386,7 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         <motion.div
           animate={reduce ? {} : { y: [0, 9, 0] }}
           transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
-          className={`rounded-[16px] bg-card/95 px-3.5 py-3 ${badges[3]!.brightness} backdrop-blur-sm`}
+          className="rounded-[16px] bg-card/95 px-3.5 py-3 shadow-card backdrop-blur-sm"
         >
           <p className="flex items-center gap-1.5 text-[11px] font-medium text-ink">
             <CalendarMeetIcon size={13} className="text-violet" />
