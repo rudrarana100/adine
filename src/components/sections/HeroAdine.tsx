@@ -1,5 +1,12 @@
 import { useRef, useEffect, useState } from "react";
-import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useScroll,
+} from "framer-motion";
 import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { fadeUp, staggerContainer } from "@/lib/motion";
@@ -51,6 +58,26 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   );
 }
 
+/* ── Animated waveform bars (equalizer), drives the "in call" strip ── */
+function WaveformBars({ reduce, active }: { reduce: boolean; active: boolean }) {
+  const bars = [10, 18, 26, 14, 22, 30, 16, 24, 12, 20];
+  return (
+    <span className="flex h-5 items-end gap-[3px]" aria-hidden="true">
+      {bars.map((h, i) => (
+        <motion.span
+          key={i}
+          className="w-[3px] rounded-full bg-violet/70"
+          animate={
+            reduce || !active
+              ? { height: 4, opacity: 0.25 }
+              : { height: [4, h, 4], opacity: [0.4, 1, 0.4] }
+          }
+          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: i * 0.09 }}
+        />
+      ))}
+    </span>
+  );
+}
 /* ── Call Session UI mock ── */
 const OUTCOMES = [
   { key: "1", label: "No Answer" },
@@ -102,6 +129,7 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
               )}
             </span>
             <p className="text-[15px] font-medium text-ink">Cold call session</p>
+            <WaveformBars reduce={reduce} active={inCall} />
           </div>
           <span className="rounded-full bg-violet/10 px-3 py-1 text-[12px] font-semibold text-violet">
             Lead 3 of 26
@@ -215,9 +243,86 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
   );
 }
 
+/* Animated orbit glyph — decorative, drawn as inline SVG, shows a "call wave"
+   radiating from the hero headline. Reduced-motion aware. */
+function OrbitGlyph({ className = "", reduce }: { className?: string; reduce: boolean }) {
+  return (
+    <svg
+      className={`pointer-events-none absolute ${className}`}
+      width="96"
+      height="96"
+      viewBox="0 0 96 96"
+      fill="none"
+      aria-hidden="true"
+    >
+      {[0, 1, 2].map((i) => (
+        <motion.circle
+          key={i}
+          cx="48"
+          cy="48"
+          r="18"
+          stroke="url(#orbitGlyph)"
+          strokeWidth="1.4"
+          strokeDasharray="4 10"
+          animate={
+            reduce ? { opacity: 0.2 } : { scale: [1, 1.7], rotate: [0, 90], opacity: [0.5, 0] }
+          }
+          transition={{
+            duration: 3.2,
+            repeat: Infinity,
+            ease: "easeOut",
+            delay: i * 1.05,
+          }}
+          style={{ transformOrigin: "48px 48px" }}
+        />
+      ))}
+      <motion.path
+        d="M34 52c5-3 9 3 14 0s9-3 14 0"
+        stroke="url(#orbitGlyph)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        animate={
+          reduce
+            ? { opacity: 0.4 }
+            : {
+                d: [
+                  "M34 52c5-3 9 3 14 0s9-3 14 0",
+                  "M34 52c5 1 9-1 14 0s9-1 14 0",
+                  "M34 52c5-3 9 3 14 0s9-3 14 0",
+                ],
+                opacity: [0.6, 1, 0.6],
+              }
+        }
+        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <defs>
+        <linearGradient
+          id="orbitGlyph"
+          x1="0"
+          y1="0"
+          x2="96"
+          y2="96"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#6161FF" />
+          <stop offset="1" stopColor="#E98DFE" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
 export default function HeroAdine() {
   const reduce = useReducedMotion() ?? false;
   const v = (variants: Variants): Variants => (reduce ? {} : variants);
+
+  // Scroll-linked parallax: content drifts up as you scroll away
+  const heroRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const mockY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const mockScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const glowOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.15]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -238,18 +343,16 @@ export default function HeroAdine() {
     <section
       id="top"
       className="relative overflow-hidden pt-[120px] pb-[40px]"
-      ref={containerRef}
+      ref={heroRef}
       onMouseMove={handleMouseMove}
     >
       {/* Background layers */}
       <AuroraField />
       <GridField className="opacity-70" />
-      <GlowOrb className="left-[8%] top-[12%]" />
-      <GlowOrb
-        className="right-[4%] top-[30%]"
-        color="rgba(233,141,254,0.16)"
-        size={360}
-      />
+      <motion.div style={{ opacity: glowOpacity }} className="pointer-events-none absolute inset-0">
+        <GlowOrb className="left-[8%] top-[12%]" />
+        <GlowOrb className="right-[4%] top-[30%]" color="rgba(233,141,254,0.16)" size={360} />
+      </motion.div>
 
       {/* Mouse spotlight */}
       {!reduce && (
@@ -265,71 +368,84 @@ export default function HeroAdine() {
       {/* Content */}
       <div className="shell relative z-10">
         <motion.div
-          variants={v(staggerContainer)}
-          initial="hidden"
-          animate="visible"
+          {...(reduce ? {} : { style: { y: contentY } })}
           className="mx-auto max-w-[820px] text-center"
         >
-          <motion.div variants={v(fadeUp)}>
-            <span className="section-eyebrow">Cold-calling CRM for India</span>
-          </motion.div>
-
-          <motion.h1
-            variants={v(fadeUp)}
-            className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em] text-ink"
-          >
-            Adine
-            <TypewriterAccent reduce={reduce} />
-          </motion.h1>
-
-          <motion.p
-            variants={v(fadeUp)}
-            className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate"
-          >
-            A call session queue, one-keypress call logging, and automatic WhatsApp follow-ups —
-            built for founders who dial 100+ prospects a week.
-          </motion.p>
-
           <motion.div
-            variants={v(fadeUp)}
-            className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+            variants={v(staggerContainer)}
+            initial="hidden"
+            animate="visible"
+            className="relative"
           >
-            <a
-              href="https://adine-crm.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-pill"
+            <motion.div variants={v(fadeUp)}>
+              <span className="section-eyebrow">Cold-calling CRM for India</span>
+            </motion.div>
+
+            <motion.h1
+              variants={v(fadeUp)}
+              className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em] text-ink"
             >
-              Open the app
-              <ArrowRight size={16} aria-hidden="true" />
-            </a>
-            <a href="#how" className="btn-ghost-pill">
-              See how it works
-            </a>
+              Adine
+              <TypewriterAccent reduce={reduce} />
+            </motion.h1>
+
+            <motion.p
+              variants={v(fadeUp)}
+              className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate"
+            >
+              A call session queue, one-keypress call logging, and automatic WhatsApp follow-ups —
+              built for founders who dial 100+ prospects a week.
+            </motion.p>
+
+            <motion.div
+              variants={v(fadeUp)}
+              className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+            >
+              <a
+                href="https://adine-crm.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-pill"
+              >
+                Open the app
+                <ArrowRight size={16} aria-hidden="true" />
+              </a>
+              <a href="#how" className="btn-ghost-pill">
+                See how it works
+              </a>
+            </motion.div>
+
+            {/* Concrete capability hints (no invented stats) */}
+            <motion.div
+              variants={v(fadeUp)}
+              className="mt-8 flex flex-wrap items-center justify-center gap-2.5"
+            >
+              {[
+                "Google Maps lead import",
+                "6-key outcome logging",
+                "Google Meet booking",
+                "WhatsApp follow-ups",
+              ].map((item) => (
+                <motion.span
+                  key={item}
+                  className="cursor-default rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate transition-colors duration-200 hover:border-violet/40 hover:bg-violet/5 hover:text-violet"
+                  {...(reduce ? {} : { whileHover: { y: -3, scale: 1.05 } })}
+                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                >
+                  {item}
+                </motion.span>
+              ))}
+            </motion.div>
           </motion.div>
 
-          {/* Concrete capability hints (no invented stats) */}
-          <motion.div
-            variants={v(fadeUp)}
-            className="mt-8 flex flex-wrap items-center justify-center gap-2.5"
-          >
-            {[
-              "Google Maps lead import",
-              "6-key outcome logging",
-              "Google Meet booking",
-              "WhatsApp follow-ups",
-            ].map((item) => (
-              <span
-                key={item}
-                className="rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate"
-              >
-                {item}
-              </span>
-            ))}
-          </motion.div>
+          {/* Floating orbit glyphs flanking the text */}
+          <OrbitGlyph reduce={reduce} className="-left-8 top-[30%] hidden lg:block" />
+          <OrbitGlyph reduce={reduce} className="-right-10 top-[58%] hidden lg:block" />
         </motion.div>
 
-        <CallSessionMock reduce={reduce} />
+        <motion.div {...(reduce ? {} : { style: { y: mockY, scale: mockScale } })}>
+          <CallSessionMock reduce={reduce} />
+        </motion.div>
       </div>
     </section>
   );
