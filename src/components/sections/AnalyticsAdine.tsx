@@ -1,6 +1,42 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView, animate } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { FlameIcon, CheckIcon } from "@/components/icons/FeatureIcons";
+
+/* Count-up number that animates 0 → value when it scrolls into view (~800ms) */
+function Counter({
+  value,
+  reduce,
+  className,
+}: {
+  value: number;
+  reduce: boolean;
+  className?: string;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const [display, setDisplay] = useState(reduce ? String(value) : "0");
+
+  useEffect(() => {
+    if (reduce || !inView) return;
+    const controls = animate(0, value, {
+      duration: 0.8,
+      ease: "easeOut",
+      onUpdate: (v) => setDisplay(String(Math.round(v))),
+    });
+    return () => controls.stop();
+  }, [inView, value, reduce]);
+
+  useEffect(() => {
+    if (reduce) setDisplay(String(value));
+  }, [reduce, value]);
+
+  return (
+    <span ref={ref} className={className}>
+      {display}
+    </span>
+  );
+}
 
 /* Decorative floating white glyphs for the violet section */
 function WhiteGlyphs({ reduce }: { reduce: boolean }) {
@@ -59,7 +95,7 @@ function WhiteGlyphs({ reduce }: { reduce: boolean }) {
 /* 90-day call heatmap mock — boolean intensity per weekday */
 const WEEKS = Array.from({ length: 13 }, () => [3, 4, 1, 3, 5, 2, 0]);
 
-function HeatmapMock({ reduce }: { reduce: boolean }) {
+function HeatmapMock({ reduce, active }: { reduce: boolean; active: boolean }) {
   return (
     <div className="flex gap-1.5" aria-hidden="true">
       {WEEKS.map((week, w) => (
@@ -80,12 +116,20 @@ function HeatmapMock({ reduce }: { reduce: boolean }) {
                           ? "bg-violet-200"
                           : "bg-white/[0.9]"
               }`}
-              animate={reduce ? {} : { opacity: [0.5, 1, 0.5], y: [0, -1, 0] }}
+              animate={
+                reduce || !active
+                  ? { opacity: 1, scale: 1 }
+                  : {
+                      opacity: [0, 1, 1, 0.85, 1],
+                      scale: [0.4, 1.08, 1, 1, 1],
+                    }
+              }
               transition={{
-                duration: 3 + (w + d) * 0.13,
+                duration: 2.4,
                 repeat: Infinity,
-                ease: "easeInOut",
-                delay: (w * 5 + d) * 0.06,
+                repeatDelay: 1,
+                ease: "easeOut",
+                delay: (w * 5 + d) * 0.035,
               }}
             />
           ))}
@@ -98,9 +142,15 @@ function HeatmapMock({ reduce }: { reduce: boolean }) {
 export default function AnalyticsAdine() {
   const v = useVariants();
   const reduce = useReducedMotion() ?? false;
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { once: true, amount: 0.25 });
 
   return (
-    <section id="analytics" className="relative overflow-hidden bg-violet py-[96px] text-white">
+    <section
+      id="analytics"
+      ref={sectionRef}
+      className="relative overflow-hidden bg-violet py-[96px] text-white"
+    >
       {/* Glow aura + animated white glyphs */}
       <motion.div
         className="pointer-events-none absolute inset-0"
@@ -181,13 +231,15 @@ export default function AnalyticsAdine() {
             {/* streak / stat row */}
             <motion.div variants={v(fadeUp)} className="mb-5 grid grid-cols-3 gap-3">
               {[
-                { label: "Day streak", value: "14", icon: FlameIcon },
-                { label: "Calls today", value: "58" },
-                { label: "Meeting booked", value: "4" },
+                { label: "Day streak", value: 14, icon: FlameIcon },
+                { label: "Calls today", value: 58 },
+                { label: "Meetings booked", value: 4 },
               ].map(({ label, value, icon: Icon }) => (
                 <div key={label} className="rounded-[18px] bg-white p-4 text-center">
                   {Icon && <Icon size={20} className="mx-auto mb-1 text-apricot" />}
-                  <p className="text-[22px] font-semibold tabular-nums text-ink">{value}</p>
+                  <p className="text-[22px] font-semibold tabular-nums text-ink">
+                    <Counter value={value} reduce={reduce} />
+                  </p>
                   <p className="text-[11px] text-slate">{label}</p>
                 </div>
               ))}
@@ -201,7 +253,7 @@ export default function AnalyticsAdine() {
                   Personal best: 168
                 </span>
               </div>
-              <HeatmapMock reduce={reduce} />
+              <HeatmapMock reduce={reduce} active={inView || reduce} />
               <div className="mt-3 flex items-center justify-end gap-1 text-[10px] text-iron">
                 Less
                 {[0, 1, 2, 3, 4, 5].map((l) => (

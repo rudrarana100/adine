@@ -73,25 +73,43 @@ export default function FinalCTAAdine() {
             variants={v(fadeUp)}
             className="relative z-10 mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <motion.a
-              href="https://adine-crm.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-[15px] font-semibold text-violet shadow-elevated"
-              animate={
-                reduce
-                  ? {}
-                  : {
-                      boxShadow: [
-                        "0px 5px 45px rgba(0,0,0,0.15)",
-                        "0px 8px 60px rgba(255,255,255,0.35)",
-                        "0px 5px 45px rgba(0,0,0,0.15)",
-                      ],
-                    }
-              }
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              {...(reduce ? {} : { whileHover: { scale: 1.04 } })}
+            <motion.div
+              variants={v(scaleIn)}
+              className="relative"
             >
+              {/* soft glow halo behind the button */}
+              <motion.div
+                className="pointer-events-none absolute -inset-5 rounded-full bg-white/25 blur-2xl"
+                aria-hidden="true"
+                animate={
+                  reduce
+                    ? {}
+                    : {
+                        opacity: [0.35, 0.9, 0.35],
+                        scale: [0.96, 1.06, 0.96],
+                      }
+                }
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.a
+                href="https://adine-crm.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-[15px] font-semibold text-violet shadow-elevated"
+                animate={
+                  reduce
+                    ? {}
+                    : {
+                        boxShadow: [
+                          "0px 5px 45px rgba(0,0,0,0.15)",
+                          "0px 8px 60px rgba(255,255,255,0.35)",
+                          "0px 5px 45px rgba(0,0,0,0.15)",
+                        ],
+                      }
+                }
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                {...(reduce ? {} : { whileHover: { scale: 1.05 }, whileTap: { scale: 0.97 } })}
+              >
               Open the app
               <motion.span
                 animate={reduce ? {} : { x: [0, 5, 0] }}
@@ -100,6 +118,7 @@ export default function FinalCTAAdine() {
                 <ArrowRight size={16} aria-hidden="true" />
               </motion.span>
             </motion.a>
+            </motion.div>
           </motion.div>
 
           {/* What happens next */}

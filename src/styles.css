@@ -176,8 +176,13 @@
     box-shadow 180ms ease-out;
 
   &:hover {
-    transform: scale(1.03);
-    box-shadow: 0px 4px 24px rgba(97, 97, 255, 0.28);
+    transform: scale(1.04) translateY(-1px);
+    box-shadow: 0px 6px 30px rgba(97, 97, 255, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-pill);
   }
 }
 
@@ -196,14 +201,22 @@
   padding: 13px 30px;
   min-height: 52px;
   transition:
+    transform 180ms ease-out,
     border-color 180ms ease-out,
     color 180ms ease-out,
-    background 180ms ease-out;
+    background 180ms ease-out,
+    box-shadow 180ms ease-out;
 
   &:hover {
+    transform: scale(1.04) translateY(-1px);
     border-color: var(--color-violet);
     color: var(--color-violet);
     background: var(--color-violet-soft);
+    box-shadow: 0px 6px 24px rgba(97, 97, 255, 0.14);
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 }
 

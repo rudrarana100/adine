@@ -22,8 +22,8 @@ export default function NavBarAdine() {
         aria-label="Primary"
         className={`flex w-full max-w-[1080px] items-center justify-between gap-4 rounded-[40px] px-6 py-3 transition-all duration-300 ${
           scrolled
-            ? "bg-card/90 backdrop-blur-xl border border-pebble/50 shadow-card"
-            : "bg-transparent"
+            ? "translate-y-0 border border-pebble/50 bg-card/90 shadow-card backdrop-blur-xl"
+            : "translate-y-0 border border-transparent bg-transparent"
         }`}
       >
         <a
@@ -34,12 +34,12 @@ export default function NavBarAdine() {
           Adine<span className="text-violet">.</span>
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
-                className="text-[15px] font-medium text-slate transition-colors hover:text-violet"
+                className="rounded-full px-4 py-2 text-[15px] font-medium text-slate transition-all duration-200 hover:bg-violet-soft hover:text-violet"
               >
                 {link.label}
               </a>
