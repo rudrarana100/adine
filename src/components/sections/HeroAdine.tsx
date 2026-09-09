@@ -17,12 +17,8 @@ import {
   CalendarMeetIcon,
   FlameIcon,
 } from "@/components/icons/FeatureIcons";
-import {
-  AuroraField,
-  GlowOrb,
-  GridField,
-  SignalRings,
-} from "@/components/backgrounds/AnimatedBackgrounds";
+import { AuroraField, GlowOrb, SignalRings } from "@/components/backgrounds/AnimatedBackgrounds";
+import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
 /* Typewriter gradient accent — the cold-calling differentiator */
 const accentWords = ["actually pick up the phone", "close more deals", "never miss a call"];
@@ -439,7 +435,7 @@ export default function HeroAdine() {
         aria-hidden="true"
       >
         <AuroraField />
-        <GridField className="opacity-70" />
+        <InteractiveMesh className="opacity-70" />
       </motion.div>
 
       {/* Glow orbs — fade as you scroll */}
