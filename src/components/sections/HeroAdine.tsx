@@ -327,43 +327,6 @@ function WhatsAppBadge({ reduce }: { reduce: boolean }) {
 }
 
 function FloatingBadges({ reduce }: { reduce: boolean }) {
-  // Each badge: independent float (different duration/delay/offset → organic),
-  // sparse pop-in scale (0.9 → 1) after the mock settles.
-  const badges = [
-    {
-      className: "-left-12 top-14 hidden lg:flex",
-      floatY: 9,
-      dur: 5.4,
-      delay: 0.2,
-      scale: 1,
-      brightness: "shadow-card",
-    },
-    {
-      className: "-right-10 top-6 hidden lg:flex",
-      floatY: -7,
-      dur: 6.6,
-      delay: 1.1,
-      scale: 0.96,
-      brightness: "shadow-card",
-    },
-    {
-      className: "left-[-6rem] bottom-14 hidden xl:flex",
-      floatY: 8,
-      dur: 7.4,
-      delay: 2,
-      scale: 0.9,
-      brightness: "shadow-pill",
-    },
-    {
-      className: "-right-12 bottom-16 hidden lg:flex",
-      floatY: -9,
-      dur: 5.2,
-      delay: 0.7,
-      scale: 1.02,
-      brightness: "shadow-card",
-    },
-  ];
-
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
       {/* Phone dialer badge — top left */}
@@ -371,7 +334,7 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         <motion.div
           animate={reduce ? {} : { y: [0, -9, 0] }}
           transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-          className={`flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 ${badges[0]!.brightness} backdrop-blur-sm`}
+          className={`flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm`}
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet/10 text-violet">
             <PhoneIcon size={18} />
@@ -395,7 +358,7 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         <motion.div
           animate={reduce ? {} : { y: [0, 6, 0] }}
           transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
-          className={`flex items-center rounded-[16px] bg-card/95 px-3.5 py-2.5 ${badges[1]!.brightness} backdrop-blur-sm`}
+          className={`flex items-center rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm`}
         >
           <WhatsAppBadge reduce={reduce} />
         </motion.div>

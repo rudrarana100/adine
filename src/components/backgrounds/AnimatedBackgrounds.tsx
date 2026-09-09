@@ -179,11 +179,7 @@ export function GridField({
    behind the hero center or the final CTA for a premium, alive grader.
    ───────────────────────────────────────────────────────────────────────── */
 
-export function ConicSheen({
-  className = "",
-}: {
-  className?: string;
-}) {
+export function ConicSheen({ className = "" }: { className?: string }) {
   const reduce = useReducedMotion() ?? false;
   return (
     <div
@@ -263,13 +259,7 @@ export function DotGrid({
    SignalRings — pulsing concentric rings, great behind the call mock.
    ───────────────────────────────────────────────────────────────────────── */
 
-export function SignalRings({
-  className = "",
-  reduce,
-}: {
-  className?: string;
-  reduce: boolean;
-}) {
+export function SignalRings({ className = "", reduce }: { className?: string; reduce: boolean }) {
   if (reduce) return null;
   const rings = [0, 0.9, 1.8];
   return (
@@ -308,7 +298,11 @@ export function GlowOrb({
   return (
     <motion.div
       className={`pointer-events-none absolute rounded-full blur-[100px] ${className}`}
-      style={{ width: size, height: size, background: `radial-gradient(circle, ${color}, transparent 65%)` }}
+      style={{
+        width: size,
+        height: size,
+        background: `radial-gradient(circle, ${color}, transparent 65%)`,
+      }}
       animate={reduce ? {} : { scale: [1, 1.12, 1], y: [0, -16, 0] }}
       transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       aria-hidden="true"
