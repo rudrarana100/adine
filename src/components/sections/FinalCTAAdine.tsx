@@ -1,59 +1,16 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { ArrowRight } from "@phosphor-icons/react";
-import { PhoneIcon, ChatIcon, MapPinIcon, FlameIcon } from "@/components/icons/FeatureIcons";
+import { ConicSheen, ShimmerField } from "@/components/backgrounds/AnimatedBackgrounds";
 
 const NEXT_STEPS = ["Sign up free", "Connect Google", "Import your first list"];
 
-/* Floating white glyphs + sparkles inside the violet panel */
+/* Premium layered backdrop: rotating conic sheen + white dust + soft blobs */
 function CtaBackdrop({ reduce }: { reduce: boolean }) {
-  const glyphs = [
-    {
-      Icon: PhoneIcon,
-      className: "left-[6%] top-[20%]",
-      size: 30,
-      y: -16,
-      x: 10,
-      dur: 12,
-      o: 0.45,
-    },
-    {
-      Icon: ChatIcon,
-      className: "right-[8%] top-[30%]",
-      size: 32,
-      y: 18,
-      x: -12,
-      dur: 14,
-      o: 0.45,
-    },
-    {
-      Icon: MapPinIcon,
-      className: "left-[12%] bottom-[22%]",
-      size: 28,
-      y: 14,
-      x: 12,
-      dur: 13,
-      o: 0.4,
-    },
-    {
-      Icon: FlameIcon,
-      className: "right-[14%] bottom-[26%]",
-      size: 26,
-      y: -14,
-      x: 10,
-      dur: 15,
-      o: 0.4,
-    },
-  ];
-  const sparkles = [
-    { className: "left-[18%] top-[16%]", d: 6, delay: 0 },
-    { className: "right-[20%] top-[18%]", d: 5, delay: 1 },
-    { className: "left-[24%] bottom-[30%]", d: 5, delay: 2 },
-    { className: "right-[26%] bottom-[22%]", d: 6, delay: 0.5 },
-  ];
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-      {/* rotating gradient blobs */}
+      <ConicSheen />
+      {/* soft white blobs */}
       <motion.div
         className="absolute -top-24 -right-24 h-[340px] w-[340px] rounded-full bg-white/[0.07] blur-[90px]"
         animate={reduce ? {} : { scale: [1, 1.2, 1], x: [0, 20, 0], y: [0, -12, 0] }}
@@ -69,30 +26,7 @@ function CtaBackdrop({ reduce }: { reduce: boolean }) {
         animate={reduce ? {} : { scale: [1, 1.3, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
       />
-      {/* glyphs */}
-      {glyphs.map(({ Icon, className, size, y, x, dur, o }, i) => (
-        <motion.div
-          key={i}
-          className={`absolute ${className}`}
-          animate={
-            reduce
-              ? {}
-              : { y: [0, y, 0], x: [0, x, 0], rotate: [0, 12, 0], opacity: [o, o * 1.6, o] }
-          }
-          transition={{ duration: dur, repeat: Infinity, ease: "easeInOut", delay: i * 1.4 }}
-        >
-          <Icon size={size} className="text-white" />
-        </motion.div>
-      ))}
-      {/* sparkles */}
-      {sparkles.map(({ className, d, delay }, i) => (
-        <motion.span
-          key={i}
-          className={`absolute h-1.5 w-1.5 rounded-full bg-white ${className}`}
-          animate={reduce ? {} : { opacity: [0, 1, 0], scale: [0.6, 1.4, 0.6] }}
-          transition={{ duration: d, repeat: Infinity, ease: "easeInOut", delay }}
-        />
-      ))}
+      <ShimmerField color="rgba(255,255,255,0.55)" />
     </div>
   );
 }

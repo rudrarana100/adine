@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import type { FeatureIconName } from "@/components/icons/FeatureIcons";
 import { AnimatedFeatureIcon } from "@/components/icons/AnimatedFeatureIcon";
-import { AnimatedGlyphs, DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
+import { AuroraField, GridField } from "@/components/backgrounds/AnimatedBackgrounds";
 
 const STEPS: {
   number: string;
@@ -56,9 +56,9 @@ export default function HowItWorksAdine() {
 
   return (
     <section id="how" className="relative overflow-hidden bg-canvas py-[96px]">
-      {/* Animated backdrop: floating product glyphs + dotted texture */}
-      <DotGrid className="opacity-40" />
-      <AnimatedGlyphs />
+      {/* Animated backdrop: aurora fields + grid texture */}
+      <AuroraField />
+      <GridField className="opacity-60" />
 
       <div className="shell relative z-10">
         <div className="mx-auto max-w-[720px] text-center">
