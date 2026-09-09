@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400&display=swap");
 @import "tw-animate-css";
 @import "tailwindcss" source(none);
 
@@ -142,9 +140,6 @@
   .font-poppins {
     font-family: var(--font-poppins);
   }
-  .font-caveat {
-    font-family: "Caveat", sans-serif;
-  }
 }
 
 /* ── Utility classes ── */
@@ -251,6 +246,16 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/*
+ * Skip rendering/painting of below-fold sections until they're near the
+ * viewport. Fast initial paint; the intrinsic size keeps the scrollbar from
+ * jumping while the browser estimates section height.
+ */
+@utility section-cv {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
 }
 
 /* Keyboard shortcut key chip */
