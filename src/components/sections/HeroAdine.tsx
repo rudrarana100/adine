@@ -4,6 +4,12 @@ import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import { PhoneIcon, ChatIcon, MapPinIcon } from "@/components/icons/FeatureIcons";
+import {
+  AuroraField,
+  GlowOrb,
+  GridField,
+  SignalRings,
+} from "@/components/backgrounds/AnimatedBackgrounds";
 
 /* Typewriter gradient accent — the cold-calling differentiator */
 const accentWords = ["actually pick up the phone", "close more deals", "never miss a call"];
@@ -45,27 +51,6 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   );
 }
 
-/* Floating orb */
-function Orb({
-  className,
-  delay = 0,
-  reduce,
-}: {
-  className: string;
-  delay?: number;
-  reduce: boolean;
-}) {
-  if (reduce) return <div className={className} aria-hidden="true" />;
-  return (
-    <motion.div
-      className={className}
-      aria-hidden="true"
-      animate={{ y: [0, -14, 0], opacity: [0.6, 1, 0.6] }}
-      transition={{ duration: 8 + delay, repeat: Infinity, ease: "easeInOut", delay }}
-    />
-  );
-}
-
 /* ── Call Session UI mock ── */
 const OUTCOMES = [
   { key: "1", label: "No Answer" },
@@ -101,7 +86,10 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
       animate={reduce ? {} : { y: [0, -8, 0] }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     >
-      <div className="card-surface overflow-hidden rounded-[24px] bg-card p-5 sm:p-6">
+      {/* Pulsing signal rings behind the mock */}
+      <SignalRings reduce={reduce} className="-inset-10" />
+
+      <div className="card-surface relative z-10 overflow-hidden rounded-[24px] bg-card p-5 sm:p-6">
         {/* Session header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -253,52 +241,26 @@ export default function HeroAdine() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
     >
-      {/* Gradient blobs */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <motion.div
-          className="absolute -top-[200px] left-[8%] h-[500px] w-[500px] rounded-full blur-[120px]"
-          style={{ background: "rgba(97,97,255,0.08)" }}
-          animate={reduce ? {} : { scale: [1, 1.12, 1], rotate: [0, 6, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-[60px] right-[4%] h-[400px] w-[400px] rounded-full blur-[120px]"
-          style={{ background: "rgba(237,223,247,0.35)" }}
-          animate={reduce ? {} : { scale: [1, 1.08, 0.96, 1], rotate: [0, -5, 3, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-      </div>
+      {/* Background layers */}
+      <AuroraField />
+      <GridField className="opacity-70" />
+      <GlowOrb className="left-[8%] top-[12%]" />
+      <GlowOrb
+        className="right-[4%] top-[30%]"
+        color="rgba(233,141,254,0.16)"
+        size={360}
+      />
 
       {/* Mouse spotlight */}
       {!reduce && (
         <motion.div
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
-            background: `radial-gradient(600px circle at ${spotlightX} ${spotlightY}, rgba(97,97,255,0.05), transparent 60%)`,
+            background: `radial-gradient(600px circle at ${spotlightX} ${spotlightY}, rgba(97,97,255,0.06), transparent 60%)`,
           }}
           aria-hidden="true"
         />
       )}
-
-      <Orb
-        reduce={reduce}
-        className="absolute top-[16%] left-[6%] h-2.5 w-2.5 rounded-full bg-violet/15"
-      />
-      <Orb
-        reduce={reduce}
-        delay={2}
-        className="absolute top-[30%] right-[10%] h-3 w-3 rounded-full bg-cotton-candy/20"
-      />
-      <Orb
-        reduce={reduce}
-        delay={4}
-        className="absolute bottom-[40%] left-[16%] h-2 w-2 rounded-full bg-mint/25"
-      />
-      <Orb
-        reduce={reduce}
-        delay={3}
-        className="absolute top-[12%] right-[26%] h-2 w-2 rounded-full bg-sky/20"
-      />
 
       {/* Content */}
       <div className="shell relative z-10">

@@ -1,17 +1,71 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { FlameIcon, CheckIcon } from "@/components/icons/FeatureIcons";
+
+/* Decorative floating white glyphs for the violet section */
+function WhiteGlyphs({ reduce }: { reduce: boolean }) {
+  const items = [
+    {
+      Icon: FlameIcon,
+      className: "left-[6%] top-[18%]",
+      size: 34,
+      delay: 0,
+      dur: 13,
+      y: -18,
+      x: 12,
+      o: 0.5,
+    },
+    {
+      Icon: CheckIcon,
+      className: "right-[8%] top-[24%]",
+      size: 28,
+      delay: 1.2,
+      dur: 11,
+      y: 16,
+      x: -14,
+      o: 0.4,
+    },
+    {
+      Icon: FlameIcon,
+      className: "left-[16%] bottom-[20%]",
+      size: 24,
+      delay: 2,
+      dur: 14,
+      y: 14,
+      x: 10,
+      o: 0.35,
+    },
+  ];
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      {items.map(({ Icon, className, size, delay, dur, y, x, o }, i) => (
+        <motion.div
+          key={i}
+          className={`absolute ${className}`}
+          animate={
+            reduce
+              ? {}
+              : { y: [0, y, 0], x: [0, x, 0], rotate: [0, 10, 0], opacity: [o, o * 1.5, o] }
+          }
+          transition={{ duration: dur, repeat: Infinity, ease: "easeInOut", delay }}
+        >
+          <Icon size={size} className="text-white" />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
 
 /* 90-day call heatmap mock — boolean intensity per weekday */
 const WEEKS = Array.from({ length: 13 }, () => [3, 4, 1, 3, 5, 2, 0]);
 
-function HeatmapMock() {
+function HeatmapMock({ reduce }: { reduce: boolean }) {
   return (
     <div className="flex gap-1.5" aria-hidden="true">
       {WEEKS.map((week, w) => (
         <div key={w} className="flex flex-col gap-1.5">
           {week.map((level, d) => (
-            <span
+            <motion.span
               key={`${w}-${d}`}
               className={`h-4 w-4 rounded-[4px] ${
                 level === 0
@@ -26,6 +80,13 @@ function HeatmapMock() {
                           ? "bg-violet-200"
                           : "bg-white/[0.9]"
               }`}
+              animate={reduce ? {} : { opacity: [0.5, 1, 0.5], y: [0, -1, 0] }}
+              transition={{
+                duration: 3 + (w + d) * 0.13,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: (w * 5 + d) * 0.06,
+              }}
             />
           ))}
         </div>
@@ -36,10 +97,30 @@ function HeatmapMock() {
 
 export default function AnalyticsAdine() {
   const v = useVariants();
+  const reduce = useReducedMotion() ?? false;
 
   return (
-    <section id="analytics" className="bg-violet py-[96px] text-white">
-      <div className="shell">
+    <section id="analytics" className="relative overflow-hidden bg-violet py-[96px] text-white">
+      {/* Glow aura + animated white glyphs */}
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        animate={
+          reduce
+            ? {}
+            : {
+                background: [
+                  "radial-gradient(900px circle at 15% 20%, rgba(255,255,255,0.14), transparent 55%)",
+                  "radial-gradient(900px circle at 85% 75%, rgba(255,255,255,0.14), transparent 55%)",
+                  "radial-gradient(900px circle at 15% 20%, rgba(255,255,255,0.14), transparent 55%)",
+                ],
+              }
+        }
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <WhiteGlyphs reduce={reduce} />
+
+      <div className="shell relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* Left: copy */}
           <motion.div
@@ -120,7 +201,7 @@ export default function AnalyticsAdine() {
                   Personal best: 168
                 </span>
               </div>
-              <HeatmapMock />
+              <HeatmapMock reduce={reduce} />
               <div className="mt-3 flex items-center justify-end gap-1 text-[10px] text-iron">
                 Less
                 {[0, 1, 2, 3, 4, 5].map((l) => (

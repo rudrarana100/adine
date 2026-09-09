@@ -1,11 +1,105 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { ArrowRight } from "@phosphor-icons/react";
+import { PhoneIcon, ChatIcon, MapPinIcon, FlameIcon } from "@/components/icons/FeatureIcons";
 
 const NEXT_STEPS = ["Sign up free", "Connect Google", "Import your first list"];
 
+/* Floating white glyphs + sparkles inside the violet panel */
+function CtaBackdrop({ reduce }: { reduce: boolean }) {
+  const glyphs = [
+    {
+      Icon: PhoneIcon,
+      className: "left-[6%] top-[20%]",
+      size: 30,
+      y: -16,
+      x: 10,
+      dur: 12,
+      o: 0.45,
+    },
+    {
+      Icon: ChatIcon,
+      className: "right-[8%] top-[30%]",
+      size: 32,
+      y: 18,
+      x: -12,
+      dur: 14,
+      o: 0.45,
+    },
+    {
+      Icon: MapPinIcon,
+      className: "left-[12%] bottom-[22%]",
+      size: 28,
+      y: 14,
+      x: 12,
+      dur: 13,
+      o: 0.4,
+    },
+    {
+      Icon: FlameIcon,
+      className: "right-[14%] bottom-[26%]",
+      size: 26,
+      y: -14,
+      x: 10,
+      dur: 15,
+      o: 0.4,
+    },
+  ];
+  const sparkles = [
+    { className: "left-[18%] top-[16%]", d: 6, delay: 0 },
+    { className: "right-[20%] top-[18%]", d: 5, delay: 1 },
+    { className: "left-[24%] bottom-[30%]", d: 5, delay: 2 },
+    { className: "right-[26%] bottom-[22%]", d: 6, delay: 0.5 },
+  ];
+  return (
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      {/* rotating gradient blobs */}
+      <motion.div
+        className="absolute -top-24 -right-24 h-[340px] w-[340px] rounded-full bg-white/[0.07] blur-[90px]"
+        animate={reduce ? {} : { scale: [1, 1.2, 1], x: [0, 20, 0], y: [0, -12, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute -bottom-20 -left-20 h-[300px] w-[300px] rounded-full bg-cotton-candy/[0.16] blur-[90px]"
+        animate={reduce ? {} : { scale: [1, 1.15, 1], x: [0, -18, 0], y: [0, 14, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      />
+      <motion.div
+        className="absolute top-[40%] left-[40%] h-[200px] w-[200px] rounded-full bg-sky/[0.12] blur-[80px]"
+        animate={reduce ? {} : { scale: [1, 1.3, 1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+      />
+      {/* glyphs */}
+      {glyphs.map(({ Icon, className, size, y, x, dur, o }, i) => (
+        <motion.div
+          key={i}
+          className={`absolute ${className}`}
+          animate={
+            reduce
+              ? {}
+              : { y: [0, y, 0], x: [0, x, 0], rotate: [0, 12, 0], opacity: [o, o * 1.6, o] }
+          }
+          transition={{ duration: dur, repeat: Infinity, ease: "easeInOut", delay: i * 1.4 }}
+        >
+          <Icon size={size} className="text-white" />
+        </motion.div>
+      ))}
+      {/* sparkles */}
+      {sparkles.map(({ className, d, delay }, i) => (
+        <motion.span
+          key={i}
+          className={`absolute h-1.5 w-1.5 rounded-full bg-white ${className}`}
+          animate={reduce ? {} : { opacity: [0, 1, 0], scale: [0.6, 1.4, 0.6] }}
+          transition={{ duration: d, repeat: Infinity, ease: "easeInOut", delay }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function FinalCTAAdine() {
   const v = useVariants();
+  const reduce = useReducedMotion() ?? false;
 
   return (
     <section className="bg-canvas py-[96px]">
@@ -17,10 +111,7 @@ export default function FinalCTAAdine() {
           viewport={{ once: true, amount: 0.2 }}
           className="relative overflow-hidden rounded-[40px] bg-violet px-8 py-[80px] text-center md:px-16"
         >
-          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-            <div className="absolute -top-20 -right-20 h-[300px] w-[300px] rounded-full bg-white/[0.06] blur-[80px]" />
-            <div className="absolute -bottom-16 -left-16 h-[250px] w-[250px] rounded-full bg-cotton-candy/[0.12] blur-[80px]" />
-          </div>
+          <CtaBackdrop reduce={reduce} />
 
           <motion.span
             variants={v(fadeUp)}
@@ -48,15 +139,33 @@ export default function FinalCTAAdine() {
             variants={v(fadeUp)}
             className="relative z-10 mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <a
+            <motion.a
               href="https://adine-crm.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-[15px] font-semibold text-violet shadow-elevated transition-transform duration-200 hover:scale-[1.03]"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-[15px] font-semibold text-violet shadow-elevated"
+              animate={
+                reduce
+                  ? {}
+                  : {
+                      boxShadow: [
+                        "0px 5px 45px rgba(0,0,0,0.15)",
+                        "0px 8px 60px rgba(255,255,255,0.35)",
+                        "0px 5px 45px rgba(0,0,0,0.15)",
+                      ],
+                    }
+              }
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              {...(reduce ? {} : { whileHover: { scale: 1.04 } })}
             >
               Open the app
-              <ArrowRight size={16} aria-hidden="true" />
-            </a>
+              <motion.span
+                animate={reduce ? {} : { x: [0, 5, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ArrowRight size={16} aria-hidden="true" />
+              </motion.span>
+            </motion.a>
           </motion.div>
 
           {/* What happens next */}
@@ -68,9 +177,19 @@ export default function FinalCTAAdine() {
               <div key={step} className="flex items-center gap-2 sm:gap-3">
                 <span className="text-[13px] font-light text-white/60">{step}</span>
                 {i < NEXT_STEPS.length - 1 && (
-                  <span className="text-white/40" aria-hidden="true">
+                  <motion.span
+                    className="text-white/40"
+                    aria-hidden="true"
+                    animate={reduce ? {} : { x: [0, 4, 0] }}
+                    transition={{
+                      duration: 1.2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.2,
+                    }}
+                  >
                     →
-                  </span>
+                  </motion.span>
                 )}
               </div>
             ))}
