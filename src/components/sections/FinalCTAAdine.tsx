@@ -33,7 +33,8 @@ function CtaBackdrop({ reduce }: { reduce: boolean }) {
       <motion.div
         className="absolute top-[40%] left-[40%] h-[200px] w-[200px] rounded-full"
         style={{
-          background: "radial-gradient(200px circle at 50% 50%, rgba(59,201,255,0.14), transparent 65%)",
+          background:
+            "radial-gradient(200px circle at 50% 50%, rgba(59,201,255,0.14), transparent 65%)",
         }}
         animate={reduce ? {} : { scale: [1, 1.3, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}

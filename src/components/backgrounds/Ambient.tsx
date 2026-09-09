@@ -19,11 +19,7 @@ export function Ambient({
   const inView = useInView(ref, { margin: rootMargin });
 
   return (
-    <div
-      ref={ref}
-      className={`pointer-events-none ${className ?? ""}`}
-      aria-hidden="true"
-    >
+    <div ref={ref} className={`pointer-events-none ${className ?? ""}`} aria-hidden="true">
       {inView || reduce ? children : null}
     </div>
   );
