@@ -298,7 +298,7 @@ export function GlowOrb({
   const reduce = useReducedMotion() ?? false;
   return (
     <motion.div
-      className={`pointer-events-none absolute rounded-full blur-[100px] ${className}`}
+      className={`pointer-events-none absolute rounded-full ${className}`}
       style={{
         width: size,
         height: size,

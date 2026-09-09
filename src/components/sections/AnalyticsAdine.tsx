@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, useInView, animate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
+import { Ambient } from "@/components/backgrounds/Ambient";
 import { FlameIcon, CheckIcon } from "@/components/icons/FeatureIcons";
 
 /* Count-up number that animates 0 → value when it scrolls into view (~800ms) */
@@ -151,24 +152,28 @@ export default function AnalyticsAdine() {
       ref={sectionRef}
       className="relative overflow-hidden bg-violet py-[96px] text-white"
     >
-      {/* Glow aura + animated white glyphs */}
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-        animate={
-          reduce
-            ? {}
-            : {
-                background: [
-                  "radial-gradient(900px circle at 15% 20%, rgba(255,255,255,0.14), transparent 55%)",
-                  "radial-gradient(900px circle at 85% 75%, rgba(255,255,255,0.14), transparent 55%)",
-                  "radial-gradient(900px circle at 15% 20%, rgba(255,255,255,0.14), transparent 55%)",
-                ],
-              }
-        }
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <WhiteGlyphs reduce={reduce} />
+      {/* Glow aura + animated white glyphs — only mounted near the viewport */}
+      <Ambient className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute -top-32 left-[6%] h-[460px] w-[460px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(460px circle at 50% 50%, rgba(255,255,255,0.16), transparent 60%)",
+          }}
+          animate={reduce ? {} : { scale: [1, 1.18, 1], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute -right-[4%] -bottom-40 h-[560px] w-[560px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(560px circle at 50% 50%, rgba(255,255,255,0.12), transparent 60%)",
+          }}
+          animate={reduce ? {} : { scale: [1, 1.15, 1], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        />
+        <WhiteGlyphs reduce={reduce} />
+      </Ambient>
 
       <div className="shell relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-2">

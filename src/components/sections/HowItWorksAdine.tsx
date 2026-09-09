@@ -3,6 +3,7 @@ import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import type { FeatureIconName } from "@/components/icons/FeatureIcons";
 import { AnimatedFeatureIcon } from "@/components/icons/AnimatedFeatureIcon";
 import { AuroraField, GridField } from "@/components/backgrounds/AnimatedBackgrounds";
+import { Ambient } from "@/components/backgrounds/Ambient";
 import SectionHeading from "@/components/sections/SectionHeading";
 
 const STEPS: {
@@ -57,9 +58,11 @@ export default function HowItWorksAdine() {
 
   return (
     <section id="how" className="relative overflow-hidden bg-canvas py-[96px]">
-      {/* Animated backdrop: aurora fields + grid texture */}
-      <AuroraField />
-      <GridField className="opacity-60" />
+      {/* Animated backdrop: aurora fields + grid texture (paused off-screen) */}
+      <Ambient className="absolute inset-0 overflow-hidden">
+        <AuroraField />
+        <GridField className="opacity-60" />
+      </Ambient>
 
       <div className="shell relative z-10">
         <SectionHeading

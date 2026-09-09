@@ -3,6 +3,7 @@ import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { AnimatedFeatureIcon } from "@/components/icons/AnimatedFeatureIcon";
 import type { FeatureIconName } from "@/components/icons/FeatureIcons";
 import { DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
+import { Ambient } from "@/components/backgrounds/Ambient";
 import SectionHeading from "@/components/sections/SectionHeading";
 
 const FEATURES: {
@@ -85,8 +86,10 @@ export default function FeatureShowcaseAdine() {
 
   return (
     <section id="features" className="relative bg-card py-[96px]">
-      {/* Soft animated accent background */}
-      <DotGrid className="opacity-50" />
+      {/* Soft animated accent background (paused off-screen) */}
+      <Ambient className="absolute inset-0 overflow-hidden">
+        <DotGrid className="opacity-50" />
+      </Ambient>
 
       <div className="shell relative z-10">
         <SectionHeading
