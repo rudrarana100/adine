@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
+import { fadeUp, scaleIn, staggerContainer, useVariants } from "@/lib/motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { ConicSheen, ShimmerField } from "@/components/backgrounds/AnimatedBackgrounds";
 
@@ -73,10 +73,7 @@ export default function FinalCTAAdine() {
             variants={v(fadeUp)}
             className="relative z-10 mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <motion.div
-              variants={v(scaleIn)}
-              className="relative"
-            >
+            <motion.div variants={v(scaleIn)} className="relative">
               {/* soft glow halo behind the button */}
               <motion.div
                 className="pointer-events-none absolute -inset-5 rounded-full bg-white/25 blur-2xl"
@@ -110,14 +107,14 @@ export default function FinalCTAAdine() {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 {...(reduce ? {} : { whileHover: { scale: 1.05 }, whileTap: { scale: 0.97 } })}
               >
-              Open the app
-              <motion.span
-                animate={reduce ? {} : { x: [0, 5, 0] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <ArrowRight size={16} aria-hidden="true" />
-              </motion.span>
-            </motion.a>
+                Open the app
+                <motion.span
+                  animate={reduce ? {} : { x: [0, 5, 0] }}
+                  transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <ArrowRight size={16} aria-hidden="true" />
+                </motion.span>
+              </motion.a>
             </motion.div>
           </motion.div>
 

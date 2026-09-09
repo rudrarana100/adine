@@ -230,13 +230,23 @@ export default function AnalyticsAdine() {
           >
             {/* streak / stat row */}
             <motion.div variants={v(fadeUp)} className="mb-5 grid grid-cols-3 gap-3">
-              {[
-                { label: "Day streak", value: 14, icon: FlameIcon },
-                { label: "Calls today", value: 58 },
-                { label: "Meetings booked", value: 4 },
-              ].map(({ label, value, icon: Icon }) => (
+              {(
+                [
+                  { label: "Day streak", value: 14, icon: FlameIcon },
+                  { label: "Calls today", value: 58 },
+                  { label: "Meeting booked", value: 4 },
+                ] as {
+                  label: string;
+                  value: number;
+                  icon?: (props: { size?: number; className?: string }) => React.ReactNode;
+                }[]
+              ).map(({ label, value, icon }) => (
                 <div key={label} className="rounded-[18px] bg-white p-4 text-center">
-                  {Icon && <Icon size={20} className="mx-auto mb-1 text-apricot" />}
+                  {icon &&
+                    (() => {
+                      const Icon = icon;
+                      return <Icon size={20} className="mx-auto mb-1 text-apricot" />;
+                    })()}
                   <p className="text-[22px] font-semibold tabular-nums text-ink">
                     <Counter value={value} reduce={reduce} />
                   </p>

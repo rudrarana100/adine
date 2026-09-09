@@ -3,6 +3,7 @@ import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { AnimatedFeatureIcon } from "@/components/icons/AnimatedFeatureIcon";
 import type { FeatureIconName } from "@/components/icons/FeatureIcons";
 import { DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
+import SectionHeading from "@/components/sections/SectionHeading";
 
 const FEATURES: {
   title: string;
@@ -88,16 +89,11 @@ export default function FeatureShowcaseAdine() {
       <DotGrid className="opacity-50" />
 
       <div className="shell relative z-10">
-        <div className="mx-auto max-w-[720px] text-center">
-          <span className="section-eyebrow">Features</span>
-          <h2 className="mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink">
-            Everything the phone workday needs
-          </h2>
-          <p className="mt-4 text-[17px] font-light leading-[1.6] text-slate">
-            Scrape, dial, log, book, and follow up — each step backed by a dedicated, fast-click
-            feature.
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow="Features"
+          title="Everything the phone workday needs"
+          subtitle="Scrape, dial, log, book, and follow up — each step backed by a dedicated, fast-click feature."
+        />
 
         <motion.div
           variants={v(staggerContainer)}

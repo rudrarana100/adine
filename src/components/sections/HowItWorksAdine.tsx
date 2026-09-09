@@ -3,6 +3,7 @@ import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import type { FeatureIconName } from "@/components/icons/FeatureIcons";
 import { AnimatedFeatureIcon } from "@/components/icons/AnimatedFeatureIcon";
 import { AuroraField, GridField } from "@/components/backgrounds/AnimatedBackgrounds";
+import SectionHeading from "@/components/sections/SectionHeading";
 
 const STEPS: {
   number: string;
@@ -61,16 +62,11 @@ export default function HowItWorksAdine() {
       <GridField className="opacity-60" />
 
       <div className="shell relative z-10">
-        <div className="mx-auto max-w-[720px] text-center">
-          <span className="section-eyebrow">How It Works</span>
-          <h2 className="mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink">
-            From a raw list to a booked meeting
-          </h2>
-          <p className="mt-4 text-[17px] font-light leading-[1.6] text-slate">
-            Four steps that map to how you actually sell on the phone — import, dial, log, and
-            follow up.
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow="How It Works"
+          title="From a raw list to a booked meeting"
+          subtitle="Four steps that map to how you actually sell on the phone — import, dial, log, and follow up."
+        />
 
         <motion.div
           variants={v(staggerContainer)}
