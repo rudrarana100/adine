@@ -1,5 +1,5 @@
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef, useState, type MouseEvent, type ReactNode } from "react";
 
 /* ─────────────────────────────────────────────────────────────────────────
    AuroraField — layered, slowly-morphing gradient fields for section
@@ -118,58 +118,169 @@ export function ShimmerField({
 
 /* ─────────────────────────────────────────────────────────────────────────
    GridField — soft perspective grid lines (no dots). Adds structure
-   without being icon-heavy.
+   without being icon-heavy. Interactive mode tilts the whole mesh gently
+   toward the cursor and node dots at grid intersections light up + ripple
+   as you hover across them.
    ───────────────────────────────────────────────────────────────────────── */
+
+const MESH_NODE_COLS = 9;
+const MESH_NODE_ROWS = 6;
+
+const MESH_NODES = Array.from({ length: MESH_NODE_ROWS }, (_, r) =>
+  Array.from({ length: MESH_NODE_COLS }, (_, c) => ({
+    r,
+    c,
+    left: 5 + (c / (MESH_NODE_COLS - 1)) * 90,
+    top: 8 + (r / (MESH_NODE_ROWS - 1)) * 84,
+  })),
+).flat();
+
+function MeshLines({ lineColor }: { lineColor: string }) {
+  return (
+    <svg className="h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+      {Array.from({ length: 21 }).map((_, i) => (
+        <line
+          key={`v${i}`}
+          x1={`${(i / 20) * 100}`}
+          y1="0"
+          x2={`${(i / 20) * 100}`}
+          y2="100"
+          stroke={lineColor}
+          strokeWidth="0.25"
+        />
+      ))}
+      {Array.from({ length: 13 }).map((_, i) => (
+        <line
+          key={`h${i}`}
+          x1="0"
+          y1={`${(i / 12) * 100}`}
+          x2="100"
+          y2={`${(i / 12) * 100}`}
+          stroke={lineColor}
+          strokeWidth="0.25"
+        />
+      ))}
+    </svg>
+  );
+}
+
+function GridSheen({ reduce }: { reduce: boolean }) {
+  if (reduce) return null;
+  return (
+    <motion.div
+      className="absolute top-0 bottom-0 left-0 w-[200%]"
+      style={{
+        background:
+          "linear-gradient(120deg, transparent 30%, rgba(97,97,255,0.12) 50%, transparent 70%)",
+        backgroundSize: "50% 100%",
+        backgroundRepeat: "repeat-x",
+      }}
+      animate={{ x: ["-50%", "0%", "-50%"] }}
+      transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+    />
+  );
+}
 
 export function GridField({
   className = "",
   lineColor = "rgba(97,97,255,0.07)",
+  interactive = true,
 }: {
   className?: string;
   lineColor?: string;
+  interactive?: boolean;
 }) {
   const reduce = useReducedMotion() ?? false;
+  const interactiveOn = interactive && !reduce;
+  const meshRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState<readonly [number, number] | null>(null);
+
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rotateX = useSpring(
+    useTransform(my, (v) => v * -6),
+    {
+      stiffness: 90,
+      damping: 22,
+      mass: 0.6,
+    },
+  );
+  const rotateY = useSpring(
+    useTransform(mx, (v) => v * 6),
+    {
+      stiffness: 90,
+      damping: 22,
+      mass: 0.6,
+    },
+  );
+
+  const handleMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!meshRef.current) return;
+    const rect = meshRef.current.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width - 0.5);
+    my.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleLeave = () => {
+    mx.set(0);
+    my.set(0);
+    setActive(null);
+  };
+
   return (
     <div
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
       aria-hidden="true"
     >
-      <svg className="h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-        {Array.from({ length: 21 }).map((_, i) => (
-          <line
-            key={`v${i}`}
-            x1={`${(i / 20) * 100}`}
-            y1="0"
-            x2={`${(i / 20) * 100}`}
-            y2="100"
-            stroke={lineColor}
-            strokeWidth="0.25"
-          />
-        ))}
-        {Array.from({ length: 13 }).map((_, i) => (
-          <line
-            key={`h${i}`}
-            x1="0"
-            y1={`${(i / 12) * 100}`}
-            x2="100"
-            y2={`${(i / 12) * 100}`}
-            stroke={lineColor}
-            strokeWidth="0.25"
-          />
-        ))}
-      </svg>
-      {!reduce && (
+      {interactiveOn ? (
         <motion.div
-          className="absolute top-0 bottom-0 left-0 w-[200%]"
-          style={{
-            background:
-              "linear-gradient(120deg, transparent 30%, rgba(97,97,255,0.12) 50%, transparent 70%)",
-            backgroundSize: "50% 100%",
-            backgroundRepeat: "repeat-x",
-          }}
-          animate={{ x: ["-50%", "0%", "-50%"] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        />
+          ref={meshRef}
+          onMouseMove={handleMove}
+          onMouseLeave={handleLeave}
+          className="pointer-events-auto absolute inset-0"
+          style={{ rotateX, rotateY, transformPerspective: 1000, scale: 1.04 }}
+        >
+          <MeshLines lineColor={lineColor} />
+          <GridSheen reduce={reduce} />
+          {MESH_NODES.map(({ r, c, left, top }) => {
+            const dist = active ? Math.max(Math.abs(active[0] - r), Math.abs(active[1] - c)) : 99;
+            const lit = dist === 0;
+            const near = dist === 1;
+            return (
+              <div
+                key={`${r}-${c}`}
+                onMouseEnter={() => setActive([r, c])}
+                className="pointer-events-auto absolute h-6 w-6 -ml-3 -mt-3"
+                style={{ left: `${left}%`, top: `${top}%` }}
+              >
+                <motion.span
+                  className="absolute left-1/2 top-1/2 -ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full"
+                  animate={
+                    lit
+                      ? { scale: 2, backgroundColor: "rgba(97,97,255,0.85)" }
+                      : near
+                        ? { scale: 1.45, backgroundColor: "rgba(97,97,255,0.45)" }
+                        : { scale: 1, backgroundColor: "rgba(97,97,255,0.25)" }
+                  }
+                  transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                />
+                {(lit || near) && (
+                  <motion.span
+                    className="absolute left-1/2 top-1/2 -ml-[9px] -mt-[9px] h-[18px] w-[18px] rounded-full border border-violet/50"
+                    initial={{ scale: 0.4, opacity: 0.7 }}
+                    animate={{ scale: lit ? 1.9 : 1.5, opacity: 0 }}
+                    transition={{ duration: 0.55, ease: "easeOut", delay: near ? 0.1 : 0 }}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </motion.div>
+      ) : (
+        <>
+          <MeshLines lineColor={lineColor} />
+          <GridSheen reduce={reduce} />
+        </>
       )}
     </div>
   );
