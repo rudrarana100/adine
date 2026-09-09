@@ -9,8 +9,14 @@ import {
 } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
-import { fadeUp, staggerContainer } from "@/lib/motion";
-import { PhoneIcon, ChatIcon, MapPinIcon } from "@/components/icons/FeatureIcons";
+import { fadeUp, heroWord, heroWordContainer, badgePop, staggerContainer } from "@/lib/motion";
+import {
+  PhoneIcon,
+  ChatIcon,
+  MapPinIcon,
+  CalendarMeetIcon,
+  FlameIcon,
+} from "@/components/icons/FeatureIcons";
 import {
   AuroraField,
   GlowOrb,
@@ -49,7 +55,7 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   const text = reduce ? accentWords[0] : getWord(wordIdx).slice(0, charIdx);
 
   return (
-    <span className="mt-2 block min-h-[1.2em] text-[clamp(36px,5vw,56px)] font-light leading-[1.12] tracking-[-0.03em] gradient-text">
+    <span className="mt-2 block min-h-[1.2em] text-[clamp(34px,4.8vw,54px)] font-light leading-[1.12] tracking-[-0.03em] gradient-text">
       {text}
       {!reduce && (
         <span className="ml-0.5 inline-block h-[1em] w-[3px] align-middle bg-violet opacity-60 animate-pulse" />
@@ -78,6 +84,7 @@ function WaveformBars({ reduce, active }: { reduce: boolean; active: boolean }) 
     </span>
   );
 }
+
 /* ── Call Session UI mock ── */
 const OUTCOMES = [
   { key: "1", label: "No Answer" },
@@ -91,16 +98,18 @@ const OUTCOMES = [
 function CallSessionMock({ reduce }: { reduce: boolean }) {
   const [pressed, setPressed] = useState(4);
   const [inCall, setInCall] = useState(true);
+  const [pressFx, setPressFx] = useState(0);
 
-  // Loop: outcome button 5 ("Interested") appears pressed, then advance
+  // Loop: "Interested" (key 5) looks pressed every few seconds, then advance
   useEffect(() => {
     if (reduce) return;
     const cycle = () => {
       setPressed(4);
       setInCall(true);
+      setPressFx((p) => p + 1);
       const t1 = setTimeout(() => setPressed(5), 1800);
       const t2 = setTimeout(() => setInCall(false), 2600);
-      const t3 = setTimeout(cycle, 3600);
+      const t3 = setTimeout(cycle, 3800);
       return [t1, t2, t3];
     };
     const timers = cycle();
@@ -110,13 +119,13 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
   return (
     <motion.div
       className="relative mx-auto mt-16 max-w-[640px]"
-      animate={reduce ? {} : { y: [0, -8, 0] }}
-      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      animate={reduce ? {} : { y: [0, -7, 0] }}
+      transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
     >
       {/* Pulsing signal rings behind the mock */}
       <SignalRings reduce={reduce} className="-inset-10" />
 
-      <div className="card-surface relative z-10 overflow-hidden rounded-[24px] bg-card p-5 sm:p-6">
+      <div className="card-surface relative z-10 overflow-hidden rounded-[24px] bg-card p-5 shadow-elevated sm:p-6">
         {/* Session header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -195,14 +204,24 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
           <div className="flex flex-wrap gap-1.5">
             {OUTCOMES.map((o, i) => {
               const isPressed = pressed === i;
+              const isInterested = i === 4;
               return (
-                <span
-                  key={o.key}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] transition-all duration-150 ${
+                <motion.span
+                  key={isInterested ? `${o.key}-${pressFx}` : o.key}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] ${
                     isPressed
-                      ? "scale-105 border-violet bg-violet text-white shadow-pill"
+                      ? "border-violet bg-violet text-white shadow-pill"
                       : "border-pebble bg-card text-slate"
                   }`}
+                  {...(isInterested && !reduce ? { initial: { scale: 1 } } : {})}
+                  animate={
+                    isInterested && isPressed && !reduce ? { scale: [0.92, 1.03, 1] } : { scale: 1 }
+                  }
+                  transition={
+                    isInterested && isPressed && !reduce
+                      ? { duration: 0.35, ease: "easeOut" }
+                      : { duration: 0.15 }
+                  }
                 >
                   <span
                     className={`flex h-4 w-4 items-center justify-center rounded text-[10px] font-bold ${
@@ -212,7 +231,7 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
                     {o.key}
                   </span>
                   {o.label}
-                </span>
+                </motion.span>
               );
             })}
             <span className="inline-flex items-center gap-1.5 rounded-full border border-pebble bg-card px-3 py-1.5 text-[12.5px] text-slate">
@@ -243,72 +262,177 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
   );
 }
 
-/* Animated orbit glyph — decorative, drawn as inline SVG, shows a "call wave"
-   radiating from the hero headline. Reduced-motion aware. */
-function OrbitGlyph({ className = "", reduce }: { className?: string; reduce: boolean }) {
+/* ── Floating SVG badges around the mock ── */
+
+/* Mini heatmap swatch — 5 columns of a few intensity squares */
+function HeatSwatch({ className = "" }: { className?: string }) {
+  const cols = [5, 3, 4, 2, 5];
   return (
-    <svg
-      className={`pointer-events-none absolute ${className}`}
-      width="96"
-      height="96"
-      viewBox="0 0 96 96"
-      fill="none"
-      aria-hidden="true"
-    >
-      {[0, 1, 2].map((i) => (
-        <motion.circle
-          key={i}
-          cx="48"
-          cy="48"
-          r="18"
-          stroke="url(#orbitGlyph)"
-          strokeWidth="1.4"
-          strokeDasharray="4 10"
-          animate={
-            reduce ? { opacity: 0.2 } : { scale: [1, 1.7], rotate: [0, 90], opacity: [0.5, 0] }
-          }
-          transition={{
-            duration: 3.2,
-            repeat: Infinity,
-            ease: "easeOut",
-            delay: i * 1.05,
-          }}
-          style={{ transformOrigin: "48px 48px" }}
-        />
+    <div className={`flex gap-[3px] ${className}`} aria-hidden="true">
+      {cols.map((n, c) => (
+        <div key={c} className="flex flex-col gap-[3px]">
+          {Array.from({ length: 5 }).map((_, r) => (
+            <span
+              key={r}
+              className={`h-1.5 w-1.5 rounded-[2px] ${
+                r < n ? (n === 5 ? "bg-violet" : "bg-violet/40") : "bg-canvas"
+              }`}
+            />
+          ))}
+        </div>
       ))}
-      <motion.path
-        d="M34 52c5-3 9 3 14 0s9-3 14 0"
-        stroke="url(#orbitGlyph)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        animate={
-          reduce
-            ? { opacity: 0.4 }
-            : {
-                d: [
-                  "M34 52c5-3 9 3 14 0s9-3 14 0",
-                  "M34 52c5 1 9-1 14 0s9-1 14 0",
-                  "M34 52c5-3 9 3 14 0s9-3 14 0",
-                ],
-                opacity: [0.6, 1, 0.6],
+    </div>
+  );
+}
+
+/* WhatsApp bubble with a "message sent" checkmark that animates across it on a loop */
+function WhatsAppBadge({ reduce }: { reduce: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-mint/40 text-green-700">
+        <ChatIcon size={18} />
+      </span>
+      <div>
+        <p className="text-[12px] font-medium text-ink">WhatsApp</p>
+        <p className="flex items-center gap-1 text-[11px] text-slate">
+          Confirmation sent
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <motion.path
+              d="M3 7.5l2.6 2.6L11 5"
+              stroke="#38a169"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={reduce ? { pathLength: 1 } : { pathLength: 0 }}
+              animate={
+                reduce
+                  ? { pathLength: 1 }
+                  : {
+                      pathLength: [0, 1, 1, 0],
+                      opacity: [0, 1, 1, 0.2],
+                    }
               }
-        }
-        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <defs>
-        <linearGradient
-          id="orbitGlyph"
-          x1="0"
-          y1="0"
-          x2="96"
-          y2="96"
-          gradientUnits="userSpaceOnUse"
+              transition={{
+                duration: 3.4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                repeatDelay: 3.6,
+              }}
+            />
+          </svg>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function FloatingBadges({ reduce }: { reduce: boolean }) {
+  // Each badge: independent float (different duration/delay/offset → organic),
+  // sparse pop-in scale (0.9 → 1) after the mock settles.
+  const badges = [
+    {
+      className: "-left-12 top-14 hidden lg:flex",
+      floatY: 9,
+      dur: 5.4,
+      delay: 0.2,
+      scale: 1,
+      brightness: "shadow-card",
+    },
+    {
+      className: "-right-10 top-6 hidden lg:flex",
+      floatY: -7,
+      dur: 6.6,
+      delay: 1.1,
+      scale: 0.96,
+      brightness: "shadow-card",
+    },
+    {
+      className: "left-[-6rem] bottom-14 hidden xl:flex",
+      floatY: 8,
+      dur: 7.4,
+      delay: 2,
+      scale: 0.9,
+      brightness: "shadow-pill",
+    },
+    {
+      className: "-right-12 bottom-16 hidden lg:flex",
+      floatY: -9,
+      dur: 5.2,
+      delay: 0.7,
+      scale: 1.02,
+      brightness: "shadow-card",
+    },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      {/* Phone dialer badge — top left */}
+      <motion.div variants={badgePop} className="absolute left-0 top-8 z-20 hidden lg:block">
+        <motion.div
+          animate={reduce ? {} : { y: [0, -9, 0] }}
+          transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+          className={`flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 ${badges[0]!.brightness} backdrop-blur-sm`}
         >
-          <stop stopColor="#6161FF" />
-          <stop offset="1" stopColor="#E98DFE" />
-        </linearGradient>
-      </defs>
-    </svg>
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet/10 text-violet">
+            <PhoneIcon size={18} />
+          </span>
+          <div>
+            <p className="flex items-center gap-1.5 text-[12px] font-medium text-ink">
+              Dialing
+              <motion.span
+                className="inline-block h-1.5 w-1.5 rounded-full bg-green-500"
+                animate={reduce ? {} : { opacity: [1, 0.3, 1] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </p>
+            <p className="text-[11px] text-slate">Lead 4 of 26</p>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* WhatsApp badge — top right, with send loop */}
+      <motion.div variants={badgePop} className="absolute right-0 top-4 z-20 hidden lg:block">
+        <motion.div
+          animate={reduce ? {} : { y: [0, 6, 0] }}
+          transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
+          className={`flex items-center rounded-[16px] bg-card/95 px-3.5 py-2.5 ${badges[1]!.brightness} backdrop-blur-sm`}
+        >
+          <WhatsAppBadge reduce={reduce} />
+        </motion.div>
+      </motion.div>
+
+      {/* Streak badge — bottom left */}
+      <motion.div variants={badgePop} className="absolute left-0 bottom-16 z-20 hidden xl:block">
+        <motion.div
+          animate={reduce ? {} : { y: [0, -8, 0] }}
+          transition={{ duration: 7.4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className={`flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 ${badges[2]!.brightness} backdrop-blur-sm`}
+        >
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-apricot/15 text-apricot">
+            <FlameIcon size={18} />
+          </span>
+          <div>
+            <p className="text-[12px] font-medium text-ink">Streak kept</p>
+            <p className="text-[11px] text-slate">14 days today</p>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Heatmap swatch badge — bottom right */}
+      <motion.div variants={badgePop} className="absolute right-6 bottom-10 z-20 hidden lg:block">
+        <motion.div
+          animate={reduce ? {} : { y: [0, 9, 0] }}
+          transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+          className={`rounded-[16px] bg-card/95 px-3.5 py-3 ${badges[3]!.brightness} backdrop-blur-sm`}
+        >
+          <p className="flex items-center gap-1.5 text-[11px] font-medium text-ink">
+            <CalendarMeetIcon size={13} className="text-violet" />
+            Call activity
+          </p>
+          <HeatSwatch className="mt-1.5" />
+        </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
@@ -320,8 +444,9 @@ export default function HeroAdine() {
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const mockY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const mockY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const mockScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 60]); // slower than content → depth
   const glowOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.15]);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -346,9 +471,17 @@ export default function HeroAdine() {
       ref={heroRef}
       onMouseMove={handleMouseMove}
     >
-      {/* Background layers */}
-      <AuroraField />
-      <GridField className="opacity-70" />
+      {/* Background: slow aurora + grid (parallax slower than content) */}
+      <motion.div
+        {...(reduce ? {} : { style: { y: bgY } })}
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+      >
+        <AuroraField />
+        <GridField className="opacity-70" />
+      </motion.div>
+
+      {/* Glow orbs — fade as you scroll */}
       <motion.div style={{ opacity: glowOpacity }} className="pointer-events-none absolute inset-0">
         <GlowOrb className="left-[8%] top-[12%]" />
         <GlowOrb className="right-[4%] top-[30%]" color="rgba(233,141,254,0.16)" size={360} />
@@ -377,74 +510,95 @@ export default function HeroAdine() {
             animate="visible"
             className="relative"
           >
-            <motion.div variants={v(fadeUp)}>
-              <span className="section-eyebrow">Cold-calling CRM for India</span>
-            </motion.div>
-
-            <motion.h1
-              variants={v(fadeUp)}
-              className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em] text-ink"
-            >
-              Adine
-              <TypewriterAccent reduce={reduce} />
-            </motion.h1>
-
-            <motion.p
-              variants={v(fadeUp)}
-              className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate"
-            >
-              A call session queue, one-keypress call logging, and automatic WhatsApp follow-ups —
-              built for founders who dial 100+ prospects a week.
-            </motion.p>
-
-            <motion.div
-              variants={v(fadeUp)}
-              className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
-            >
-              <a
-                href="https://adine-crm.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-pill"
-              >
-                Open the app
-                <ArrowRight size={16} aria-hidden="true" />
-              </a>
-              <a href="#how" className="btn-ghost-pill">
-                See how it works
-              </a>
-            </motion.div>
-
-            {/* Concrete capability hints (no invented stats) */}
-            <motion.div
-              variants={v(fadeUp)}
-              className="mt-8 flex flex-wrap items-center justify-center gap-2.5"
-            >
-              {[
-                "Google Maps lead import",
-                "6-key outcome logging",
-                "Google Meet booking",
-                "WhatsApp follow-ups",
-              ].map((item) => (
-                <motion.span
-                  key={item}
-                  className="cursor-default rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate transition-colors duration-200 hover:border-violet/40 hover:bg-violet/5 hover:text-violet"
-                  {...(reduce ? {} : { whileHover: { y: -3, scale: 1.05 } })}
-                  transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                >
-                  {item}
+            <motion.div variants={v(staggerContainer)}>
+              <motion.div variants={v(heroWordContainer)}>
+                <motion.span variants={v(heroWord)} className="inline-block">
+                  <span className="section-eyebrow block">Cold-calling CRM for India</span>
                 </motion.span>
-              ))}
+              </motion.div>
+
+              {/* Headline: brand + gradient typewriter accent */}
+              <motion.h1
+                variants={v(heroWordContainer)}
+                className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em] text-ink"
+              >
+                {["Adine", "makes", "you"].map((word, i) => (
+                  <motion.span
+                    key={i}
+                    variants={v(heroWord)}
+                    className="inline-block whitespace-nowrap"
+                  >
+                    {word}
+                    {i < 2 && <span className="mx-[0.22em]">&nbsp;</span>}
+                  </motion.span>
+                ))}
+                <TypewriterAccent reduce={reduce} />
+              </motion.h1>
+
+              <motion.p
+                variants={v(fadeUp)}
+                className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate"
+              >
+                A call session queue, one-keypress call logging, and automatic WhatsApp follow-ups —
+                built for founders who dial 100+ prospects a week.
+              </motion.p>
+
+              <motion.div
+                variants={v(fadeUp)}
+                className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+              >
+                <a
+                  href="https://adine-crm.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-pill"
+                >
+                  Open the app
+                  <ArrowRight size={16} aria-hidden="true" />
+                </a>
+                <a href="#how" className="btn-ghost-pill">
+                  See how it works
+                </a>
+              </motion.div>
+
+              {/* Concrete capability hints (no invented stats) */}
+              <motion.div
+                variants={v(staggerContainer)}
+                className="mt-8 flex flex-wrap items-center justify-center gap-2.5"
+              >
+                {[
+                  "Google Maps lead import",
+                  "6-key outcome logging",
+                  "Google Meet booking",
+                  "WhatsApp follow-ups",
+                ].map((item) => (
+                  <motion.span
+                    key={item}
+                    variants={v(fadeUp)}
+                    className="cursor-default rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate transition-colors duration-200 hover:border-violet/40 hover:bg-violet/5 hover:text-violet"
+                    {...(reduce ? {} : { whileHover: { y: -3, scale: 1.05 } })}
+                    transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                  >
+                    {item}
+                  </motion.span>
+                ))}
+              </motion.div>
             </motion.div>
           </motion.div>
-
-          {/* Floating orbit glyphs flanking the text */}
-          <OrbitGlyph reduce={reduce} className="-left-8 top-[30%] hidden lg:block" />
-          <OrbitGlyph reduce={reduce} className="-right-10 top-[58%] hidden lg:block" />
         </motion.div>
 
-        <motion.div {...(reduce ? {} : { style: { y: mockY, scale: mockScale } })}>
-          <CallSessionMock reduce={reduce} />
+        {/* Hero visual: mock card enters last, then badges pop in */}
+        <motion.div
+          variants={v(staggerContainer)}
+          initial="hidden"
+          animate="visible"
+          transition={{ delayChildren: 0.55, staggerChildren: 0.09 }}
+          {...(reduce ? {} : { style: { y: mockY, scale: mockScale } })}
+        >
+          <motion.div variants={v(badgePop)} className="relative mx-auto max-w-[720px]">
+            <CallSessionMock reduce={reduce} />
+            <FloatingBadges reduce={reduce} />
+          </motion.div>
         </motion.div>
       </div>
     </section>

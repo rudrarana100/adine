@@ -23,6 +23,31 @@ export const scaleIn: Variants = {
   },
 };
 
+/* Hero entrance: quick word-by-word reveal (one key phrase) */
+export const heroWordContainer: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.045, delayChildren: 0.08 } },
+};
+
+export const heroWord: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+/* Floating badge pop-in (scale 0.9 → 1) */
+export const badgePop: Variants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 export function useVariants() {
   const reduce = useReducedMotion();
   return (v: Variants): Variants => (reduce ? {} : v);
