@@ -417,8 +417,6 @@ export default function HeroAdine() {
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(mouseX, { stiffness: 80, damping: 20 });
   const smoothY = useSpring(mouseY, { stiffness: 80, damping: 20 });
-  const spotlightX = useTransform(smoothX, (val) => `${val}px`);
-  const spotlightY = useTransform(smoothY, (val) => `${val}px`);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (reduce || !containerRef.current) return;
@@ -450,12 +448,17 @@ export default function HeroAdine() {
         <GlowOrb className="right-[4%] top-[30%]" color="rgba(233,141,254,0.16)" size={360} />
       </motion.div>
 
-      {/* Mouse spotlight */}
+      {/* Mouse spotlight — translate-only layer, no repaints */}
       {!reduce && (
         <motion.div
-          className="pointer-events-none absolute inset-0 z-[1]"
+          className="pointer-events-none absolute left-0 top-0 z-[1] h-[600px] w-[600px] rounded-full"
           style={{
-            background: `radial-gradient(600px circle at ${spotlightX} ${spotlightY}, rgba(97,97,255,0.06), transparent 60%)`,
+            x: smoothX,
+            y: smoothY,
+            translateX: "-50%",
+            translateY: "-50%",
+            background:
+              "radial-gradient(600px circle at 50% 50%, rgba(97,97,255,0.06), transparent 60%)",
           }}
           aria-hidden="true"
         />
