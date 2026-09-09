@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { CalendarMeetIcon, ChatIcon, BellIcon, CheckIcon } from "@/components/icons/FeatureIcons";
+import SectionHeading from "@/components/sections/SectionHeading";
 
 const OUTCOMES = [
   { key: "1", label: "No Answer", tone: "bg-carbon/5 text-iron" },
@@ -19,16 +20,11 @@ export default function CallSessionDeepDiveAdine() {
   return (
     <section id="calls" className="bg-canvas py-[96px]">
       <div className="shell">
-        <div className="mx-auto max-w-[720px] text-center">
-          <span className="section-eyebrow">The Call Session</span>
-          <h2 className="mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink">
-            Built for high-volume calling, not admin
-          </h2>
-          <p className="mt-4 text-[17px] font-light leading-[1.6] text-slate">
-            Every call is logged by a keyboard shortcut. Your hands never leave the keys to find a
-            form field.
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow="The Call Session"
+          title="Built for high-volume calling, not admin"
+          subtitle="Every call is logged by a keyboard shortcut. Your hands never leave the keys to find a form field."
+        />
 
         {/* Outcome chips with shortcuts */}
         <motion.div

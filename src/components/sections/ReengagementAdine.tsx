@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { ChatIcon } from "@/components/icons/FeatureIcons";
+import SectionHeading from "@/components/sections/SectionHeading";
 
 const MEETING_OUTCOMES = [
   { label: "Closed", tone: "bg-mint/30 text-green-700" },
@@ -17,16 +18,11 @@ export default function ReengagementAdine() {
   return (
     <section id="reengage" className="bg-card py-[96px]">
       <div className="shell">
-        <div className="mx-auto max-w-[720px] text-center">
-          <span className="section-eyebrow">Never Lost After the First Call</span>
-          <h2 className="mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink">
-            The follow-up that happens without you
-          </h2>
-          <p className="mt-4 text-[17px] font-light leading-[1.6] text-slate">
-            After a Google Meet, the conversation doesn't end. No matter how it went, the next step
-            is queued and the message is pre-built.
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow="Never Lost After the First Call"
+          title="The follow-up that happens without you"
+          subtitle="After a Google Meet, the conversation doesn't end. No matter how it went, the next step is queued and the message is pre-built."
+        />
 
         <motion.div
           variants={v(staggerContainer)}

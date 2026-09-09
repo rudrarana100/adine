@@ -1,16 +1,12 @@
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/motion";
+import SectionHeading from "@/components/sections/SectionHeading";
 
 export default function MakerStoryAdine() {
   return (
     <section id="story" className="bg-canvas py-[96px]">
       <div className="shell">
-        <div className="mx-auto max-w-[720px] text-center">
-          <span className="section-eyebrow">Maker Story</span>
-          <h2 className="mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink">
-            Built from 150+ real cold calls
-          </h2>
-        </div>
+        <SectionHeading eyebrow="Maker Story" title="Built from 150+ real cold calls" />
 
         <motion.div
           variants={fadeUp}
