@@ -68,11 +68,11 @@ function WaveformBars({ reduce, active }: { reduce: boolean; active: boolean }) 
       {bars.map((h, i) => (
         <motion.span
           key={i}
-          className="w-[3px] rounded-full bg-violet/70"
+          className="h-full w-[3px] origin-bottom rounded-full bg-violet/70"
           animate={
             reduce || !active
-              ? { height: 4, opacity: 0.25 }
-              : { height: [4, h, 4], opacity: [0.4, 1, 0.4] }
+              ? { scaleY: 0.2, opacity: 0.25 }
+              : { scaleY: [0.2, h / 20, 0.2], opacity: [0.4, 1, 0.4] }
           }
           transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: i * 0.09 }}
         />

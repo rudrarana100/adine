@@ -248,16 +248,6 @@
   background-clip: text;
 }
 
-/*
- * Skip rendering/painting of below-fold sections until they're near the
- * viewport. Fast initial paint; the intrinsic size keeps the scrollbar from
- * jumping while the browser estimates section height.
- */
-@utility section-cv {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 760px;
-}
-
 /* Keyboard shortcut key chip */
 @utility key-chip {
   display: inline-flex;

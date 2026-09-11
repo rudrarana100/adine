@@ -85,7 +85,7 @@ export default function FeatureShowcaseAdine() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <section id="features" className="section-cv relative bg-card py-[96px]">
+    <section id="features" className="relative bg-card py-[96px]">
       {/* Soft animated accent background (paused off-screen) */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <DotGrid className="opacity-50" />

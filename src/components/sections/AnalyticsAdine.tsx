@@ -150,7 +150,7 @@ export default function AnalyticsAdine() {
     <section
       id="analytics"
       ref={sectionRef}
-      className="section-cv relative overflow-hidden bg-violet py-[96px] text-white"
+      className="relative overflow-hidden bg-violet py-[96px] text-white"
     >
       {/* Glow aura + animated white glyphs — only mounted near the viewport */}
       <Ambient className="absolute inset-0 overflow-hidden">

@@ -57,7 +57,7 @@ export default function HowItWorksAdine() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <section id="how" className="section-cv relative overflow-hidden bg-canvas py-[96px]">
+    <section id="how" className="relative overflow-hidden bg-canvas py-[96px]">
       {/* Animated backdrop: aurora fields + grid texture (paused off-screen) */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <AuroraField />

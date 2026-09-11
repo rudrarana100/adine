@@ -49,7 +49,7 @@ export default function FinalCTAAdine() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <section className="section-cv bg-canvas py-[96px]">
+    <section className="bg-canvas py-[96px]">
       <div className="shell">
         <motion.div
           variants={v(staggerContainer)}
