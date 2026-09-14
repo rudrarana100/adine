@@ -26,14 +26,7 @@ function buildProps(size: number, props: IconProps) {
   };
 }
 
-function wrap(
-  Icon: ComponentType<{
-    size: number;
-    weight: typeof FEATURE_WEIGHT;
-    className?: string;
-    "aria-hidden"?: boolean;
-  }>,
-) {
+function wrap(Icon: ComponentType<Record<string, unknown>>) {
   return function FeatureIcon({ size = 28, ...props }: IconProps): ReactElement {
     return <Icon {...buildProps(size, props)} />;
   };

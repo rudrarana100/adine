@@ -37,7 +37,7 @@ export function AnimatedFeatureIcon({
       {...(reduce ? {} : { whileHover: anim })}
       transition={{ duration: 0.45, ease: "easeInOut" }}
     >
-      <Icon size={size} className={className} />
+      <Icon size={size} {...(className !== undefined ? { className } : {})} />
     </motion.span>
   );
 }

@@ -65,7 +65,7 @@ export default function ProblemStatementAdine() {
           <motion.ul variants={v(fadeUp)} className="mt-8 flex items-center justify-center gap-8">
             {TOOLS.map(({ Icon, label }) => (
               <li key={label} className="flex flex-col items-center gap-2 text-iron/45">
-                <Icon size={26} aria-hidden="true" />
+                <Icon size={26} aria-hidden={true} />
                 <span className="text-[12px] font-medium">{label}</span>
               </li>
             ))}
