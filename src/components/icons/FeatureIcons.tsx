@@ -4,71 +4,63 @@ import {
   ChartBar,
   ChatCircleDots,
   CheckCircle,
+  ClipboardText,
   Command,
   Flame,
   Kanban,
   MapPin,
   Phone,
-  TableSimple,
 } from "@phosphor-icons/react";
-import type { SVGProps } from "react";
+import type { ComponentType, ReactElement } from "react";
 
-type IconProps = SVGProps<SVGSVGElement> & { size?: number };
+type IconProps = { size?: number; className?: string; "aria-hidden"?: boolean };
+
+const FEATURE_WEIGHT = "regular" as const;
+
+function buildProps(size: number, props: IconProps) {
+  return {
+    size,
+    weight: FEATURE_WEIGHT,
+    ...(props.className !== undefined ? { className: props.className } : {}),
+    ...(props["aria-hidden"] !== undefined ? { "aria-hidden": props["aria-hidden"] } : {}),
+  };
+}
+
+function wrap(
+  Icon: ComponentType<{
+    size: number;
+    weight: typeof FEATURE_WEIGHT;
+    className?: string;
+    "aria-hidden"?: boolean;
+  }>,
+) {
+  return function FeatureIcon({ size = 28, ...props }: IconProps): ReactElement {
+    return <Icon {...buildProps(size, props)} />;
+  };
+}
 
 /* Map pin — Google Maps lead scraping */
-export function MapPinIcon({ size = 28, ...props }: IconProps) {
-  return <MapPin size={size} weight="regular" {...props} />;
-}
-
+export const MapPinIcon = wrap(MapPin);
 /* Phone — call session dialing */
-export function PhoneIcon({ size = 28, ...props }: IconProps) {
-  return <Phone size={size} weight="regular" {...props} />;
-}
-
+export const PhoneIcon = wrap(Phone);
 /* Calendar + check — Google Meet booking */
-export function CalendarMeetIcon({ size = 28, ...props }: IconProps) {
-  return <CalendarCheck size={size} weight="regular" {...props} />;
-}
-
+export const CalendarMeetIcon = wrap(CalendarCheck);
 /* Chat bubble w/ dots — WhatsApp message */
-export function ChatIcon({ size = 28, ...props }: IconProps) {
-  return <ChatCircleDots size={size} weight="regular" {...props} />;
-}
-
-/* Table — sheet / smart CSV import */
-export function SheetIcon({ size = 28, ...props }: IconProps) {
-  return <TableSimple size={size} weight="regular" {...props} />;
-}
-
+export const ChatIcon = wrap(ChatCircleDots);
+/* Clipboard table — sheet / smart CSV import */
+export const SheetIcon = wrap(ClipboardText);
 /* Bell — follow-up queue */
-export function BellIcon({ size = 28, ...props }: IconProps) {
-  return <BellSimpleRinging size={size} weight="regular" {...props} />;
-}
-
+export const BellIcon = wrap(BellSimpleRinging);
 /* Kanban columns — pipeline */
-export function KanbanIcon({ size = 28, ...props }: IconProps) {
-  return <Kanban size={size} weight="regular" {...props} />;
-}
-
+export const KanbanIcon = wrap(Kanban);
 /* Bar chart — analytics */
-export function ChartIcon({ size = 28, ...props }: IconProps) {
-  return <ChartBar size={size} weight="regular" {...props} />;
-}
-
+export const ChartIcon = wrap(ChartBar);
 /* Command (⌘) — command palette */
-export function CommandIcon({ size = 28, ...props }: IconProps) {
-  return <Command size={size} weight="regular" {...props} />;
-}
-
+export const CommandIcon = wrap(Command);
 /* Flame — streaks / gamification */
-export function FlameIcon({ size = 28, ...props }: IconProps) {
-  return <Flame size={size} weight="regular" {...props} />;
-}
-
+export const FlameIcon = wrap(Flame);
 /* Checkmark */
-export function CheckIcon({ size = 28, ...props }: IconProps) {
-  return <CheckCircle size={size} weight="regular" {...props} />;
-}
+export const CheckIcon = wrap(CheckCircle);
 
 export const FEATURE_ICONS = {
   map: MapPinIcon,
