@@ -20,8 +20,12 @@ import {
 import { AuroraField, GlowOrb, SignalRings } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
-/* Typewriter gradient accent — the cold-calling differentiator */
-const accentWords = ["actually pick up the phone", "close more deals", "never miss a call"];
+/* Typewriter gradient accent — the after-call moment Adine protects */
+const accentWords = [
+  "after-call paperwork disappear.",
+  "follow-up write itself.",
+  "momentum survive the hangup.",
+];
 const getWord = (i: number) => accentWords[i % accentWords.length]!;
 
 function TypewriterAccent({ reduce }: { reduce: boolean }) {
@@ -325,8 +329,11 @@ function WhatsAppBadge({ reduce }: { reduce: boolean }) {
 function FloatingBadges({ reduce }: { reduce: boolean }) {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-      {/* Phone dialer badge — top left */}
-      <motion.div variants={badgePop} className="absolute left-0 top-8 z-20 hidden lg:block">
+      {/* Phone dialer badge — anchored outside the card's top-left edge */}
+      <motion.div
+        variants={badgePop}
+        className="absolute top-10 right-full mr-6 z-20 hidden lg:block"
+      >
         <motion.div
           animate={reduce ? {} : { y: [0, -9, 0] }}
           transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
@@ -349,8 +356,11 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         </motion.div>
       </motion.div>
 
-      {/* WhatsApp badge — top right, with send loop */}
-      <motion.div variants={badgePop} className="absolute right-0 top-4 z-20 hidden lg:block">
+      {/* WhatsApp badge — anchored outside the card's top-right edge, with send loop */}
+      <motion.div
+        variants={badgePop}
+        className="absolute top-4 left-full ml-6 z-20 hidden lg:block"
+      >
         <motion.div
           animate={reduce ? {} : { y: [0, 6, 0] }}
           transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
@@ -360,8 +370,11 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         </motion.div>
       </motion.div>
 
-      {/* Streak badge — bottom left */}
-      <motion.div variants={badgePop} className="absolute left-0 bottom-16 z-20 hidden xl:block">
+      {/* Streak badge — anchored outside the card's bottom-left edge */}
+      <motion.div
+        variants={badgePop}
+        className="absolute bottom-20 right-full mr-6 z-20 hidden xl:block"
+      >
         <motion.div
           animate={reduce ? {} : { y: [0, -8, 0] }}
           transition={{ duration: 7.4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
@@ -377,8 +390,11 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
         </motion.div>
       </motion.div>
 
-      {/* Heatmap swatch badge — bottom right */}
-      <motion.div variants={badgePop} className="absolute right-6 bottom-10 z-20 hidden lg:block">
+      {/* Heatmap swatch badge — anchored outside the card's bottom-right edge */}
+      <motion.div
+        variants={badgePop}
+        className="absolute bottom-12 left-full ml-6 z-20 hidden lg:block"
+      >
         <motion.div
           animate={reduce ? {} : { y: [0, 9, 0] }}
           transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
@@ -424,7 +440,7 @@ export default function HeroAdine() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-[120px] pb-[40px]"
+      className="relative overflow-hidden pt-[120px] pb-24"
       ref={heroRef}
       onMouseMove={handleMouseMove}
     >
@@ -435,7 +451,9 @@ export default function HeroAdine() {
         aria-hidden="true"
       >
         <AuroraField />
-        <InteractiveMesh className="opacity-70" />
+        <div className="absolute inset-x-0 bottom-0 top-[112px]">
+          <InteractiveMesh className="opacity-70" />
+        </div>
       </motion.div>
 
       {/* Glow orbs — fade as you scroll */}
@@ -482,13 +500,13 @@ export default function HeroAdine() {
               {/* Headline: brand + gradient typewriter accent */}
               <motion.h1
                 variants={v(heroWordContainer)}
-                className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em] text-ink"
+                className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em]"
               >
-                {["Adine", "makes", "you"].map((word, i) => (
+                {["Adine", "makes", "the"].map((word, i) => (
                   <motion.span
                     key={i}
                     variants={v(heroWord)}
-                    className="inline-block whitespace-nowrap"
+                    className="inline-block whitespace-nowrap gradient-text"
                   >
                     {word}
                     {i < 2 && <span className="mx-[0.22em]">&nbsp;</span>}
@@ -501,8 +519,8 @@ export default function HeroAdine() {
                 variants={v(fadeUp)}
                 className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate"
               >
-                A call session queue, one-keypress call logging, and automatic WhatsApp follow-ups —
-                built for founders who dial 100+ prospects a week.
+                One keypress after every hang-up logs the call, queues the next lead, and schedules
+                the follow-up — the moment that used to kill your momentum just ends.
               </motion.p>
 
               <motion.div
@@ -515,13 +533,18 @@ export default function HeroAdine() {
                   rel="noopener noreferrer"
                   className="btn-pill"
                 >
-                  Open the app
+                  Start Free
                   <ArrowRight size={16} aria-hidden="true" />
                 </a>
                 <a href="#how" className="btn-ghost-pill">
                   See how it works
                 </a>
               </motion.div>
+
+              {/* Credibility micro-line */}
+              <motion.p variants={v(fadeUp)} className="mt-5 text-[13px] font-medium text-iron">
+                Built by someone who made 150+ cold calls before writing a line of code.
+              </motion.p>
 
               {/* Concrete capability hints (no invented stats) */}
               <motion.div
@@ -557,7 +580,7 @@ export default function HeroAdine() {
           transition={{ delayChildren: 0.55, staggerChildren: 0.09 }}
           {...(reduce ? {} : { style: { y: mockY, scale: mockScale } })}
         >
-          <motion.div variants={v(badgePop)} className="relative mx-auto max-w-[720px]">
+          <motion.div variants={v(badgePop)} className="relative mx-auto max-w-[640px]">
             <CallSessionMock reduce={reduce} />
             <FloatingBadges reduce={reduce} />
           </motion.div>

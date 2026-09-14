@@ -140,6 +140,73 @@ function HeatmapMock({ reduce, active }: { reduce: boolean; active: boolean }) {
   );
 }
 
+/* Weekly conversion trend mock — two stroked series drawn in on view */
+const WEEK_BOOKED = [40, 48, 45, 62, 70, 78, 86];
+const WEEK_WARM = [22, 30, 34, 40, 48, 56, 64];
+
+function toPath(values: number[]) {
+  return values
+    .map((val, i) => {
+      const x = 18 + i * 44;
+      const y = 84 - val;
+      return `${i === 0 ? "M" : "L"}${x} ${y}`;
+    })
+    .join(" ");
+}
+
+function ConversionTrend({ reduce }: { reduce: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 300 96"
+      fill="none"
+      className="w-full"
+      role="img"
+      aria-label="Weekly conversion trend — meetings booked and warm prospects rising week over week"
+    >
+      {[32, 54, 76].map((y) => (
+        <line
+          key={y}
+          x1="12"
+          x2="288"
+          y1={y}
+          y2={y}
+          stroke="var(--color-mist)"
+          strokeWidth="1"
+          strokeDasharray="3 5"
+        />
+      ))}
+      <motion.path
+        d={toPath(WEEK_WARM)}
+        stroke="var(--color-electric-cyan)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={reduce ? { pathLength: 1 } : { pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1.4, ease: "easeOut" }}
+      />
+      <motion.path
+        d={toPath(WEEK_BOOKED)}
+        stroke="var(--color-violet)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={reduce ? { pathLength: 1 } : { pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1.4, delay: 0.3, ease: "easeOut" }}
+      />
+      {WEEK_WARM.map((val, i) => (
+        <circle key={i} cx={18 + i * 44} cy={84 - val} r="2.5" fill="var(--color-electric-cyan)" />
+      ))}
+      {WEEK_BOOKED.map((val, i) => (
+        <circle key={i} cx={18 + i * 44} cy={84 - val} r="2.5" fill="var(--color-violet)" />
+      ))}
+    </svg>
+  );
+}
+
 export default function AnalyticsAdine() {
   const v = useVariants();
   const reduce = useReducedMotion() ?? false;
@@ -195,16 +262,17 @@ export default function AnalyticsAdine() {
               variants={v(fadeUp)}
               className="mt-5 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em]"
             >
-              Makes cold calling feel like a game, not a chore
+              You can&apos;t quit a grind you can see
             </motion.h2>
 
             <motion.p
               variants={v(fadeUp)}
               className="mt-5 max-w-[460px] text-[17px] font-light leading-[1.6] text-white/75"
             >
-              Track your daily goal, keep a streak alive, and watch your 90-day call heatmap fill
-              in. Hit your daily target and a celebration modal fires — momentum you can actually
-              feel.
+              Solo dialing is a black box — 50 calls in, you can&apos;t tell whether you&apos;re
+              improving or just tired. Adine makes the grind visible: a daily goal, a streak to
+              protect, and a 90-day heatmap that proves the work is compounding. Hit your target and
+              a celebration fires — the days stop blurring into one.
             </motion.p>
 
             <motion.ul variants={v(fadeUp)} className="mt-6 space-y-3">
@@ -233,29 +301,22 @@ export default function AnalyticsAdine() {
             viewport={{ once: true, amount: 0.2 }}
             className="rounded-[28px] bg-white/10 p-6 backdrop-blur-sm"
           >
-            {/* streak / stat row */}
-            <motion.div variants={v(fadeUp)} className="mb-5 grid grid-cols-3 gap-3">
+            {/* stat / streak row */}
+            <motion.div variants={v(fadeUp)} className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {(
                 [
-                  { label: "Day streak", value: 14, icon: FlameIcon },
-                  { label: "Calls today", value: 58 },
-                  { label: "Meeting booked", value: 4 },
-                ] as {
-                  label: string;
-                  value: number;
-                  icon?: (props: { size?: number; className?: string }) => React.ReactNode;
-                }[]
-              ).map(({ label, value, icon }) => (
+                  { label: "Total leads", value: 486 },
+                  { label: "Calls remaining", value: 328 },
+                  { label: "Meetings booked", value: 4 },
+                  { label: "Conversion rate", value: 6, suffix: "%" },
+                ] as { label: string; value: number; suffix?: string }[]
+              ).map(({ label, value, suffix }) => (
                 <div key={label} className="rounded-[18px] bg-white p-4 text-center">
-                  {icon &&
-                    (() => {
-                      const Icon = icon;
-                      return <Icon size={20} className="mx-auto mb-1 text-apricot" />;
-                    })()}
                   <p className="text-[22px] font-semibold tabular-nums text-ink">
                     <Counter value={value} reduce={reduce} />
+                    {suffix ?? ""}
                   </p>
-                  <p className="text-[11px] text-slate">{label}</p>
+                  <p className="mt-1 text-[11px] text-slate">{label}</p>
                 </div>
               ))}
             </motion.div>
@@ -281,6 +342,27 @@ export default function AnalyticsAdine() {
                 ))}
                 More
               </div>
+            </motion.div>
+
+            {/* weekly conversion trend */}
+            <motion.div variants={v(fadeUp)} className="rounded-[18px] bg-white p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-[13px] font-medium text-ink">Weekly conversion trend</p>
+                <span className="rounded-full bg-violet/10 px-2.5 py-0.5 text-[11px] font-medium text-violet">
+                  7-day view
+                </span>
+              </div>
+              <div className="mb-3 flex items-center gap-4 text-[11px] text-slate">
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-violet" />
+                  Meetings booked
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-electric-cyan" />
+                  Warm prospects
+                </span>
+              </div>
+              <ConversionTrend reduce={reduce} />
             </motion.div>
           </motion.div>
         </div>

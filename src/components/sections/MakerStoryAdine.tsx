@@ -18,9 +18,9 @@ export default function MakerStoryAdine() {
           <div className="card-surface px-8 py-10 md:px-12">
             <div className="space-y-5">
               <p className="text-[17px] font-light leading-[1.7] text-slate">
-                After making 150+ cold calls myself, the problem wasn't the dialing — it was
-                everything around it. Picking up the phone is the easy part. Logging the call,
-                updating the CRM, and remembering who to call back is what drains you.
+                After 150+ cold calls myself, the problem was never the dialing — it was everything
+                around it. Picking up the phone is the easy part. Logging the call, updating the
+                CRM, and remembering who to call back is what drains you.
               </p>
               <p className="text-[17px] font-light leading-[1.7] text-slate">
                 That's why outcome logging lives on the number keys. When you're ten calls deep,
@@ -29,12 +29,11 @@ export default function MakerStoryAdine() {
                 calls.
               </p>
               <p className="text-[17px] font-light leading-[1.7] text-slate">
-                Everything else — the single-lead queue, auto next-day retries, and one-tap WhatsApp
-                follow-ups — exists for the same reason: to keep your hands close to the phone where
-                they belong.
+                The single-lead queue, auto next-day retries, and one-tap WhatsApp follow-ups exist
+                for one reason: to keep your hands close to the phone where they belong.
               </p>
               <p className="text-[17px] font-light italic leading-[1.7] text-violet">
-                Actually picking up the phone.
+                One keypress. That's the whole point.
               </p>
             </div>
           </div>

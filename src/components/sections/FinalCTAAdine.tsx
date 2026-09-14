@@ -84,6 +84,14 @@ export default function FinalCTAAdine() {
             not setup spreadsheets.
           </motion.p>
 
+          <motion.p
+            variants={v(fadeUp)}
+            className="relative z-10 mx-auto mt-4 max-w-[480px] text-[14px] font-light leading-[1.6] text-white/60"
+          >
+            Slow follow-up is the most expensive thing you have — every day a warm lead goes cold is
+            a deal you'll never get back.
+          </motion.p>
+
           <motion.div
             variants={v(fadeUp)}
             className="relative z-10 mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
@@ -122,7 +130,7 @@ export default function FinalCTAAdine() {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 {...(reduce ? {} : { whileHover: { scale: 1.05 }, whileTap: { scale: 0.97 } })}
               >
-                Open the app
+                Start Free
                 <motion.span
                   animate={reduce ? {} : { x: [0, 5, 0] }}
                   transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}

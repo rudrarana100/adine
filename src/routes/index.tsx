@@ -2,12 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import NavBar from "@/components/layout/NavBarAdine";
 import FooterAdine from "@/components/layout/FooterAdine";
 import HeroAdine from "@/components/sections/HeroAdine";
+import ProblemStatementAdine from "@/components/sections/ProblemStatementAdine";
 import HowItWorksAdine from "@/components/sections/HowItWorksAdine";
+import ContrastAdine from "@/components/sections/ContrastAdine";
+import StartFreeCta from "@/components/sections/StartFreeCta";
 import CallSessionDeepDiveAdine from "@/components/sections/CallSessionDeepDiveAdine";
 import FeatureShowcaseAdine from "@/components/sections/FeatureShowcaseAdine";
 import AnalyticsAdine from "@/components/sections/AnalyticsAdine";
 import ReengagementAdine from "@/components/sections/ReengagementAdine";
 import MakerStoryAdine from "@/components/sections/MakerStoryAdine";
+import PricingAdine from "@/components/sections/PricingAdine";
+import FAQAdine from "@/components/sections/FAQAdine";
 import FinalCTAAdine from "@/components/sections/FinalCTAAdine";
 import { howToSchema, orgSchema, softwareSchema } from "@/lib/schema";
 
@@ -57,12 +62,19 @@ function Index() {
       <NavBar />
       <main id="main">
         <HeroAdine />
+        <ProblemStatementAdine />
         <HowItWorksAdine />
+        <StartFreeCta />
+        <ContrastAdine />
+        <StartFreeCta />
         <CallSessionDeepDiveAdine />
         <FeatureShowcaseAdine />
+        <StartFreeCta />
         <AnalyticsAdine />
         <ReengagementAdine />
         <MakerStoryAdine />
+        <PricingAdine />
+        <FAQAdine />
         <FinalCTAAdine />
       </main>
       <FooterAdine />

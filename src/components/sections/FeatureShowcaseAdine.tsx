@@ -16,7 +16,7 @@ const FEATURES: {
 }[] = [
   {
     title: "Google Maps Lead Scraping",
-    text: "Scrape verified business leads by category and city with a live progress bar, then import straight into a collection.",
+    text: "Skip the data-entry — pull verified businesses by category and city with a live progress bar, and they land in your queue ready to dial.",
     icon: "map",
     wash: "bg-mint/20",
     iconBg: "bg-mint/40",
@@ -24,7 +24,7 @@ const FEATURES: {
   },
   {
     title: "Call Session Queue",
-    text: "A single-lead-at-a-time dialing flow built for volume, with quick actions and keyboard-driven outcomes.",
+    text: "One lead per screen keeps your head in the call — quick actions and keyboard outcomes mean you never stop to type.",
     icon: "phone",
     wash: "bg-sky/20",
     iconBg: "bg-sky/30",
@@ -32,7 +32,7 @@ const FEATURES: {
   },
   {
     title: "One-Click Google Meet",
-    text: "Book a real Google Calendar meeting and auto-send the confirmation over WhatsApp — no copy-pasting.",
+    text: "Turn an Interested into a booked meeting on the spot — the Meet invite lands in their calendar and the WhatsApp confirmation sends itself.",
     icon: "meet",
     wash: "bg-lavender/30",
     iconBg: "bg-lavender/50",
@@ -40,7 +40,7 @@ const FEATURES: {
   },
   {
     title: "Smart CSV Import",
-    text: "Column auto-mapping, phone de-duplication, and chunked import so messy spreadsheets become clean lead lists.",
+    text: "Drop in the spreadsheet you've been avoiding — columns map themselves and duplicates disappear, so it's callable tonight.",
     icon: "sheet",
     wash: "bg-periwinkle/50",
     iconBg: "bg-violet/10",
@@ -48,7 +48,7 @@ const FEATURES: {
   },
   {
     title: "Follow-up Queue",
-    text: "Overdue, today, tomorrow, upcoming — sorted automatically with one-click complete, reschedule, or skip.",
+    text: "Nothing slips anymore — the queue surfaces exactly who to call today, and no-answers already have a retry waiting.",
     icon: "bell",
     wash: "bg-aqua/30",
     iconBg: "bg-aqua/40",
@@ -56,7 +56,7 @@ const FEATURES: {
   },
   {
     title: "Pipeline Kanban",
-    text: "Six drag-and-drop stages from Contacted to Won, with optimistic updates so the board never feels laggy.",
+    text: "See every conversation in one board — drag a lead from Interested to Booked and the whole pipeline updates instantly.",
     icon: "kanban",
     wash: "bg-cornflower/20",
     iconBg: "bg-cornflower/30",
@@ -64,7 +64,7 @@ const FEATURES: {
   },
   {
     title: "Call Analytics",
-    text: "Daily goal tracking, a 90-day call heatmap, peak-hour analysis, and a live conversion funnel.",
+    text: "Know exactly what your calls produce — daily goals, a streak heatmap, peak-hour patterns, and how many dials turn into Won.",
     icon: "chart",
     wash: "bg-peony/30",
     iconBg: "bg-peony/40",
@@ -72,7 +72,7 @@ const FEATURES: {
   },
   {
     title: "Command Palette (⌘K)",
-    text: "Jump to any lead or page without touching the mouse — open a lead, start a session, or search in a keystroke.",
+    text: "Never lift your hands off the keyboard — open any lead, start a session, or search mid-call in one keystroke.",
     icon: "command",
     wash: "bg-periwinkle/40",
     iconBg: "bg-violet/10",
@@ -95,7 +95,7 @@ export default function FeatureShowcaseAdine() {
         <SectionHeading
           eyebrow="Features"
           title="Everything the phone workday needs"
-          subtitle="Scrape, dial, log, book, and follow up — each step backed by a dedicated, fast-click feature."
+          subtitle="Every step of the phone workday — designed so each click moves a lead toward yes."
         />
 
         <motion.div

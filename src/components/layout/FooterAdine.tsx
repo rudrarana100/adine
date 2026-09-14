@@ -13,7 +13,7 @@ const COLUMNS = [
     links: [
       { label: "Our Story", href: "#story" },
       { label: "Contact", href: "mailto:support@adine-crm.vercel.app" },
-      { label: "Open the App", href: "https://adine-crm.vercel.app/", external: true },
+      { label: "Start Free", href: "https://adine-crm.vercel.app/", external: true },
     ],
   },
   {

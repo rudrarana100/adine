@@ -54,7 +54,7 @@ export default function NavBarAdine() {
             rel="noopener noreferrer"
             className="btn-pill !min-h-0 !px-6 !py-2.5 !text-[14px] hidden md:inline-flex"
           >
-            Open the app
+            Start Free
           </a>
           <a
             href="https://adine-crm.vercel.app/"
@@ -62,7 +62,7 @@ export default function NavBarAdine() {
             rel="noopener noreferrer"
             className="btn-pill !min-h-0 !px-5 !py-2.5 !text-[14px] md:hidden"
           >
-            Get started
+            Start Free
           </a>
         </div>
       </nav>

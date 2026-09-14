@@ -18,7 +18,7 @@ const STEPS: {
     number: "01",
     title: "Build your list",
     description:
-      "Scrape verified business leads from Google Maps by category, city, and target count — or import a CSV with automatic column-mapping and phone de-duplication.",
+      "Pull only businesses that actually pick up the phone — verified Google Maps leads by category and city, or a CSV import that maps columns and de-duplicates numbers for you.",
     icon: "map",
     accent: "bg-mint/30 text-green-700",
     iconColor: "text-green-600",
@@ -27,7 +27,7 @@ const STEPS: {
     number: "02",
     title: "Run a call session",
     description:
-      "Work through a single-lead-at-a-time dialing queue, filterable by collection, with one-tap call, website, Maps, email, and WhatsApp actions.",
+      "One lead on screen, one tap to dial — with website, Maps, email, and WhatsApp one click away. No tab-hopping while a prospect waits.",
     icon: "phone",
     accent: "bg-sky/30 text-sky-700",
     iconColor: "text-sky-600",
@@ -36,7 +36,7 @@ const STEPS: {
     number: "03",
     title: "Log with one keypress",
     description:
-      "Six outcome types triggered by number keys 1–6 — No Answer, Invalid, Gatekeeper, Not Interested, Interested, Schedule. No manual data entry.",
+      "Press 1–6 and the call is logged forever — No Answer, Invalid, Gatekeeper, Not Interested, Interested, or Schedule. No form, no typing, no lost detail.",
     icon: "check",
     accent: "bg-violet/10 text-violet",
     iconColor: "text-violet",
@@ -45,7 +45,7 @@ const STEPS: {
     number: "04",
     title: "Follow up automatically",
     description:
-      "Interested leads branch into a Google Meet booking or a scheduled follow-up. No-answers auto-schedule a next-day retry for you.",
+      "Interested leads offer a Meet booking on the spot; no-answers get a next-day retry scheduled without lifting a finger. The follow-up that used to slip just happens.",
     icon: "meet",
     accent: "bg-lavender/50 text-ultraviolet",
     iconColor: "text-ultraviolet",
@@ -68,7 +68,7 @@ export default function HowItWorksAdine() {
         <SectionHeading
           eyebrow="How It Works"
           title="From a raw list to a booked meeting"
-          subtitle="Four steps that map to how you actually sell on the phone — import, dial, log, and follow up."
+          subtitle="The exact arc of a sales call — import, dial, log, follow up — with nothing left to remember."
         />
 
         <motion.div
