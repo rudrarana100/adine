@@ -11,7 +11,6 @@ const COLUMNS = [
   {
     title: "Company",
     links: [
-      { label: "Our Story", href: "#story" },
       { label: "Contact", href: "mailto:support@adine-crm.vercel.app" },
       { label: "Start Free", href: "https://adine-crm.vercel.app/", external: true },
     ],
@@ -21,7 +20,6 @@ const COLUMNS = [
     links: [
       { label: "Documentation", href: "https://adine-crm.vercel.app/", external: true },
       { label: "Help Center", href: "mailto:support@adine-crm.vercel.app" },
-      { label: "Follow-up Re-Engagement", href: "#reengage" },
     ],
   },
 ];
@@ -54,7 +52,7 @@ export default function FooterAdine() {
               Adine<span className="text-violet">.</span>
             </a>
             <p className="mt-3 max-w-[260px] text-[14px] font-light leading-[1.6] text-white/50">
-              The outbound CRM for high-volume cold calling in India — scrape, dial, log, and follow
+              The outbound CRM for high-volume cold calling — scrape, dial, log, and follow
               up in one place.
             </p>
           </div>

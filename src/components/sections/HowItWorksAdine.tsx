@@ -36,7 +36,7 @@ const STEPS: {
     number: "03",
     title: "Log with one keypress",
     description:
-      "Press 1–6 and the call is logged forever — No Answer, Invalid, Gatekeeper, Not Interested, Interested, or Schedule. No form, no typing, no lost detail.",
+      "Every outcome lives on the number keys — no form to tab through, no detail lost, hands never leave the keyboard.",
     icon: "check",
     accent: "bg-violet/10 text-violet",
     iconColor: "text-violet",

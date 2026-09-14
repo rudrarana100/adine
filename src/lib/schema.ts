@@ -37,12 +37,6 @@ export const softwareSchema = {
     "@type": "Offer",
     description: "Outbound CRM for agency founders and solo salespeople.",
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "2347",
-    bestRating: "5",
-  },
   featureList: [
     "Cold Call Sessions",
     "Auto Status Logging",

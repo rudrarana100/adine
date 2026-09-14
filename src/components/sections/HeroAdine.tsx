@@ -493,7 +493,7 @@ export default function HeroAdine() {
             <motion.div variants={v(staggerContainer)}>
               <motion.div variants={v(heroWordContainer)}>
                 <motion.span variants={v(heroWord)} className="inline-block">
-                  <span className="section-eyebrow block">Cold-calling CRM for India</span>
+                  <span className="section-eyebrow block">Built for outbound, not busywork</span>
                 </motion.span>
               </motion.div>
 
@@ -543,7 +543,7 @@ export default function HeroAdine() {
 
               {/* Credibility micro-line */}
               <motion.p variants={v(fadeUp)} className="mt-5 text-[13px] font-medium text-iron">
-                Built by someone who made 150+ cold calls before writing a line of code.
+                Built by someone who made 1000+ cold calls before writing a line of code.
               </motion.p>
 
               {/* Concrete capability hints (no invented stats) */}

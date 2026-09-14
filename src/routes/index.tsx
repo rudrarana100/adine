@@ -6,19 +6,16 @@ import ProblemStatementAdine from "@/components/sections/ProblemStatementAdine";
 import HowItWorksAdine from "@/components/sections/HowItWorksAdine";
 import ContrastAdine from "@/components/sections/ContrastAdine";
 import StartFreeCta from "@/components/sections/StartFreeCta";
-import CallSessionDeepDiveAdine from "@/components/sections/CallSessionDeepDiveAdine";
 import FeatureShowcaseAdine from "@/components/sections/FeatureShowcaseAdine";
 import AnalyticsAdine from "@/components/sections/AnalyticsAdine";
-import ReengagementAdine from "@/components/sections/ReengagementAdine";
-import MakerStoryAdine from "@/components/sections/MakerStoryAdine";
 import PricingAdine from "@/components/sections/PricingAdine";
 import FAQAdine from "@/components/sections/FAQAdine";
 import FinalCTAAdine from "@/components/sections/FinalCTAAdine";
 import { howToSchema, orgSchema, softwareSchema } from "@/lib/schema";
 
-const TITLE = "Adine — Outbound CRM for high-volume cold calling in India";
+const TITLE = "Adine — Outbound CRM for high-volume cold calling";
 const DESCRIPTION =
-  "Adine is an outbound CRM for high-volume cold calling in India. Google Maps lead scraping, sequential call sessions, one-keypress outcome logging, and automatic WhatsApp and Google Meet follow-ups.";
+  "Adine is an outbound CRM for high-volume cold calling. Google Maps lead scraping, sequential call sessions, one-keypress outcome logging, and automatic WhatsApp and Google Meet follow-ups.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,7 +25,7 @@ export const Route = createFileRoute("/")({
       {
         name: "keywords",
         content:
-          "outbound CRM India, cold calling software, Google Maps lead scraper, power dialer, WhatsApp follow-ups, Google Meet booking, sales CRM for founders",
+          "outbound CRM, cold calling software, Google Maps lead scraper, power dialer, WhatsApp follow-ups, Google Meet booking, sales CRM for founders",
       },
       { property: "og:title", content: "Adine — Outbound CRM for high-volume cold calling" },
       {
@@ -67,12 +64,9 @@ function Index() {
         <StartFreeCta />
         <ContrastAdine />
         <StartFreeCta />
-        <CallSessionDeepDiveAdine />
         <FeatureShowcaseAdine />
         <StartFreeCta />
         <AnalyticsAdine />
-        <ReengagementAdine />
-        <MakerStoryAdine />
         <PricingAdine />
         <FAQAdine />
         <FinalCTAAdine />
