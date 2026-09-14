@@ -8,7 +8,7 @@ const APP_URL = "https://salestrackercrm.vercel.app/";
 
 const FREE_FEATURES = [
   "Full feature access — every tool unlocked",
-  "Google Maps lead scraping",
+  "CSV lead import",
   "Sequential call sessions with one-keypress logging",
   "WhatsApp + Google Meet automation",
   "Complete pipeline, tasks, and analytics",

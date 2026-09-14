@@ -33,18 +33,18 @@ const CALL_OUTCOMES = [
 
 /* ── Mini visuals (one per pillar) ───────────────────────────── */
 
-function ScraperVisual() {
+function ImportVisual() {
   return (
     <div aria-hidden="true">
       <div className="flex items-center justify-between text-[11px] text-slate">
-        <span>Scraping — search query · target count</span>
+        <span>Uploading leads.csv — mapping columns</span>
         <span className="font-semibold text-violet">72%</span>
       </div>
       <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-pebble/50">
         <div className="h-full w-[72%] rounded-full" style={{ background: GROUND_IMG }} />
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
-        {["Business name", "Phone", "Email", "Website", "Category", "Map link"].map((f) => (
+        {["Name", "Phone", "Company", "Email", "City", "Skip row"].map((f) => (
           <span
             key={f}
             className="rounded-full border border-pebble bg-white px-2.5 py-1 text-[11px] font-medium text-slate"
@@ -66,7 +66,7 @@ function CallSessionVisual() {
           <p className="text-[11px] font-light text-slate">Dentist · +91 98…</p>
         </div>
         <span className="rounded-full bg-violet/10 px-2.5 py-1 text-[11px] font-semibold text-violet">
-          Hot
+          Warm
         </span>
       </div>
       <div className="flex flex-wrap gap-1.5">
@@ -78,6 +78,9 @@ function CallSessionVisual() {
             {o}
           </span>
         ))}
+        <span className="rounded-full border border-pebble bg-white px-2.5 py-1 text-[11px] font-medium text-slate">
+          <span className="font-semibold text-green-700">✔</span> Book Meet
+        </span>
       </div>
     </div>
   );
@@ -148,9 +151,9 @@ function KanbanVisual() {
   return (
     <div aria-hidden="true" className="grid grid-cols-3 gap-2">
       {[
-        { label: "Cold", active: false },
+        { label: "Contacted", active: false },
         { label: "Warm", active: true },
-        { label: "Booked", active: false },
+        { label: "Meeting Booked", active: false },
       ].map((c) => (
         <div key={c.label} className="rounded-[14px] border border-pebble bg-canvas p-2.5">
           <p className="text-center text-[10px] font-semibold uppercase tracking-wider text-iron">
@@ -190,7 +193,7 @@ function MeetVisual() {
         ))}
       </div>
       <div className="flex items-center justify-between rounded-[10px] bg-mint px-3 py-2 text-[11px] font-medium text-green-800">
-        Meet link created
+        Meeting Booked
         <CheckIcon size={14} />
       </div>
     </div>
@@ -202,7 +205,7 @@ function WhatsAppVisual() {
     <div aria-hidden="true" className="flex justify-start rounded-[14px] bg-sky/20 p-3.5">
       <div className="max-w-[85%] rounded-2xl rounded-tl-sm border border-pebble bg-white p-3">
         <p className="text-[12px] leading-snug text-ink">
-          Hi Rohit! Great talking today — here&apos;s where we can catch up:
+          Hi Rohit — booking confirmed for tomorrow 11:30 AM 👋
         </p>
         <p className="mt-1 truncate text-[11px] font-semibold text-violet">
           meet.google.com/abc-defg-hij
@@ -277,17 +280,17 @@ const CARD_BASE = "group relative overflow-hidden rounded-[24px] shadow-card";
 
 const PILLARS: Pillar[] = [
   {
-    title: "Lead Scraper Engine",
-    text: "Find leads without opening ten browser tabs — pull real businesses from Google Maps by area, category, and target count. Name, contact person, phone, email, website, and map link, with duplicates skipped automatically, while a live progress bar fills in the background.",
-    icon: "map",
+    title: "CSV Lead Import",
+    text: "Your list, in the CRM in a minute. Upload a CSV with automatic column mapping and a validation preview, so bad rows never slip through. Duplicates are skipped and every phone is formatted for dialing before you ever open the queue.",
+    icon: "sheet",
     iconBg: "bg-mint/50",
     iconColor: "text-green-700",
     card: `${CARD_BASE} border border-pebble bg-mint/25`,
-    Visual: ScraperVisual,
+    Visual: ImportVisual,
   },
   {
     title: "Sequential Call Session",
-    text: "One lead. One decision. Then the next. A distraction-free queue shows only the lead in front of you, the context beside it, and one-click outcomes. Keys 1–6 log No Answer, Invalid, Gatekeeper, Not Interested, Interested, or Schedule — every call books a meeting, queues a callback, or moves on. Nothing sits in limbo.",
+    text: "One lead. One decision. Then the next. A distraction-free queue shows only the lead in front of you, the context beside it, and one-click outcomes. Keys 1–5 log No Answer, Callback, Gatekeeper, Not Interested, or Interested — Interested books a meeting with a WhatsApp confirmation instantly, every no-answer queues a callback, and nothing sits in limbo.",
     icon: "phone",
     iconBg: "bg-violet/10",
     iconColor: "text-violet",
@@ -298,7 +301,7 @@ const PILLARS: Pillar[] = [
   {
     title: "Lead Directory & 360° Inspector",
     text: "Every prospect, fully visible. Table or card views with instant full-text search, CSV bulk import with column mapping and a validation preview, and a complete notes timeline and activity log for every lead.",
-    icon: "sheet",
+    icon: "command",
     iconBg: "bg-sky/40",
     iconColor: "text-sky-700",
     card: `${CARD_BASE} border border-pebble bg-sky/30`,
@@ -306,7 +309,7 @@ const PILLARS: Pillar[] = [
   },
   {
     title: "Follow-Up Hub",
-    text: "Nothing falls through. Overdue, Today, and Upcoming tabs with a step-by-step execution queue, so follow-ups get worked without leaving the screen. Reschedule, escalate, or run the branch that matches how the meeting went — Closed, Ghosted, Follow-up, or Rescheduled.",
+    text: "Nothing falls through. Overdue, Today, and Upcoming tabs with a step-by-step execution queue, so follow-ups get worked without leaving the screen. Every call outcome sets its own next step — No Answer books a callback, Interested books the meeting — and each one fires over WhatsApp automatically.",
     icon: "bell",
     iconBg: "bg-lavender",
     iconColor: "text-ultraviolet",
@@ -314,8 +317,8 @@ const PILLARS: Pillar[] = [
     Visual: FollowUpVisual,
   },
   {
-    title: "Visual Pipeline (Kanban)",
-    text: "Watch the deal move. Drag-and-drop across Cold Lead, Warm Prospect, Meeting Booked, Closed Won, and Closed Lost — with live deal counts and total value per stage, so you always know which deals are actually moving.",
+    title: "Pipeline (Kanban)",
+    text: "Watch the deal move. Drag-and-drop across Contacted, Warm, Meeting Booked, Proposal Sent, Won, and Lost — with live deal counts and total value per stage, so you always know which deals are actually moving.",
     icon: "kanban",
     iconBg: "bg-aqua/50",
     iconColor: "text-cyan-700",
@@ -324,7 +327,7 @@ const PILLARS: Pillar[] = [
   },
   {
     title: "Calendar & Google Meet",
-    text: "The meeting books itself. One click creates a real Google Meet link through your calendar, and a full monthly view keeps every callback, meeting, and follow-up in one place.",
+    text: "The meeting books itself. One click flags the lead as Meeting Booked and opens a real Google Meet slot through your calendar — and a full monthly view keeps every callback, meeting, and follow-up in one place.",
     icon: "meet",
     iconBg: "bg-cornflower/30",
     iconColor: "text-blue-700",
@@ -365,7 +368,7 @@ export default function FeatureShowcaseAdine() {
       <div className="shell relative z-10">
         <SectionHeading
           eyebrow="The Workflow"
-          title="From first scrape to booked meeting — one continuous line."
+          title="From first lead to booked meeting — one continuous line."
           subtitle="Eight pillars that cover the whole outbound arc — and the workday that keeps it moving."
         />
 

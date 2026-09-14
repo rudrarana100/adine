@@ -19,8 +19,8 @@ const STEPS: {
     number: "01",
     title: "Build your list",
     description:
-      "Pull only businesses that actually pick up the phone — verified Google Maps leads by category and city, or a CSV import that maps columns and de-duplicates numbers for you.",
-    icon: "map",
+      "Upload a CSV and watch the columns map themselves — name, phone, company, city, de-duplicated and ready to dial. No staging, no tab-hopping.",
+    icon: "sheet",
     accent: "bg-mint/30 text-green-700",
     iconColor: "text-green-600",
   },

@@ -6,7 +6,7 @@ export const SITE_URL = "https://adine-crm.vercel.app";
 export const FAQ_ITEMS = [
   {
     q: "What is Adine?",
-    a: "Adine is an outbound CRM for high-volume cold calling. Scrape a target list from Google Maps, dial it in distraction-free call sessions, log every outcome with one keypress, and let follow-ups, meetings, and WhatsApp messages fire automatically. Everything is free during early access.",
+    a: "Adine is an outbound CRM for high-volume cold calling. Import a lead list, dial it in distraction-free call sessions, log every outcome with one keypress, and let follow-ups, meetings, and WhatsApp messages fire automatically. Everything is free during early access.",
   },
   {
     q: "How do cold call sessions work?",
@@ -14,7 +14,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "How does outcome logging work?",
-    a: "Keys 1–6 log No Answer, Invalid, Gatekeeper, Not Interested, Interested, or Schedule. Each call is stamped with the outcome and timestamp automatically, so your CRM stays current without manual data entry.",
+    a: "Keys 1–5 log No Answer, Callback, Gatekeeper, Not Interested, or Interested. Each call is stamped with the outcome and timestamp automatically, and interested leads book a meeting with a WhatsApp confirmation — so your CRM stays current without manual data entry.",
   },
   {
     q: "How does the WhatsApp follow-up work?",
@@ -22,7 +22,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "Can I import leads I already have?",
-    a: "Yes. Upload a CSV with column mapping and automatic de-duplication, or scrape fresh, verified businesses from Google Maps by area and category — name, contact person, phone, email, website, and map link.",
+    a: "Yes. Upload a CSV with automatic column mapping and de-duplication — name, phone, company, email, and city map in seconds, and every phone is formatted for dialing before it reaches the queue.",
   },
   {
     q: "Is Adine really free?",
@@ -42,13 +42,13 @@ export const softwareSchema = {
   name: "Adine",
   alternateName: "Adine CRM",
   description:
-    "Adine is an outbound CRM for high-volume cold calling. Google Maps lead scraping, sequential call sessions with one-keypress outcome logging, a follow-up hub, kanban pipeline, task management, and automatic WhatsApp and Google Meet follow-ups.",
+    "Adine is an outbound CRM for high-volume cold calling. Lead import and search, sequential call sessions with one-keypress outcome logging, a follow-up hub, kanban pipeline, task management, and automatic WhatsApp and Google Meet follow-ups.",
   applicationCategory: "BusinessApplication",
   applicationSubCategory: "SalesManagementApplication",
   operatingSystem: "Web",
   url: SITE_URL,
   keywords:
-    "outbound CRM, cold calling software, Google Maps lead scraper, call tracking, WhatsApp follow-ups, Google Meet booking, sales pipeline for founders",
+    "outbound CRM, cold calling software, lead management, call tracking, WhatsApp follow-ups, Google Meet booking, sales pipeline for founders",
   offers: {
     "@type": "Offer",
     price: "0",
@@ -57,7 +57,7 @@ export const softwareSchema = {
     availability: "https://schema.org/InStock",
   },
   featureList: [
-    "Google Maps lead scraper",
+    "CSV lead import",
     "Sequential call sessions",
     "One-keypress outcome logging",
     "Follow-up hub",
@@ -81,7 +81,7 @@ export const orgSchema = {
   logo: `${SITE_URL}/og.png`,
   image: `${SITE_URL}/og.png`,
   description:
-    "Adine is an outbound CRM for high-volume cold calling — lead scraping, call sessions, and automated follow-ups in one interface.",
+    "Adine is an outbound CRM for high-volume cold calling — lead import, call sessions, and automated follow-ups in one interface.",
   sameAs: [],
   contactPoint: {
     "@type": "ContactPoint",
@@ -113,7 +113,7 @@ export const webSiteSchema = {
   name: "Adine",
   url: SITE_URL,
   description:
-    "Adine is an outbound CRM for high-volume cold calling. Scrape leads, run call sessions, log outcomes with one keypress, and automate follow-ups.",
+    "Adine is an outbound CRM for high-volume cold calling. Import leads, run call sessions, log outcomes with one keypress, and automate follow-ups.",
   inLanguage: "en",
   publisher: { "@id": `${SITE_URL}/#organization` },
 };
@@ -125,14 +125,14 @@ export const howToSchema = {
   "@type": "HowTo",
   name: "How to run a cold call session with Adine",
   description:
-    "From a raw list to a booked meeting: scrape leads, dial them in a call session, log outcomes with one keypress, and let follow-ups happen automatically.",
+    "From a raw list to a booked meeting: import leads, dial them in a call session, log outcomes with one keypress, and let follow-ups happen automatically.",
   totalTime: "PT1H",
   supply: ["Google account for calendar access", "A list of leads or a target area"],
   step: [
     {
       "@type": "HowToStep",
       name: "Build your list",
-      text: "Scrape verified leads from Google Maps by area and category, or import a CSV with automatic column mapping and de-duplication.",
+      text: "Imports lead lists with automatic column mapping and de-duplication, or search directly inside the lead directory.",
     },
     {
       "@type": "HowToStep",
@@ -142,12 +142,12 @@ export const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Log outcomes with one keypress",
-      text: "Press 1–6 to log No Answer, Invalid, Gatekeeper, Not Interested, Interested, or Schedule. The queue advances and the activity is recorded automatically.",
+      text: "Press 1–5 to log No Answer, Callback, Gatekeeper, Not Interested, or Interested. The queue advances and the activity is recorded automatically.",
     },
     {
       "@type": "HowToStep",
       name: "Follow up automatically",
-      text: "Interested leads get a Google Meet booking on the spot; no-answers get a scheduled retry. Templated WhatsApp messages fire for confirmations and reminders.",
+      text: "Interested leads book a Google Meet meeting on the spot with a WhatsApp confirmation; no-answers get a scheduled retry. Templated WhatsApp messages fire for confirmations and reminders.",
     },
     {
       "@type": "HowToStep",

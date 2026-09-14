@@ -22,7 +22,7 @@ import {
 
 const TITLE = "Adine — Outbound CRM for high-volume cold calling";
 const DESCRIPTION =
-  "Adine is an outbound CRM for high-volume cold calling. Google Maps lead scraping, sequential call sessions, one-keypress outcome logging, and automatic WhatsApp and Google Meet follow-ups.";
+  "Adine is an outbound CRM for high-volume cold calling. Lead import and search, sequential call sessions, one-keypress outcome logging, and automatic WhatsApp and Google Meet follow-ups.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({
       {
         name: "keywords",
         content:
-          "outbound CRM, cold calling software, Google Maps lead scraper, power dialer, WhatsApp follow-ups, Google Meet booking, sales CRM for founders",
+          "outbound CRM, cold calling software, lead management, power dialer, WhatsApp follow-ups, Google Meet booking, sales CRM for founders",
       },
       { property: "og:title", content: "Adine — Outbound CRM for high-volume cold calling" },
       {

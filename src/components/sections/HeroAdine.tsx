@@ -548,7 +548,7 @@ export default function HeroAdine() {
                 className="mt-8 flex flex-wrap items-center justify-center gap-2.5"
               >
                 {[
-                  "Google Maps lead import",
+                  "CSV lead import",
                   "5-key outcome logging",
                   "Google Meet booking",
                   "WhatsApp follow-ups",

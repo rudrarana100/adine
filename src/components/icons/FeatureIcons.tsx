@@ -32,7 +32,7 @@ function wrap(Icon: ComponentType<Record<string, unknown>>) {
   };
 }
 
-/* Map pin — Google Maps lead scraping */
+/* Map pin — lead location context */
 export const MapPinIcon = wrap(MapPin);
 /* Phone — call session dialing */
 export const PhoneIcon = wrap(Phone);

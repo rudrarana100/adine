@@ -80,7 +80,7 @@ export default function FinalCTAAdine() {
             variants={v(fadeUp)}
             className="relative z-10 mx-auto mt-5 max-w-[480px] text-[17px] font-light leading-[1.6] text-white/70"
           >
-            Scrape a list, connect your Google account, and dial your first lead within minutes —
+            Import your list, connect your Google account, and dial your first lead within minutes —
             not setup spreadsheets.
           </motion.p>
 

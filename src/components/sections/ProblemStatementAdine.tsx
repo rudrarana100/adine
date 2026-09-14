@@ -59,7 +59,7 @@ export default function ProblemStatementAdine() {
             className="mx-auto mt-5 max-w-[560px] text-[17px] font-light leading-[1.6] text-slate"
           >
             Missed callbacks. Leads that go cold because nobody remembers to text back. Hours lost
-            between a scraped list and an actual dial.
+            between an imported list and an actual dial.
           </motion.p>
 
           <motion.ul variants={v(fadeUp)} className="mt-8 flex items-center justify-center gap-8">
