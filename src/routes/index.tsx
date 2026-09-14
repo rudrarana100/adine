@@ -5,7 +5,6 @@ import HeroAdine from "@/components/sections/HeroAdine";
 import ProblemStatementAdine from "@/components/sections/ProblemStatementAdine";
 import HowItWorksAdine from "@/components/sections/HowItWorksAdine";
 import ContrastAdine from "@/components/sections/ContrastAdine";
-import StartFreeCta from "@/components/sections/StartFreeCta";
 import FeatureShowcaseAdine from "@/components/sections/FeatureShowcaseAdine";
 import AnalyticsAdine from "@/components/sections/AnalyticsAdine";
 import PricingAdine from "@/components/sections/PricingAdine";
@@ -61,11 +60,8 @@ function Index() {
         <HeroAdine />
         <ProblemStatementAdine />
         <HowItWorksAdine />
-        <StartFreeCta />
         <ContrastAdine />
-        <StartFreeCta />
         <FeatureShowcaseAdine />
-        <StartFreeCta />
         <AnalyticsAdine />
         <PricingAdine />
         <FAQAdine />

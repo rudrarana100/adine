@@ -299,10 +299,10 @@ export default function AnalyticsAdine() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="rounded-[28px] bg-white/10 p-6 backdrop-blur-sm"
+            className="flex flex-col gap-5 rounded-[28px] bg-white/10 p-6 backdrop-blur-sm"
           >
             {/* stat / streak row */}
-            <motion.div variants={v(fadeUp)} className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <motion.div variants={v(fadeUp)} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {(
                 [
                   { label: "Total leads", value: 486 },
