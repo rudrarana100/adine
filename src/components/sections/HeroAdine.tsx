@@ -543,7 +543,7 @@ export default function HeroAdine() {
 
               {/* Credibility micro-line */}
               <motion.p variants={v(fadeUp)} className="mt-5 text-[13px] font-medium text-iron">
-                Built by someone who made 1000+ cold calls before writing a line of code.
+                Built from 1000+ real cold calls.
               </motion.p>
 
               {/* Concrete capability hints (no invented stats) */}
