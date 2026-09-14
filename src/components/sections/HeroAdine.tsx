@@ -24,7 +24,7 @@ import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 const accentWords = [
   "after-call paperwork disappear.",
   "follow-up write itself.",
-  "momentum survive the hangup.",
+  "momentum outlast the call.",
 ];
 const getWord = (i: number) => accentWords[i % accentWords.length]!;
 
