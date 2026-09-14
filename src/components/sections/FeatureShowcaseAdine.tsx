@@ -13,8 +13,7 @@ import SectionHeading from "@/components/sections/SectionHeading";
 /* The real Kanban stages from the product — used as the pillar-section rail */
 const PIPELINE_STAGES = ["Scrape", "Cold Lead", "Warm Prospect", "Meeting Booked", "Closed Won"];
 
-const GROUND_IMG =
-  "linear-gradient(90deg, var(--color-violet), var(--color-apricot))";
+const GROUND_IMG = "linear-gradient(90deg, var(--color-violet), var(--color-apricot))";
 
 /* Follow-up outcome branches — folded in from the removed standalone section */
 const OUTCOME_TAGS = [
@@ -97,7 +96,9 @@ function DirectoryVisual() {
           <div
             key={name}
             className={`flex items-center justify-between rounded-[10px] px-3 py-2 text-[12px] ${
-              i === 0 ? "bg-violet/8 font-medium text-ink" : "border border-pebble bg-white text-slate"
+              i === 0
+                ? "bg-violet/8 font-medium text-ink"
+                : "border border-pebble bg-white text-slate"
             }`}
           >
             <span>{name}</span>
@@ -113,17 +114,19 @@ function FollowUpVisual() {
   return (
     <div aria-hidden="true" className="space-y-3">
       <div className="space-y-1.5">
-        {["Call Sharma Dental — today", "Re-engage Vaishali Clinic — overdue", "Confirm Meet — tomorrow"].map(
-          (t) => (
-            <div
-              key={t}
-              className="flex items-center gap-2.5 rounded-[10px] border border-pebble bg-white px-3 py-2 text-[12px] text-slate"
-            >
-              <CheckIcon size={14} className="shrink-0 text-green-600" />
-              {t}
-            </div>
-          ),
-        )}
+        {[
+          "Call Sharma Dental — today",
+          "Re-engage Vaishali Clinic — overdue",
+          "Confirm Meet — tomorrow",
+        ].map((t) => (
+          <div
+            key={t}
+            className="flex items-center gap-2.5 rounded-[10px] border border-pebble bg-white px-3 py-2 text-[12px] text-slate"
+          >
+            <CheckIcon size={14} className="shrink-0 text-green-600" />
+            {t}
+          </div>
+        ))}
       </div>
       <div className="flex flex-wrap gap-1.5">
         {OUTCOME_TAGS.map((o) => (
@@ -134,7 +137,9 @@ function FollowUpVisual() {
             {o.label}
           </span>
         ))}
-        <span className="self-center text-[10px] font-light text-iron">→ WhatsApp fires the branch</span>
+        <span className="self-center text-[10px] font-light text-iron">
+          → WhatsApp fires the branch
+        </span>
       </div>
     </div>
   );
@@ -158,7 +163,9 @@ function KanbanVisual() {
             }`}
           >
             <span className={`h-1.5 w-1.5 rounded-full ${c.active ? "bg-white" : "bg-pebble"}`} />
-            <span className={`h-1.5 w-1.5 rounded-full ${c.active ? "bg-white/60" : "bg-pebble"}`} />
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${c.active ? "bg-white/60" : "bg-pebble"}`}
+            />
           </div>
         </div>
       ))}
@@ -174,7 +181,9 @@ function MeetVisual() {
           <div
             key={day}
             className={`flex h-7 items-center justify-center rounded-[6px] text-[10px] ${
-              i === 3 ? "bg-violet font-semibold text-white" : "border border-pebble bg-white text-slate"
+              i === 3
+                ? "bg-violet font-semibold text-white"
+                : "border border-pebble bg-white text-slate"
             }`}
           >
             {day}
@@ -222,15 +231,27 @@ function TasksVisual() {
       </div>
       <div className="space-y-1.5">
         {[
-          { label: "High", t: "Follow up Sharma Dental", due: "Today", tone: "bg-apricot text-white" },
-          { label: "Medium", t: "Prep pitch for Vaishali Clinic", due: "Tomorrow", tone: "bg-sky text-sky-900" },
+          {
+            label: "High",
+            t: "Follow up Sharma Dental",
+            due: "Today",
+            tone: "bg-apricot text-white",
+          },
+          {
+            label: "Medium",
+            t: "Prep pitch for Vaishali Clinic",
+            due: "Tomorrow",
+            tone: "bg-sky text-sky-900",
+          },
           { label: "Low", t: "Refresh stale list", due: "Fri", tone: "bg-mint text-green-800" },
         ].map((r) => (
           <div
             key={r.label}
             className="flex items-center gap-2.5 rounded-[10px] border border-pebble bg-white px-3 py-2 text-[12px] text-slate"
           >
-            <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${r.tone}`}>{r.label}</span>
+            <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${r.tone}`}>
+              {r.label}
+            </span>
             <span className="flex-1 truncate">{r.t}</span>
             <span className="text-[11px] text-iron">{r.due}</span>
           </div>

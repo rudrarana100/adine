@@ -52,8 +52,8 @@ export default function FooterAdine() {
               Adine<span className="text-violet">.</span>
             </a>
             <p className="mt-3 max-w-[260px] text-[14px] font-light leading-[1.6] text-white/50">
-              The outbound CRM for high-volume cold calling — scrape, dial, log, and follow
-              up in one place.
+              The outbound CRM for high-volume cold calling — scrape, dial, log, and follow up in
+              one place.
             </p>
           </div>
 
