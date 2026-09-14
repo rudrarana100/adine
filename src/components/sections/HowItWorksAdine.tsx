@@ -2,7 +2,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import type { FeatureIconName } from "@/components/icons/FeatureIcons";
 import { AnimatedFeatureIcon } from "@/components/icons/AnimatedFeatureIcon";
-import { AuroraField, GridField } from "@/components/backgrounds/AnimatedBackgrounds";
+import { AuroraField } from "@/components/backgrounds/AnimatedBackgrounds";
+import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 import { Ambient } from "@/components/backgrounds/Ambient";
 import SectionHeading from "@/components/sections/SectionHeading";
 
@@ -58,10 +59,10 @@ export default function HowItWorksAdine() {
 
   return (
     <section id="how" className="relative overflow-hidden bg-canvas py-[96px]">
-      {/* Animated backdrop: aurora fields + grid texture (paused off-screen) */}
+      {/* Animated backdrop: aurora + the same interactive mesh as the hero */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <AuroraField />
-        <GridField className="opacity-60" />
+        <InteractiveMesh className="opacity-70" />
       </Ambient>
 
       <div className="shell relative z-10">

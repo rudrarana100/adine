@@ -5,23 +5,28 @@ import { useInView, useReducedMotion } from "framer-motion";
  * InteractiveMesh — a slim, irregular line mesh rendered on a <canvas>.
  *
  * The mesh is deliberately not a perfect grid: lines are jittered, gently
- * curved, and interrupted by random gaps. It stays static (a single drawn
- * frame) until you hover — then a water-like ripple follows the cursor: a
- * wave bursts on enter, trails behind the pointer, and fades out on leave.
- * Once the fade settles the redraw loop stops, so an idle page pays almost
- * nothing.
+ * curved, and interrupted by random gaps. It is ALWAYS alive — a slow
+ * breathing undulation drifts across the field so the backdrop never sits
+ * still — and it reacts to the pointer:
  *
- * Purely decorative; one path + one stroke per frame while active.
+ *   · a water-like ripple bursts on enter / click and trails the cursor
+ *   · vertices are pulled toward the pointer while it's over the canvas,
+ *     so the mesh visibly bends toward you
+ *
+ * Purely decorative; one path + one stroke per frame while active. Respects
+ * prefers-reduced-motion (a single static frame, no listeners).
  */
 
 type Ripple = { x: number; y: number; t0: number; following: boolean };
 
-const AMP = 24;
-const RADIUS = 360;
-const WAVELENGTH = 130;
-const SPEED = 1.15;
-const FADE = 1.5;
-const LOOP_IDLE_MS = 750;
+const AMP = 26; // ripple wave amplitude
+const RADIUS = 380; // ripple reach
+const WAVELENGTH = 140;
+const SPEED = 1.4;
+const FADE = 1.4;
+const ATTRACT = 6; // vertex pull toward cursor (px)
+const ATTRACT_RADIUS = 200;
+const IDLE = 2.2; // idle breathing amplitude (px)
 
 type MarginValue = `${number}${"px" | "%"}`;
 type MarginType =
@@ -91,22 +96,37 @@ function draw(
 
   for (const line of lines) {
     for (let i = 0; i < line.px.length; i++) {
-      let x = line.px[i]! + Math.sin(line.py[i]! * 0.006 + t * 0.55) * 0.9;
-      let y = line.py[i]! + Math.cos(line.px[i]! * 0.005 + t * 0.45) * 0.9;
+      const bx = line.px[i]!;
+      const by = line.py[i]!;
+      /* idle breathing — the mesh never sits still */
+      let x = bx + Math.sin(by * 0.008 + t * 0.7) * IDLE;
+      let y = by + Math.cos(bx * 0.007 + t * 0.6) * IDLE;
+      /* slow undulation sweeping across the whole field */
+      x += Math.sin((bx + by) * 0.004 + t * 0.35) * 1.6;
+      y += Math.cos((bx + by) * 0.004 + t * 0.3) * 1.4;
 
       if (ripple) {
         const dx = x - ripple.x;
         const dy = y - ripple.y;
         const d = Math.hypot(dx, dy);
         if (d > 0.5) {
-          const wave =
-            Math.sin((Math.PI * 2 * d) / WAVELENGTH - 2 * Math.PI * SPEED * age) *
-            Math.exp(-d / RADIUS) *
-            AMP *
-            fade;
-          const k = wave / d;
-          x += dx * k;
-          y += dy * k;
+          /* expanding ripple */
+          if (d < RADIUS * 2.4) {
+            const wave =
+              Math.sin((Math.PI * 2 * d) / WAVELENGTH - 2 * Math.PI * SPEED * age) *
+              Math.exp(-d / RADIUS) *
+              AMP *
+              fade;
+            const k = wave / d;
+            x += dx * k;
+            y += dy * k;
+          }
+          /* soft pull toward the pointer */
+          if (d < ATTRACT_RADIUS) {
+            const pull = (1 - d / ATTRACT_RADIUS) * ATTRACT * fade;
+            x -= (dx / d) * pull;
+            y -= (dy / d) * pull;
+          }
         }
       }
 
@@ -140,22 +160,8 @@ export function InteractiveMesh({
     let lines: Array<{ px: number[]; py: number[] }> = [];
     let ripple: Ripple | null = null;
     let raf = 0;
-    let loopRunning = false;
 
     const drawFrame = (now: number) => draw(ctx, lines, ripple, now, size.w, size.h, color);
-
-    const stopLoop = () => {
-      loopRunning = false;
-      cancelAnimationFrame(raf);
-      ripple = null;
-      drawFrame(performance.now());
-    };
-
-    const startLoop = () => {
-      if (loopRunning) return;
-      loopRunning = true;
-      raf = requestAnimationFrame(loop);
-    };
 
     const build = () => {
       const rect = canvas.getBoundingClientRect();
@@ -169,10 +175,6 @@ export function InteractiveMesh({
 
     function loop(now: number) {
       drawFrame(now);
-      if (ripple && !ripple.following && now - ripple.t0 > LOOP_IDLE_MS) {
-        stopLoop();
-        return;
-      }
       raf = requestAnimationFrame(loop);
     }
 
@@ -181,7 +183,6 @@ export function InteractiveMesh({
 
     const ro = new ResizeObserver(() => {
       build();
-      if (!loopRunning) drawFrame(performance.now());
     });
     ro.observe(canvas);
 
@@ -191,7 +192,9 @@ export function InteractiveMesh({
       };
     }
 
-    const onMove = (e: PointerEvent) => {
+    raf = requestAnimationFrame(loop);
+
+    const setRipple = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -201,19 +204,26 @@ export function InteractiveMesh({
         ripple.x = x;
         ripple.y = y;
       }
-      startLoop();
+    };
+    const onMove = (e: PointerEvent) => {
+      setRipple(e);
+    };
+    const onDown = (e: PointerEvent) => {
+      setRipple(e);
     };
     const onLeave = () => {
       if (ripple) ripple.following = false;
     };
 
     canvas.addEventListener("pointermove", onMove, { passive: true });
+    canvas.addEventListener("pointerdown", onDown, { passive: true });
     canvas.addEventListener("pointerleave", onLeave);
 
     return () => {
-      if (loopRunning) cancelAnimationFrame(raf);
+      cancelAnimationFrame(raf);
       ro.disconnect();
       canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointerleave", onLeave);
     };
   }, [inView, reduce, color]);
