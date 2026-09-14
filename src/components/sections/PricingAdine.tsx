@@ -4,7 +4,7 @@ import { ArrowRight } from "@phosphor-icons/react";
 import { fadeUp, useVariants } from "@/lib/motion";
 import SectionHeading from "@/components/sections/SectionHeading";
 
-const APP_URL = "https://adine-crm.vercel.app/";
+const APP_URL = "https://salestrackercrm.vercel.app/";
 
 const FREE_FEATURES = [
   "Full feature access — every tool unlocked",

@@ -112,7 +112,7 @@ export default function FinalCTAAdine() {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
               <motion.a
-                href="https://adine-crm.vercel.app/"
+                href="https://salestrackercrm.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-[15px] font-semibold text-violet shadow-elevated"

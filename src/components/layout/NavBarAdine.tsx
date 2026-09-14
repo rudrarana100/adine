@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: "FAQ", href: "#faq" },
 ];
 
-const APP_URL = "https://adine-crm.vercel.app/";
+const APP_URL = "https://salestrackercrm.vercel.app/";
 
 export default function NavBarAdine() {
   const [scrolled, setScrolled] = useState(false);

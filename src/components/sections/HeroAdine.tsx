@@ -526,7 +526,7 @@ export default function HeroAdine() {
                 className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
               >
                 <a
-                  href="https://adine-crm.vercel.app/"
+                  href="https://salestrackercrm.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-pill"

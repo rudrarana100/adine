@@ -12,13 +12,13 @@ const COLUMNS = [
     title: "Company",
     links: [
       { label: "Contact", href: "mailto:support@adine-crm.vercel.app" },
-      { label: "Start Free", href: "https://adine-crm.vercel.app/", external: true },
+      { label: "Start Free", href: "https://salestrackercrm.vercel.app/", external: true },
     ],
   },
   {
     title: "Resources",
     links: [
-      { label: "Documentation", href: "https://adine-crm.vercel.app/", external: true },
+      { label: "Documentation", href: "https://salestrackercrm.vercel.app/", external: true },
       { label: "Help Center", href: "mailto:support@adine-crm.vercel.app" },
     ],
   },
