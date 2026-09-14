@@ -10,26 +10,25 @@ import { DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
 import { Ambient } from "@/components/backgrounds/Ambient";
 import SectionHeading from "@/components/sections/SectionHeading";
 
-/* The real Kanban stages from the product — used as the pillar-section rail */
-const PIPELINE_STAGES = ["Scrape", "Cold Lead", "Warm Prospect", "Meeting Booked", "Closed Won"];
+/* The real pipeline stages from the product — used as the pillar-section rail */
+const PIPELINE_STAGES = ["Contacted", "Warm", "Meeting Booked", "Proposal Sent", "Won", "Lost"];
 
 const GROUND_IMG = "linear-gradient(90deg, var(--color-violet), var(--color-apricot))";
 
 /* Follow-up outcome branches — folded in from the removed standalone section */
 const OUTCOME_TAGS = [
-  { label: "Closed", tone: "bg-mint text-green-800" },
-  { label: "Ghosted", tone: "bg-fog text-iron" },
-  { label: "Follow-up", tone: "bg-sky text-sky-900" },
-  { label: "Rescheduled", tone: "bg-apricot/20 text-apricot" },
+  { label: "No Answer", tone: "bg-fog text-iron" },
+  { label: "Callback", tone: "bg-sky text-sky-900" },
+  { label: "Interested", tone: "bg-mint text-green-800" },
+  { label: "Meeting Booked", tone: "bg-apricot/20 text-apricot" },
 ];
 
 const CALL_OUTCOMES = [
   "1 · No Answer",
-  "2 · Invalid",
+  "2 · Callback",
   "3 · Gatekeeper",
   "4 · Not Interested",
   "5 · Interested",
-  "6 · Schedule",
 ];
 
 /* ── Mini visuals (one per pillar) ───────────────────────────── */

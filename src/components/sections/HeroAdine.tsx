@@ -88,11 +88,10 @@ function WaveformBars({ reduce, active }: { reduce: boolean; active: boolean }) 
 /* ── Call Session UI mock ── */
 const OUTCOMES = [
   { key: "1", label: "No Answer" },
-  { key: "2", label: "Invalid" },
+  { key: "2", label: "Callback" },
   { key: "3", label: "Gatekeeper" },
   { key: "4", label: "Not Interested" },
   { key: "5", label: "Interested" },
-  { key: "6", label: "Schedule" },
 ];
 
 function CallSessionMock({ reduce }: { reduce: boolean }) {
@@ -100,17 +99,16 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
   const [inCall, setInCall] = useState(true);
   const [pressFx, setPressFx] = useState(0);
 
-  // Loop: "Interested" (key 5) looks pressed every few seconds, then advance
+  // Loop: keeps "Interested" (key 5) lit every few seconds to show the flow
   useEffect(() => {
     if (reduce) return;
     const cycle = () => {
       setPressed(4);
       setInCall(true);
       setPressFx((p) => p + 1);
-      const t1 = setTimeout(() => setPressed(5), 1800);
-      const t2 = setTimeout(() => setInCall(false), 2600);
-      const t3 = setTimeout(cycle, 3800);
-      return [t1, t2, t3];
+      const t1 = setTimeout(() => setInCall(false), 2200);
+      const t2 = setTimeout(cycle, 3400);
+      return [t1, t2];
     };
     const timers = cycle();
     return () => timers.forEach((t) => typeof t === "number" && clearTimeout(t));
@@ -551,7 +549,7 @@ export default function HeroAdine() {
               >
                 {[
                   "Google Maps lead import",
-                  "6-key outcome logging",
+                  "5-key outcome logging",
                   "Google Meet booking",
                   "WhatsApp follow-ups",
                 ].map((item) => (
