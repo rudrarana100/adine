@@ -12,6 +12,8 @@ import { useInView, useReducedMotion } from "framer-motion";
  *   · a water-like ripple bursts on enter / click and trails the cursor
  *   · vertices are pulled toward the pointer while it's over the canvas,
  *     so the mesh visibly bends toward you
+ *   · the whole field leans and springs back with scroll — the faster you
+ *     scroll, the further it shears, relaxing to rest when you stop
  *
  * Purely decorative; one path + one stroke per frame while active. Respects
  * prefers-reduced-motion (a single static frame, no listeners).
@@ -27,6 +29,9 @@ const FADE = 1.4;
 const ATTRACT = 6; // vertex pull toward cursor (px)
 const ATTRACT_RADIUS = 200;
 const IDLE = 2.2; // idle breathing amplitude (px)
+const SHEAR_MAX = 16; // max scroll shear (px)
+const SHEAR_GAIN = 0.3; // scroll-velocity → shear gain
+const SHEAR_ATTEN = 0.14; // spring-back per frame
 
 type MarginValue = `${number}${"px" | "%"}`;
 type MarginType =
@@ -83,6 +88,7 @@ function draw(
   W: number,
   H: number,
   color: string,
+  shear = 0,
 ) {
   const t = now / 1000;
   ctx.clearRect(0, 0, W, H);
@@ -98,12 +104,18 @@ function draw(
     for (let i = 0; i < line.px.length; i++) {
       const bx = line.px[i]!;
       const by = line.py[i]!;
-      /* idle breathing — the mesh never sits still */
-      let x = bx + Math.sin(by * 0.008 + t * 0.7) * IDLE;
-      let y = by + Math.cos(bx * 0.007 + t * 0.6) * IDLE;
-      /* slow undulation sweeping across the whole field */
-      x += Math.sin((bx + by) * 0.004 + t * 0.35) * 1.6;
-      y += Math.cos((bx + by) * 0.004 + t * 0.3) * 1.4;
+      /* idle breathing — every vertex owns a pseudo-random phase, so the whole
+         mesh shimmers continuously with no frozen nodes */
+      const phase = Math.abs(bx * 12.9898 + by * 78.233) % 6.2831853;
+      let x = bx + Math.sin(t * 0.9 + phase) * IDLE;
+      let y = by + Math.cos(t * 0.75 + phase * 1.37) * IDLE;
+      /* slow traveling undulation sweeping across the whole field */
+      x += Math.sin(t * 0.5 - (bx + by) * 0.006) * 2.2;
+      y += Math.cos(t * 0.45 - bx * 0.006) * 1.8;
+
+      /* scroll shear — the whole mesh leans with scroll velocity */
+      x += shear;
+      y += shear * -0.18;
 
       if (ripple) {
         const dx = x - ripple.x;
@@ -160,8 +172,10 @@ export function InteractiveMesh({
     let lines: Array<{ px: number[]; py: number[] }> = [];
     let ripple: Ripple | null = null;
     let raf = 0;
+    let shear = 0;
+    let shearTarget = 0;
 
-    const drawFrame = (now: number) => draw(ctx, lines, ripple, now, size.w, size.h, color);
+    const drawFrame = (now: number) => draw(ctx, lines, ripple, now, size.w, size.h, color, shear);
 
     const build = () => {
       const rect = canvas.getBoundingClientRect();
@@ -174,6 +188,7 @@ export function InteractiveMesh({
     };
 
     function loop(now: number) {
+      shear += (shearTarget - shear) * SHEAR_ATTEN;
       drawFrame(now);
       raf = requestAnimationFrame(loop);
     }
@@ -193,6 +208,15 @@ export function InteractiveMesh({
     }
 
     raf = requestAnimationFrame(loop);
+
+    let lastScrollY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const velocity = y - lastScrollY;
+      lastScrollY = y;
+      shearTarget = Math.max(-SHEAR_MAX, Math.min(SHEAR_MAX, velocity * SHEAR_GAIN));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     const setRipple = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
@@ -218,10 +242,12 @@ export function InteractiveMesh({
     canvas.addEventListener("pointermove", onMove, { passive: true });
     canvas.addEventListener("pointerdown", onDown, { passive: true });
     canvas.addEventListener("pointerleave", onLeave);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      window.removeEventListener("scroll", onScroll);
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointerleave", onLeave);

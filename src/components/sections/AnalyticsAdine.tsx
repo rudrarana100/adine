@@ -98,13 +98,13 @@ const WEEKS = Array.from({ length: 13 }, () => [3, 4, 1, 3, 5, 2, 0]);
 
 function HeatmapMock({ reduce, active }: { reduce: boolean; active: boolean }) {
   return (
-    <div className="flex gap-1.5" aria-hidden="true">
+    <div className="flex gap-1 sm:gap-1.5" aria-hidden="true">
       {WEEKS.map((week, w) => (
-        <div key={w} className="flex flex-col gap-1.5">
+        <div key={w} className="flex flex-col gap-1 sm:gap-1.5">
           {week.map((level, d) => (
             <motion.span
               key={`${w}-${d}`}
-              className={`h-4 w-4 rounded-[4px] ${
+              className={`h-3 w-3 rounded-[3px] sm:h-4 sm:w-4 sm:rounded-[4px] ${
                 level === 0
                   ? "bg-white/[0.08]"
                   : level === 1

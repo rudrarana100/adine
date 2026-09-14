@@ -55,7 +55,7 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   const text = reduce ? accentWords[0] : getWord(wordIdx).slice(0, charIdx);
 
   return (
-    <span className="mt-2 block min-h-[1.2em] text-[clamp(34px,4.8vw,54px)] font-light leading-[1.12] tracking-[-0.03em] gradient-text">
+    <span className="mt-2 block min-h-[2em] text-[clamp(26px,4.8vw,54px)] font-light leading-[1.12] tracking-[-0.03em] gradient-text sm:min-h-[1.2em] sm:text-[clamp(34px,4.8vw,54px)]">
       {text}
       {!reduce && (
         <span className="ml-0.5 inline-block h-[1em] w-[3px] align-middle bg-violet opacity-60 animate-pulse" />
@@ -451,9 +451,7 @@ export default function HeroAdine() {
         aria-hidden="true"
       >
         <AuroraField />
-        <div className="absolute inset-x-0 bottom-0 top-[112px]">
-          <InteractiveMesh className="opacity-70" />
-        </div>
+        <InteractiveMesh className="opacity-70" />
       </motion.div>
 
       {/* Glow orbs — fade as you scroll */}

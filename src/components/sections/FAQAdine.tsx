@@ -3,29 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Minus } from "@phosphor-icons/react";
 import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import SectionHeading from "@/components/sections/SectionHeading";
-
-const FAQ_ITEMS: { q: string; a: string }[] = [
-  {
-    q: "Can I import leads I already have?",
-    a: "Yes — CSV bulk import with column mapping is built in.",
-  },
-  {
-    q: "Is the WhatsApp automation compliant?",
-    a: "It uses standard WhatsApp messaging, not bulk or spam sending. Templated messages are one-to-one, never broadcast.",
-  },
-  {
-    q: "Does this work if I'm a solo rep, not a team?",
-    a: "Yes. The sequential call queue and follow-up hub are built around one person working a list — teams are a bonus, not the baseline.",
-  },
-  {
-    q: "What happens when my trial ends?",
-    a: "Your data stays. You just need a plan to keep working leads past day 14.",
-  },
-  {
-    q: "Do I need to be tech-savvy to set this up?",
-    a: "No. The only integration is connecting Google Calendar for meeting links — everything else works out of the box.",
-  },
-];
+import { FAQ_ITEMS } from "@/lib/schema";
 
 export default function FAQAdine() {
   const v = useVariants();
@@ -55,9 +33,7 @@ export default function FAQAdine() {
                   id={`faq-trigger-${i}`}
                   className="flex min-h-[48px] w-full items-center justify-between gap-6 py-5 text-left"
                 >
-                  <span className="text-[17px] font-medium tracking-[-0.01em] text-ink">
-                    {item.q}
-                  </span>
+                  <h3 className="text-[17px] font-medium tracking-[-0.01em] text-ink">{item.q}</h3>
                   {isOpen ? (
                     <Minus size={18} aria-hidden="true" className="shrink-0 text-slate" />
                   ) : (

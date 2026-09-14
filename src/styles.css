@@ -101,6 +101,13 @@
     scroll-behavior: smooth;
   }
 
+  /* Guard: never let decorative layers trigger horizontal page scroll.
+     `clip` (not `hidden`) keeps position:fixed and sticky working. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
