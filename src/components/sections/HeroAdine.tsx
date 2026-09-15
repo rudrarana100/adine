@@ -11,7 +11,7 @@ import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { fadeUp, heroWord, heroWordContainer, badgePop, staggerContainer } from "@/lib/motion";
 import { PhoneIcon, ChatIcon } from "@/components/icons/FeatureIcons";
-import { AuroraField, GlowOrb, SignalRings } from "@/components/backgrounds/AnimatedBackgrounds";
+import { AuroraField, GlowOrb } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
 /* Typewriter gradient accent — the after-call moment Adine protects */
@@ -84,9 +84,6 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
         className="pointer-events-none absolute inset-x-6 inset-y-8 -z-10 rounded-[32px] border border-white/5 bg-gradient-to-br from-white/10 to-transparent shadow-card backdrop-blur-sm"
         aria-hidden="true"
       />
-
-      {/* Pulsing signal rings behind the mock */}
-      <SignalRings reduce={reduce} className="-inset-10" />
 
       {/* The screenshot itself — gentle breathing scale so it feels alive */}
       <motion.div
@@ -220,7 +217,7 @@ export default function HeroAdine() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-[120px] pb-24"
+      className="relative overflow-hidden pt-[144px] pb-32"
       ref={heroRef}
       onMouseMove={handleMouseMove}
     >
