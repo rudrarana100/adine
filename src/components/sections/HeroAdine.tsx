@@ -10,7 +10,7 @@ import {
 import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { fadeUp, heroWord, heroWordContainer, badgePop, staggerContainer } from "@/lib/motion";
-import { PhoneIcon, ChatIcon, CalendarMeetIcon, FlameIcon } from "@/components/icons/FeatureIcons";
+import { PhoneIcon, ChatIcon } from "@/components/icons/FeatureIcons";
 import { AuroraField, GlowOrb, SignalRings } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
@@ -47,11 +47,13 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   }, [charIdx, deleting, wordIdx, reduce]);
 
   const text = reduce ? accentWords[0] : getWord(wordIdx).slice(0, charIdx);
+  const word = getWord(wordIdx);
 
   return (
     <span className="mt-2 block min-h-[2em] text-[clamp(26px,4.8vw,54px)] font-light leading-[1.16] tracking-[-0.03em] gradient-text sm:min-h-[1.2em] sm:text-[clamp(34px,4.8vw,54px)] lg:min-h-[1.15em] lg:text-[clamp(24px,3vw,38px)]">
       {text}
-      {!reduce && (
+      {/* Caret only while the word is mid-typing — never left behind at rest */}
+      {!reduce && charIdx < word.length && (
         <span className="ml-0.5 inline-block h-[1em] w-[3px] align-middle bg-violet opacity-60 animate-pulse" />
       )}
     </span>
@@ -64,16 +66,32 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
   return (
     <motion.div
       className="relative mx-auto w-full max-w-[640px]"
-      animate={reduce ? {} : { y: [0, -7, 0] }}
-      transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+      animate={reduce ? {} : { y: [0, -6, 0] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     >
+      {/* Ambient glow behind the card — recedes into the background */}
+      <div
+        className="pointer-events-none absolute -inset-8 -z-10 rounded-[48px] opacity-70 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(60% 60% at 20% 15%, rgba(97,97,255,0.28), transparent 70%), radial-gradient(55% 55% at 85% 90%, rgba(56,189,248,0.18), transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Ghost backdrop panel — layered depth behind the primary card */}
+      <div
+        className="pointer-events-none absolute inset-x-6 inset-y-8 -z-10 rounded-[32px] border border-white/5 bg-gradient-to-br from-white/10 to-transparent shadow-card backdrop-blur-sm"
+        aria-hidden="true"
+      />
+
       {/* Pulsing signal rings behind the mock */}
       <SignalRings reduce={reduce} className="-inset-10" />
 
       {/* The screenshot itself — gentle breathing scale so it feels alive */}
       <motion.div
         className="card-surface relative z-10 overflow-hidden rounded-[24px] shadow-elevated ring-1 ring-white/10"
-        animate={reduce ? {} : { scale: [1, 1.02, 1] }}
+        animate={reduce ? {} : { scale: [1, 1.012, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
         <img
@@ -85,32 +103,9 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
         />
       </motion.div>
 
-      {/* Elevation shadow */}
-      <div className="absolute -bottom-5 left-[10%] right-[10%] h-10 rounded-full bg-violet/8 blur-2xl" />
+      {/* Soft ground shadow */}
+      <div className="absolute -bottom-6 left-[8%] right-[8%] h-12 rounded-full bg-violet/10 blur-2xl" />
     </motion.div>
-  );
-}
-
-/* ── Floating SVG badges around the mock ── */
-
-/* Mini heatmap swatch — 5 columns of a few intensity squares */
-function HeatSwatch({ className = "" }: { className?: string }) {
-  const cols = [5, 3, 4, 2, 5];
-  return (
-    <div className={`flex gap-[3px] ${className}`} aria-hidden="true">
-      {cols.map((n, c) => (
-        <div key={c} className="flex flex-col gap-[3px]">
-          {Array.from({ length: 5 }).map((_, r) => (
-            <span
-              key={r}
-              className={`h-1.5 w-1.5 rounded-[2px] ${
-                r < n ? (n === 5 ? "bg-violet" : "bg-violet/40") : "bg-canvas"
-              }`}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
   );
 }
 
@@ -157,16 +152,24 @@ function WhatsAppBadge({ reduce }: { reduce: boolean }) {
 
 function FloatingBadges({ reduce }: { reduce: boolean }) {
   return (
-    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-      {/* Phone dialer badge — anchored outside the card's top-left edge */}
-      <motion.div
-        variants={badgePop}
-        className="absolute top-10 right-full mr-6 z-20 hidden lg:block"
-      >
+    <div className="pointer-events-none absolute inset-0 z-30" aria-hidden="true">
+      {/* WhatsApp confirmation — overlaps the card's top-right corner */}
+      <motion.div variants={badgePop} className="absolute -top-5 -right-3 hidden md:block">
         <motion.div
-          animate={reduce ? {} : { y: [0, -9, 0] }}
+          animate={reduce ? {} : { y: [0, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+          className="flex items-center gap-2 rounded-2xl border border-white/10 bg-card/95 px-3 py-2.5 shadow-elevated backdrop-blur-md"
+        >
+          <WhatsAppBadge reduce={reduce} />
+        </motion.div>
+      </motion.div>
+
+      {/* Dialing live status — overlaps the card's bottom-left corner */}
+      <motion.div variants={badgePop} className="absolute -bottom-5 -left-3 hidden md:block">
+        <motion.div
+          animate={reduce ? {} : { y: [0, -5, 0] }}
           transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-          className={`flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm`}
+          className="flex items-center gap-2.5 rounded-2xl border border-white/10 bg-card/95 px-3.5 py-2.5 shadow-elevated backdrop-blur-md"
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet/10 text-violet">
             <PhoneIcon size={18} />
@@ -176,64 +179,12 @@ function FloatingBadges({ reduce }: { reduce: boolean }) {
               Dialing
               <motion.span
                 className="inline-block h-1.5 w-1.5 rounded-full bg-green-500"
-                animate={reduce ? {} : { opacity: [1, 0.3, 1] }}
+                animate={reduce ? {} : { opacity: [1, 0.25, 1] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
               />
             </p>
             <p className="text-[11px] text-slate">Lead 4 of 26</p>
           </div>
-        </motion.div>
-      </motion.div>
-
-      {/* WhatsApp badge — anchored outside the card's top-right edge, with send loop */}
-      <motion.div
-        variants={badgePop}
-        className="absolute top-4 left-full ml-6 z-20 hidden lg:block"
-      >
-        <motion.div
-          animate={reduce ? {} : { y: [0, 6, 0] }}
-          transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut", delay: 1.1 }}
-          className="flex items-center rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm"
-        >
-          <WhatsAppBadge reduce={reduce} />
-        </motion.div>
-      </motion.div>
-
-      {/* Streak badge — anchored outside the card's bottom-left edge */}
-      <motion.div
-        variants={badgePop}
-        className="absolute bottom-20 right-full mr-6 z-20 hidden xl:block"
-      >
-        <motion.div
-          animate={reduce ? {} : { y: [0, -8, 0] }}
-          transition={{ duration: 7.4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="flex items-center gap-2 rounded-[16px] bg-card/95 px-3.5 py-2.5 shadow-card backdrop-blur-sm"
-        >
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-apricot/15 text-apricot">
-            <FlameIcon size={18} />
-          </span>
-          <div>
-            <p className="text-[12px] font-medium text-ink">Streak kept</p>
-            <p className="text-[11px] text-slate">14 days today</p>
-          </div>
-        </motion.div>
-      </motion.div>
-
-      {/* Heatmap swatch badge — anchored outside the card's bottom-right edge */}
-      <motion.div
-        variants={badgePop}
-        className="absolute bottom-12 left-full ml-6 z-20 hidden lg:block"
-      >
-        <motion.div
-          animate={reduce ? {} : { y: [0, 9, 0] }}
-          transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
-          className="rounded-[16px] bg-card/95 px-3.5 py-3 shadow-card backdrop-blur-sm"
-        >
-          <p className="flex items-center gap-1.5 text-[11px] font-medium text-ink">
-            <CalendarMeetIcon size={13} className="text-violet" />
-            Call activity
-          </p>
-          <HeatSwatch className="mt-1.5" />
         </motion.div>
       </motion.div>
     </div>
@@ -280,7 +231,7 @@ export default function HeroAdine() {
         aria-hidden="true"
       >
         <AuroraField />
-        <InteractiveMesh className="opacity-70" />
+        <InteractiveMesh className="opacity-50" />
       </motion.div>
 
       {/* Glow orbs — fade as you scroll */}
@@ -369,34 +320,6 @@ export default function HeroAdine() {
                     See how it works
                   </a>
                 </motion.div>
-
-                {/* Credibility micro-line */}
-                <motion.p variants={v(fadeUp)} className="mt-5 text-[13px] font-medium text-iron">
-                  Built from 1000+ real cold calls.
-                </motion.p>
-
-                {/* Concrete capability hints (no invented stats) */}
-                <motion.div
-                  variants={v(staggerContainer)}
-                  className="mt-8 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start"
-                >
-                  {[
-                    "CSV lead import",
-                    "5-key outcome logging",
-                    "Google Meet booking",
-                    "WhatsApp follow-ups",
-                  ].map((item) => (
-                    <motion.span
-                      key={item}
-                      variants={v(fadeUp)}
-                      className="cursor-default rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate transition-colors duration-200 hover:border-violet/40 hover:bg-violet/5 hover:text-violet"
-                      {...(reduce ? {} : { whileHover: { y: -3, scale: 1.05 } })}
-                      transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                    >
-                      {item}
-                    </motion.span>
-                  ))}
-                </motion.div>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -406,7 +329,7 @@ export default function HeroAdine() {
             variants={v(staggerContainer)}
             initial="hidden"
             animate="visible"
-            transition={{ delayChildren: 0.55, staggerChildren: 0.09 }}
+            transition={{ delayChildren: 0.5, staggerChildren: 0.12 }}
             {...(reduce ? {} : { style: { y: mockY, scale: mockScale } })}
           >
             <motion.div

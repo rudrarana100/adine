@@ -18,17 +18,18 @@ const GROUND_IMG = "linear-gradient(90deg, var(--color-violet), var(--color-apri
 /* Follow-up outcome branches — folded in from the removed standalone section */
 const OUTCOME_TAGS = [
   { label: "No Answer", tone: "bg-fog text-iron" },
-  { label: "Callback", tone: "bg-sky text-sky-900" },
+  { label: "Callback Requested", tone: "bg-sky text-sky-900" },
   { label: "Interested", tone: "bg-mint text-green-800" },
   { label: "Meeting Booked", tone: "bg-apricot/20 text-apricot" },
 ];
 
 const CALL_OUTCOMES = [
   "1 · No Answer",
-  "2 · Callback",
+  "2 · Invalid",
   "3 · Gatekeeper",
-  "4 · Not Interested",
-  "5 · Interested",
+  "4 · Callback Requested",
+  "5 · Not Interested",
+  "6 · Interested",
 ];
 
 /* ── Mini visuals (one per pillar) ───────────────────────────── */
@@ -79,7 +80,7 @@ function CallSessionVisual() {
           </span>
         ))}
         <span className="rounded-full border border-pebble bg-white px-2.5 py-1 text-[11px] font-medium text-slate">
-          <span className="font-semibold text-green-700">✔</span> Book Meet
+          <span className="font-semibold text-iron">S</span> Skip
         </span>
       </div>
     </div>
@@ -290,7 +291,7 @@ const PILLARS: Pillar[] = [
   },
   {
     title: "Sequential Call Session",
-    text: "One lead. One decision. Then the next. A distraction-free queue shows only the lead in front of you, the context beside it, and one-click outcomes. Keys 1–5 log No Answer, Callback, Gatekeeper, Not Interested, or Interested — Interested books a meeting with a WhatsApp confirmation instantly, every no-answer queues a callback, and nothing sits in limbo.",
+    text: "One lead. One decision. Then the next. A distraction-free queue shows only the lead in front of you, the context beside it, and one-click outcomes. Keys 1–6 log No Answer, Invalid, Gatekeeper, Callback Requested, Not Interested, or Interested, with a separate Skip — every call books a meeting, queues a callback, or moves on. Nothing sits in limbo.",
     icon: "phone",
     iconBg: "bg-violet/10",
     iconColor: "text-violet",

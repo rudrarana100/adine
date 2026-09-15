@@ -14,7 +14,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: "How does outcome logging work?",
-    a: "Keys 1–5 log No Answer, Callback, Gatekeeper, Not Interested, or Interested. Each call is stamped with the outcome and timestamp automatically, and interested leads book a meeting with a WhatsApp confirmation — so your CRM stays current without manual data entry.",
+    a: "Keys 1–6 log No Answer, Invalid, Gatekeeper, Callback Requested, Not Interested, or Interested — with a separate Skip. Each call is stamped with the outcome and timestamp automatically, and interested leads book a meeting with a WhatsApp confirmation — so your CRM stays current without manual data entry.",
   },
   {
     q: "How does the WhatsApp follow-up work?",
@@ -142,7 +142,7 @@ export const howToSchema = {
     {
       "@type": "HowToStep",
       name: "Log outcomes with one keypress",
-      text: "Press 1–5 to log No Answer, Callback, Gatekeeper, Not Interested, or Interested. The queue advances and the activity is recorded automatically.",
+      text: "Press 1–6 to log No Answer, Invalid, Gatekeeper, Callback Requested, Not Interested, or Interested, or skip to the next lead. The queue advances and the activity is recorded automatically.",
     },
     {
       "@type": "HowToStep",
