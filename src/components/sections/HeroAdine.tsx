@@ -10,13 +10,7 @@ import {
 import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { fadeUp, heroWord, heroWordContainer, badgePop, staggerContainer } from "@/lib/motion";
-import {
-  PhoneIcon,
-  ChatIcon,
-  MapPinIcon,
-  CalendarMeetIcon,
-  FlameIcon,
-} from "@/components/icons/FeatureIcons";
+import { PhoneIcon, ChatIcon, CalendarMeetIcon, FlameIcon } from "@/components/icons/FeatureIcons";
 import { AuroraField, GlowOrb, SignalRings } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
@@ -55,7 +49,7 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   const text = reduce ? accentWords[0] : getWord(wordIdx).slice(0, charIdx);
 
   return (
-    <span className="mt-2 block min-h-[2em] text-[clamp(26px,4.8vw,54px)] font-light leading-[1.12] tracking-[-0.03em] gradient-text sm:min-h-[1.2em] sm:text-[clamp(34px,4.8vw,54px)]">
+    <span className="mt-2 block min-h-[2em] text-[clamp(26px,4.8vw,54px)] font-light leading-[1.16] tracking-[-0.03em] gradient-text sm:min-h-[1.2em] sm:text-[clamp(34px,4.8vw,54px)] lg:min-h-[1.15em] lg:text-[clamp(24px,3vw,38px)]">
       {text}
       {!reduce && (
         <span className="ml-0.5 inline-block h-[1em] w-[3px] align-middle bg-violet opacity-60 animate-pulse" />
@@ -64,195 +58,32 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
   );
 }
 
-/* ── Animated waveform bars (equalizer), drives the "in call" strip ── */
-function WaveformBars({ reduce, active }: { reduce: boolean; active: boolean }) {
-  const bars = [10, 18, 26, 14, 22, 30, 16, 24, 12, 20];
-  return (
-    <span className="flex h-5 items-end gap-[3px]" aria-hidden="true">
-      {bars.map((h, i) => (
-        <motion.span
-          key={i}
-          className="h-full w-[3px] origin-bottom rounded-full bg-violet/70"
-          animate={
-            reduce || !active
-              ? { scaleY: 0.2, opacity: 0.25 }
-              : { scaleY: [0.2, h / 20, 0.2], opacity: [0.4, 1, 0.4] }
-          }
-          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: i * 0.09 }}
-        />
-      ))}
-    </span>
-  );
-}
-
-/* ── Call Session UI mock ── */
-const OUTCOMES = [
-  { key: "1", label: "No Answer" },
-  { key: "2", label: "Callback" },
-  { key: "3", label: "Gatekeeper" },
-  { key: "4", label: "Not Interested" },
-  { key: "5", label: "Interested" },
-];
-
+/* ── Call Session mock — the real product screenshot, kept inside the same
+   floating chrome and motion rhythm as the original hand-built card ── */
 function CallSessionMock({ reduce }: { reduce: boolean }) {
-  const [pressed, setPressed] = useState(4);
-  const [inCall, setInCall] = useState(true);
-  const [pressFx, setPressFx] = useState(0);
-
-  // Loop: keeps "Interested" (key 5) lit every few seconds to show the flow
-  useEffect(() => {
-    if (reduce) return;
-    const cycle = () => {
-      setPressed(4);
-      setInCall(true);
-      setPressFx((p) => p + 1);
-      const t1 = setTimeout(() => setInCall(false), 2200);
-      const t2 = setTimeout(cycle, 3400);
-      return [t1, t2];
-    };
-    const timers = cycle();
-    return () => timers.forEach((t) => typeof t === "number" && clearTimeout(t));
-  }, [reduce]);
-
   return (
     <motion.div
-      className="relative mx-auto mt-16 max-w-[640px]"
+      className="relative mx-auto w-full max-w-[640px]"
       animate={reduce ? {} : { y: [0, -7, 0] }}
       transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
     >
       {/* Pulsing signal rings behind the mock */}
       <SignalRings reduce={reduce} className="-inset-10" />
 
-      <div className="card-surface relative z-10 overflow-hidden rounded-[24px] bg-card p-5 shadow-elevated sm:p-6">
-        {/* Session header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span
-              className={`relative flex h-2.5 w-2.5 rounded-full ${inCall ? "bg-red-500" : "bg-slate-300"}`}
-              aria-hidden="true"
-            >
-              {inCall && !reduce && (
-                <span className="absolute inset-0 rounded-full bg-red-500 opacity-60 [animation:outcome-pulse_1.8s_ease-in-out_infinite]" />
-              )}
-            </span>
-            <p className="text-[15px] font-medium text-ink">Cold call session</p>
-            <WaveformBars reduce={reduce} active={inCall} />
-          </div>
-          <span className="rounded-full bg-violet/10 px-3 py-1 text-[12px] font-semibold text-violet">
-            Lead 3 of 26
-          </span>
-        </div>
-
-        {/* Lead card */}
-        <div className="mt-4 rounded-[16px] border border-pebble/60 bg-canvas/60 p-4">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet/15 text-[13px] font-semibold text-violet">
-                RM
-              </span>
-              <div>
-                <p className="text-[15px] font-medium text-ink">Rahul Mehta</p>
-                <p className="text-[13px] text-slate">Meridian Technologies</p>
-              </div>
-            </div>
-          </div>
-          <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[13px] text-slate sm:grid-cols-4">
-            <div className="flex items-center gap-1.5">
-              <PhoneIcon size={14} />
-              <dd className="truncate">+91 98204 55123</dd>
-            </div>
-            <dd className="text-iron">Software</dd>
-            <dd className="text-iron">Mumbai</dd>
-            <dd className="text-iron">Est. ₹4.2L</dd>
-          </dl>
-        </div>
-
-        {/* Quick actions */}
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-violet px-3.5 py-2 text-[13px] font-medium text-white">
-            <PhoneIcon size={15} /> Call lead
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-mint/40 px-3.5 py-2 text-[13px] font-medium text-green-700">
-            <ChatIcon size={15} /> WhatsApp
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-sky/40 px-3.5 py-2 text-[13px] font-medium text-sky-700">
-            <MapPinIcon size={15} /> Maps
-          </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-lavender/50 px-3.5 py-2 text-[13px] font-medium text-ultraviolet">
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-            >
-              <rect x="3" y="5" width="14" height="14" rx="3" />
-              <path d="M17 7l4-2v12l-4-2" />
-            </svg>
-            Gmail
-          </span>
-        </div>
-
-        {/* Outcome row with keyboard shortcuts */}
-        <div className="mt-4 rounded-[16px] bg-canvas p-3">
-          <p className="mb-2.5 px-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-iron">
-            Call outcome
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {OUTCOMES.map((o, i) => {
-              const isPressed = pressed === i;
-              const isInterested = i === 4;
-              return (
-                <motion.span
-                  key={isInterested ? `${o.key}-${pressFx}` : o.key}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] ${
-                    isPressed
-                      ? "border-violet bg-violet text-white shadow-pill"
-                      : "border-pebble bg-card text-slate"
-                  }`}
-                  {...(isInterested && !reduce ? { initial: { scale: 1 } } : {})}
-                  animate={
-                    isInterested && isPressed && !reduce ? { scale: [0.92, 1.03, 1] } : { scale: 1 }
-                  }
-                  transition={
-                    isInterested && isPressed && !reduce
-                      ? { duration: 0.35, ease: "easeOut" }
-                      : { duration: 0.15 }
-                  }
-                >
-                  <span
-                    className={`flex h-4 w-4 items-center justify-center rounded text-[10px] font-bold ${
-                      isPressed ? "bg-white/20 text-white" : "bg-canvas text-iron"
-                    }`}
-                  >
-                    {o.key}
-                  </span>
-                  {o.label}
-                </motion.span>
-              );
-            })}
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-pebble bg-card px-3 py-1.5 text-[12.5px] text-slate">
-              <span className="flex h-4 w-4 items-center justify-center rounded bg-canvas text-[10px] font-bold text-iron">
-                S
-              </span>
-              Skip
-            </span>
-          </div>
-        </div>
-
-        {/* Queue progress */}
-        <div className="mt-4 flex gap-1.5" aria-hidden="true">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span
-              key={i}
-              className={`h-1.5 flex-1 rounded-full ${
-                i < 2 ? "bg-violet/50" : i === 2 ? "bg-violet" : "bg-canvas"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+      {/* The screenshot itself — gentle breathing scale so it feels alive */}
+      <motion.div
+        className="card-surface relative z-10 overflow-hidden rounded-[24px] shadow-elevated ring-1 ring-white/10"
+        animate={reduce ? {} : { scale: [1, 1.02, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img
+          src="/screenshots/hero-mockup.png"
+          alt="Adine — the live call session in the app"
+          className="block h-auto w-full select-none"
+          loading="eager"
+          decoding="async"
+        />
+      </motion.div>
 
       {/* Elevation shadow */}
       <div className="absolute -bottom-5 left-[10%] right-[10%] h-10 rounded-full bg-violet/8 blur-2xl" />
@@ -476,111 +307,117 @@ export default function HeroAdine() {
 
       {/* Content */}
       <div className="shell relative z-10">
-        <motion.div
-          {...(reduce ? {} : { style: { y: contentY } })}
-          className="mx-auto max-w-[820px] text-center"
-        >
+        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+          {/* Left: copy */}
+          <motion.div
+            {...(reduce ? {} : { style: { y: contentY } })}
+            className="mx-auto max-w-[820px] text-center lg:mx-0 lg:max-w-none lg:text-left"
+          >
+            <motion.div
+              variants={v(staggerContainer)}
+              initial="hidden"
+              animate="visible"
+              className="relative"
+            >
+              <motion.div variants={v(staggerContainer)}>
+                <motion.div variants={v(heroWordContainer)}>
+                  <motion.span variants={v(heroWord)} className="inline-block">
+                    <span className="section-eyebrow block">Built for outbound, not busywork</span>
+                  </motion.span>
+                </motion.div>
+
+                {/* Headline: brand + gradient typewriter accent */}
+                <motion.h1
+                  variants={v(heroWordContainer)}
+                  className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.12] tracking-[-0.03em] lg:text-[clamp(32px,3.4vw,48px)]"
+                >
+                  {["Adine", "makes", "the"].map((word, i) => (
+                    <motion.span
+                      key={i}
+                      variants={v(heroWord)}
+                      className="inline-block whitespace-nowrap gradient-text"
+                    >
+                      {word}
+                      {i < 2 && <span className="mx-[0.22em]">&nbsp;</span>}
+                    </motion.span>
+                  ))}
+                  <TypewriterAccent reduce={reduce} />
+                </motion.h1>
+
+                <motion.p
+                  variants={v(fadeUp)}
+                  className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate lg:mx-0"
+                >
+                  One keypress after every hang-up logs the call, queues the next lead, and
+                  schedules the follow-up — the moment that used to kill your momentum just ends.
+                </motion.p>
+
+                <motion.div
+                  variants={v(fadeUp)}
+                  className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start"
+                >
+                  <a
+                    href="https://salestrackercrm.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-pill"
+                  >
+                    Start Free
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                  <a href="#how" className="btn-ghost-pill">
+                    See how it works
+                  </a>
+                </motion.div>
+
+                {/* Credibility micro-line */}
+                <motion.p variants={v(fadeUp)} className="mt-5 text-[13px] font-medium text-iron">
+                  Built from 1000+ real cold calls.
+                </motion.p>
+
+                {/* Concrete capability hints (no invented stats) */}
+                <motion.div
+                  variants={v(staggerContainer)}
+                  className="mt-8 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start"
+                >
+                  {[
+                    "CSV lead import",
+                    "5-key outcome logging",
+                    "Google Meet booking",
+                    "WhatsApp follow-ups",
+                  ].map((item) => (
+                    <motion.span
+                      key={item}
+                      variants={v(fadeUp)}
+                      className="cursor-default rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate transition-colors duration-200 hover:border-violet/40 hover:bg-violet/5 hover:text-violet"
+                      {...(reduce ? {} : { whileHover: { y: -3, scale: 1.05 } })}
+                      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                    >
+                      {item}
+                    </motion.span>
+                  ))}
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+
+          {/* Right: hero visual — screenshot enters last, then badges pop in */}
           <motion.div
             variants={v(staggerContainer)}
             initial="hidden"
             animate="visible"
-            className="relative"
+            transition={{ delayChildren: 0.55, staggerChildren: 0.09 }}
+            {...(reduce ? {} : { style: { y: mockY, scale: mockScale } })}
           >
-            <motion.div variants={v(staggerContainer)}>
-              <motion.div variants={v(heroWordContainer)}>
-                <motion.span variants={v(heroWord)} className="inline-block">
-                  <span className="section-eyebrow block">Built for outbound, not busywork</span>
-                </motion.span>
-              </motion.div>
-
-              {/* Headline: brand + gradient typewriter accent */}
-              <motion.h1
-                variants={v(heroWordContainer)}
-                className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.08] tracking-[-0.03em]"
-              >
-                {["Adine", "makes", "the"].map((word, i) => (
-                  <motion.span
-                    key={i}
-                    variants={v(heroWord)}
-                    className="inline-block whitespace-nowrap gradient-text"
-                  >
-                    {word}
-                    {i < 2 && <span className="mx-[0.22em]">&nbsp;</span>}
-                  </motion.span>
-                ))}
-                <TypewriterAccent reduce={reduce} />
-              </motion.h1>
-
-              <motion.p
-                variants={v(fadeUp)}
-                className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate"
-              >
-                One keypress after every hang-up logs the call, queues the next lead, and schedules
-                the follow-up — the moment that used to kill your momentum just ends.
-              </motion.p>
-
-              <motion.div
-                variants={v(fadeUp)}
-                className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
-              >
-                <a
-                  href="https://salestrackercrm.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-pill"
-                >
-                  Start Free
-                  <ArrowRight size={16} aria-hidden="true" />
-                </a>
-                <a href="#how" className="btn-ghost-pill">
-                  See how it works
-                </a>
-              </motion.div>
-
-              {/* Credibility micro-line */}
-              <motion.p variants={v(fadeUp)} className="mt-5 text-[13px] font-medium text-iron">
-                Built from 1000+ real cold calls.
-              </motion.p>
-
-              {/* Concrete capability hints (no invented stats) */}
-              <motion.div
-                variants={v(staggerContainer)}
-                className="mt-8 flex flex-wrap items-center justify-center gap-2.5"
-              >
-                {[
-                  "CSV lead import",
-                  "5-key outcome logging",
-                  "Google Meet booking",
-                  "WhatsApp follow-ups",
-                ].map((item) => (
-                  <motion.span
-                    key={item}
-                    variants={v(fadeUp)}
-                    className="cursor-default rounded-full border border-pebble bg-card px-4 py-1.5 text-[13px] font-medium text-slate transition-colors duration-200 hover:border-violet/40 hover:bg-violet/5 hover:text-violet"
-                    {...(reduce ? {} : { whileHover: { y: -3, scale: 1.05 } })}
-                    transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                  >
-                    {item}
-                  </motion.span>
-                ))}
-              </motion.div>
+            <motion.div
+              variants={v(badgePop)}
+              className="relative mx-auto mt-12 w-full max-w-[640px] lg:mt-0"
+            >
+              <CallSessionMock reduce={reduce} />
+              <FloatingBadges reduce={reduce} />
             </motion.div>
           </motion.div>
-        </motion.div>
-
-        {/* Hero visual: mock card enters last, then badges pop in */}
-        <motion.div
-          variants={v(staggerContainer)}
-          initial="hidden"
-          animate="visible"
-          transition={{ delayChildren: 0.55, staggerChildren: 0.09 }}
-          {...(reduce ? {} : { style: { y: mockY, scale: mockScale } })}
-        >
-          <motion.div variants={v(badgePop)} className="relative mx-auto max-w-[640px]">
-            <CallSessionMock reduce={reduce} />
-            <FloatingBadges reduce={reduce} />
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
