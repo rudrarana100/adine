@@ -691,139 +691,68 @@ function AbstractArtwork({
   compact?: boolean;
 }) {
   const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0]!;
-  const dots = Array.from({ length: 18 }, (_, i) => ({
-    x: 12 + ((i * 37) % 76),
-    y: 14 + ((i * 53) % 70),
-    size: 3 + (i % 3),
-    delay: (i % 6) * 0.32,
-  }));
+  const progress = reduce ? 1 : 0.18 + active * 0.16;
+  const nodes = [
+    { x: 74, y: 420 },
+    { x: 130, y: 334 },
+    { x: 94, y: 248 },
+    { x: 180, y: 174 },
+    { x: 276, y: 130 },
+    { x: 322, y: 72 },
+  ];
+  const focus = nodes[active] ?? nodes[0]!;
 
   return (
     <div
-      className={`relative isolate overflow-hidden rounded-[32px] border border-white/70 bg-white/35 shadow-card backdrop-blur-sm ${compact ? "h-[230px]" : "h-[min(700px,calc(100svh-132px))] min-h-[430px]"}`}
-      aria-label="Abstract animated flow artwork"
+      className={`relative isolate overflow-hidden ${compact ? "h-[230px]" : "h-[min(650px,calc(100svh-132px))] min-h-[390px]"}`}
+      aria-label="Progressive workflow route"
     >
-      <motion.div
-        key={`wash-${active}`}
-        className="absolute -inset-24 rounded-full opacity-70"
-        style={{
-          background: `radial-gradient(circle at 32% 35%, ${palette[1]} 0%, transparent 55%), radial-gradient(circle at 76% 70%, ${palette[2]} 0%, transparent 54%)`,
-        }}
-        initial={reduce ? { opacity: 0.7, scale: 1 } : { opacity: 0, scale: 0.88 }}
-        animate={{ opacity: 0.7, scale: 1.05 }}
-        transition={{ duration: reduce ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
-      />
-      <motion.div
-        className="absolute left-[16%] top-[18%] h-[44%] w-[54%] rounded-full opacity-90 blur-[1px]"
-        style={{ background: `linear-gradient(135deg, ${palette[0]}, ${palette[1]})` }}
-        animate={
-          reduce ? { rotate: 0, scale: 1 } : { rotate: [0, 8, -3, 0], scale: [1, 1.08, 0.98, 1] }
-        }
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute -bottom-[10%] -left-[8%] h-[45%] w-[52%] rounded-full opacity-55 blur-[18px]"
-        style={{ background: `linear-gradient(145deg, ${palette[2]}, ${palette[1]})` }}
-        animate={
-          reduce
-            ? { x: 0, y: 0, scale: 1 }
-            : { x: [0, 18, -8, 0], y: [0, -12, 8, 0], scale: [1, 1.12, 0.96, 1] }
-        }
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-      />
-      <motion.div
-        className="absolute right-[12%] bottom-[17%] h-[18%] w-[22%] rounded-full opacity-75 blur-[9px]"
-        style={{ background: palette[0] }}
-        animate={reduce ? { scale: 1 } : { scale: [1, 1.2, 0.92, 1], opacity: [0.55, 0.8, 0.55] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-      />
-      <motion.div
-        className="absolute right-[8%] top-[12%] h-[36%] w-[34%] rounded-full border border-white/55 opacity-70"
-        style={{ borderColor: `${palette[0]}55` }}
-        animate={reduce ? { rotate: 0 } : { rotate: [0, 360] }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.svg
-        className="absolute inset-[13%] h-[74%] w-[74%] overflow-visible opacity-70"
-        viewBox="0 0 300 300"
-        fill="none"
-        aria-hidden="true"
-        animate={reduce ? {} : { rotate: [0, -360] }}
-        transition={{ duration: 38, repeat: Infinity, ease: "linear" }}
-      >
-        <motion.ellipse
-          cx="150"
-          cy="150"
-          rx="132"
-          ry="78"
-          stroke={palette[0]}
-          strokeOpacity=".28"
-          strokeWidth="1.5"
-          transform="rotate(-28 150 150)"
-        />
-        <motion.ellipse
-          cx="150"
-          cy="150"
-          rx="106"
-          ry="54"
-          stroke={palette[0]}
-          strokeOpacity=".18"
-          strokeWidth="1"
-          transform="rotate(38 150 150)"
+      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 500" fill="none" aria-hidden="true">
+        <path
+          d="M74 420C64 378 152 367 130 334C105 296 70 285 94 248C119 209 207 212 180 174C153 136 283 159 276 130C269 101 309 94 322 72"
+          stroke="#cfd4e7"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          strokeDasharray="2 8"
         />
         <motion.path
-          d="M20 191C88 122 152 238 280 104"
+          d="M74 420C64 378 152 367 130 334C105 296 70 285 94 248C119 209 207 212 180 174C153 136 283 159 276 130C269 101 309 94 322 72"
+          pathLength={1}
           stroke={palette[0]}
-          strokeOpacity=".32"
-          strokeWidth="1.5"
-          strokeDasharray="3 9"
-        />
-        <motion.path
-          d="M12 90C76 260 184 14 292 202"
-          stroke={palette[1]}
-          strokeOpacity=".6"
+          strokeOpacity=".7"
           strokeWidth="2"
           strokeLinecap="round"
-          strokeDasharray="1 13"
-          initial={reduce ? { pathLength: 1, opacity: 0.6 } : { pathLength: 0, opacity: 0 }}
-          animate={
-            reduce
-              ? { pathLength: 1, opacity: 0.6 }
-              : { pathLength: [0, 1, 1], opacity: [0, 0.75, 0.2] }
-          }
-          transition={{ duration: 4.5, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
+          strokeDasharray="0.015 0.035"
+          initial={reduce ? { pathLength: 1, opacity: 0.7 } : { pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: progress, opacity: reduce ? 0.7 : 0.72 }}
+          transition={{ duration: reduce ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
         />
-      </motion.svg>
-      {dots.map((dot, i) => (
-        <motion.span
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            left: `${dot.x}%`,
-            top: `${dot.y}%`,
-            width: dot.size,
-            height: dot.size,
-            backgroundColor: i % 3 === 0 ? palette[0] : palette[1],
-          }}
-          animate={
-            reduce
-              ? { opacity: 0.55 }
-              : { opacity: [0.2, 0.8, 0.2], y: [0, -8, 0], scale: [0.8, 1.15, 0.8] }
-          }
-          transition={{
-            duration: 4 + (i % 4),
-            delay: dot.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+        {nodes.map((node, i) => {
+          const reached = i <= active;
+          return (
+            <g key={i}>
+              <motion.circle
+                cx={node.x}
+                cy={node.y}
+                r={reached ? 7 : 5}
+                fill={reached ? `${palette[1]}55` : "#ffffff"}
+                stroke={reached ? palette[0] : "#cfd4e7"}
+                strokeWidth={reached ? 1.5 : 1}
+                animate={reduce || !reached ? { scale: 1 } : { scale: [1, 1.2, 1] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.12 }}
+              />
+              {reached && <circle cx={node.x} cy={node.y} r="2" fill={palette[0]} />}
+            </g>
+          );
+        })}
+        <motion.circle
+          r="4"
+          fill={palette[0]}
+          initial={false}
+          animate={{ cx: focus.x, cy: focus.y }}
+          transition={{ duration: reduce ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] }}
         />
-      ))}
-      <div className="absolute inset-x-8 bottom-8 flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.22em] text-ink/40">
-        <span>Continuous flow</span>
-        <span className="flex items-center gap-2">
-          <LiveDot reduce={reduce} className="bg-violet" /> Live
-        </span>
-      </div>
+      </svg>
     </div>
   );
 }
@@ -842,7 +771,7 @@ function DesktopWalkthrough({
     <div className="relative">
       {/* The stage stays pinned below the fixed navigation while the native
           scroll track advances the card deck. */}
-      <div className="sticky top-[92px] z-10 -mb-[calc(100svh-92px)] grid h-[calc(100svh-92px)] grid-cols-[48px_minmax(0,7fr)_minmax(0,8fr)] gap-8 overflow-hidden lg:gap-14">
+      <div className="sticky top-[92px] z-10 grid h-[calc(100svh-92px)] grid-cols-[48px_minmax(0,7fr)_minmax(0,8fr)] gap-8 overflow-hidden lg:gap-14">
         {/* Continuous progress rail beside the card deck. */}
         <div className="relative flex items-start justify-center pt-[20vh]">
           <div className="relative h-[300px] w-[3px] overflow-hidden rounded-full bg-pebble">
@@ -860,7 +789,7 @@ function DesktopWalkthrough({
         </div>
         {/* Left: the card "stack" — all six sit on top of each other and the
             active one rises forward as the scroll advances. */}
-        <div className="mx-auto flex w-full max-w-[620px] flex-col justify-start pt-[16vh]">
+        <div className="mx-auto flex w-full max-w-[620px] flex-col justify-start pt-[10vh]">
           <div className="mb-7 flex items-center gap-2.5">
             <span className="text-[13px] font-bold tabular-nums text-violet">
               {STEPS[active]?.number ?? ""}
@@ -989,7 +918,10 @@ export default function HowItWorksAdine() {
         <SectionHeading
           eyebrow="How It Works"
           title="From a lead on the map to a deal in the pipeline"
-          subtitle="Six steps. One continuous flow — scrape, build, call, log, book, close — with nothing left to remember."
+          subtitle="Six steps. One flow: scrape, build, call, log, book, close."
+          maxWidthClass="max-w-[650px]"
+          titleClassName="mt-3 text-[clamp(30px,3.3vw,42px)] font-light leading-[1.1] tracking-[-0.025em] text-ink"
+          subtitleClassName="mt-3 text-[16px] font-light leading-[1.5] text-slate"
         />
 
         {isDesktop ? (

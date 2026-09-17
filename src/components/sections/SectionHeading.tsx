@@ -9,12 +9,18 @@ export default function SectionHeading({
   subtitle,
   align = "center",
   viewportAmount = 0.3,
+  maxWidthClass = "max-w-[720px]",
+  titleClassName,
+  subtitleClassName,
 }: {
   eyebrow: string;
   title: ReactNode;
   subtitle?: ReactNode;
   align?: "center" | "left";
   viewportAmount?: number;
+  maxWidthClass?: string;
+  titleClassName?: string;
+  subtitleClassName?: string;
 }) {
   const v = useVariants();
   const alignment = align === "center" ? "text-center mx-auto" : "text-left";
@@ -25,21 +31,24 @@ export default function SectionHeading({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: viewportAmount }}
-      className={`max-w-[720px] ${alignment}`}
+      className={`${maxWidthClass} ${alignment}`}
     >
       <motion.span variants={v(fadeUp)} className="section-eyebrow block">
         {eyebrow}
       </motion.span>
       <motion.h2
         variants={v(fadeUp)}
-        className="mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink"
+        className={
+          titleClassName ??
+          "mt-4 text-[clamp(28px,3.5vw,44px)] font-light leading-[1.15] tracking-[-0.02em] text-ink"
+        }
       >
         {title}
       </motion.h2>
       {subtitle && (
         <motion.p
           variants={v(fadeUp)}
-          className="mt-4 text-[17px] font-light leading-[1.6] text-slate"
+          className={subtitleClassName ?? "mt-4 text-[17px] font-light leading-[1.6] text-slate"}
         >
           {subtitle}
         </motion.p>
