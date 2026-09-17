@@ -691,7 +691,7 @@ function AbstractArtwork({
   reduce: boolean;
   compact?: boolean;
 }) {
-  const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0];
+  const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0]!;
   const dots = Array.from({ length: 18 }, (_, i) => ({
     x: 12 + ((i * 37) % 76),
     y: 14 + ((i * 53) % 70),
@@ -813,7 +813,7 @@ function DesktopWalkthrough({
       {/* The stage pins at the top of the viewport and stays put; the track
           below (six full viewports) is what the page actually scrolls through,
           so only the cards/scenes appear to advance. */}
-      <div className="sticky top-0 grid h-svh grid-cols-[auto_minmax(0,7fr)_minmax(0,8fr)] gap-10 lg:gap-16 overflow-hidden">
+      <div className="sticky top-0 z-10 -mb-[100svh] grid h-svh grid-cols-[auto_minmax(0,7fr)_minmax(0,8fr)] gap-10 overflow-hidden lg:gap-16">
         {/* Vertical progress rail */}
         <div className="relative flex w-11 flex-col items-center justify-center">
           <div className="relative h-[320px] w-[3px] overflow-hidden rounded-full bg-pebble">
