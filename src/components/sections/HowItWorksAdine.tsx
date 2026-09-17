@@ -853,6 +853,10 @@ function DesktopWalkthrough({
                   scale: active === i ? 1 : 0.94,
                   rotateX: active === i ? 0 : 5,
                   filter: active === i ? "blur(0px)" : "blur(2px)",
+                  // Keep the active card above the receded deck. Without an
+                  // explicit stacking order, later inactive cards paint over
+                  // the active card and make its copy look washed out.
+                  zIndex: active === i ? 20 : i < active ? 1 : 0,
                 }}
                 transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                 aria-hidden={active !== i}
