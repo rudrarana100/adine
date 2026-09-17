@@ -800,34 +800,14 @@ function AbstractArtwork({
 
 /* ── Desktop: pinned full-viewport stage, only cards/scenes advance ──── */
 
-function DesktopWalkthrough({
-  active,
-  setCardRef,
-}: {
-  active: number;
-  setCardRef: (el: HTMLDivElement | null, i: number) => void;
-}) {
+function DesktopWalkthrough({ active }: { active: number }) {
   const reduce = useReducedMotion() ?? false;
   return (
     <div className="relative">
       {/* The stage pins at the top of the viewport and stays put; the track
           below (six full viewports) is what the page actually scrolls through,
           so only the cards/scenes appear to advance. */}
-      <div className="sticky top-0 z-10 -mb-[100svh] grid h-svh grid-cols-[auto_minmax(0,7fr)_minmax(0,8fr)] gap-10 overflow-hidden lg:gap-16">
-        {/* Vertical progress rail */}
-        <div className="relative flex w-11 flex-col items-center justify-center">
-          <div className="relative h-[320px] w-[3px] overflow-hidden rounded-full bg-pebble">
-            <motion.div
-              className="absolute left-0 top-0 h-full w-full origin-top rounded-full bg-gradient-to-b from-violet via-violet to-cornflower"
-              animate={{ scaleY: (active + 1) / STEPS.length }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-          </div>
-          <span className="mt-5 text-[13px] font-bold tabular-nums text-violet">
-            {STEPS[active]?.number ?? ""}
-          </span>
-        </div>
-
+      <div className="sticky top-0 z-10 grid h-svh grid-cols-[minmax(0,7fr)_minmax(0,8fr)] gap-10 overflow-hidden lg:gap-16">
         {/* Left: the card "stack" — all six sit on top of each other and the
             active one rises forward as the scroll advances. */}
         <div className="mx-auto flex w-full max-w-[560px] flex-col justify-center">
@@ -873,18 +853,6 @@ function DesktopWalkthrough({
         </div>
       </div>
 
-      {/* Scroll track: one full viewport per step. These sentinels give the
-          wrapper its height and drive `active` via the observer in the root. */}
-      <div className="pointer-events-none" aria-hidden="true">
-        {STEPS.map((step, i) => (
-          <div
-            key={step.number}
-            data-index={i}
-            ref={(el) => setCardRef(el, i)}
-            className="h-svh w-px"
-          />
-        ))}
-      </div>
     </div>
   );
 }
