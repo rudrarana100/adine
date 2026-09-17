@@ -895,7 +895,7 @@ export default function HowItWorksAdine() {
     const section = sectionRef.current;
     if (!section) return;
     const bounds = section.getBoundingClientRect();
-    const sectionIsPinned = bounds.top <= 120 && bounds.bottom >= window.innerHeight * 0.72;
+    const sectionIsPinned = bounds.top <= 180 && bounds.bottom >= window.innerHeight * 0.2;
     if (!sectionIsPinned) return;
 
     const direction = event.deltaY > 8 ? 1 : event.deltaY < -8 ? -1 : 0;
@@ -915,8 +915,8 @@ export default function HowItWorksAdine() {
     <section
       ref={sectionRef}
       id="how"
-      onWheel={handleWheel}
-      className="relative overflow-clip bg-canvas py-[96px]"
+      onWheelCapture={handleWheel}
+      className="relative bg-canvas py-[96px]"
     >
       {/* Animated backdrop: aurora + the same interactive mesh as the hero */}
       <Ambient className="absolute inset-0 overflow-hidden">
