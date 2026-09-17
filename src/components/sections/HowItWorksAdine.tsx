@@ -623,10 +623,10 @@ const STEPS: Step[] = [
 function StepCard({ step, active, reduce }: { step: Step; active: boolean; reduce: boolean }) {
   return (
     <motion.div
-      className={`relative flex gap-5 overflow-hidden rounded-[24px] border p-6 transition-colors duration-300 ${
+      className={`relative flex gap-6 overflow-hidden rounded-[26px] border p-7 transition-colors duration-300 ${
         active
-          ? "border-violet/25 bg-card shadow-elevated"
-          : "border-pebble bg-card/70 opacity-60 shadow-none"
+          ? "border-violet/25 bg-card shadow-[0_26px_70px_rgba(48,45,111,0.18)]"
+          : "border-pebble bg-card/70 shadow-none"
       }`}
       {...(!reduce ? { whileHover: { y: -3 } } : {})}
       transition={{ duration: 0.2 }}
@@ -644,7 +644,7 @@ function StepCard({ step, active, reduce }: { step: Step; active: boolean; reduc
       />
       <div className="relative">
         <div
-          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] text-[16px] font-bold transition-colors duration-300 ${
+          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] text-[16px] font-bold tracking-[-0.02em] transition-colors duration-300 ${
             active
               ? "bg-violet text-white shadow-pill"
               : "border border-pebble bg-canvas text-slate"
@@ -656,7 +656,7 @@ function StepCard({ step, active, reduce }: { step: Step; active: boolean; reduc
       <div className="relative min-w-0">
         <div className="flex items-center gap-2">
           <span
-            className={`flex h-9 w-9 items-center justify-center rounded-xl ${step.iconBg} ${step.iconTxt}`}
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] ${step.iconBg} ${step.iconTxt}`}
           >
             <AnimatedFeatureIcon name={step.icon} size={18} className={step.iconTxt} />
           </span>
@@ -722,6 +722,18 @@ function AbstractArtwork({
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
+        className="absolute -bottom-[10%] -left-[8%] h-[45%] w-[52%] rounded-full opacity-55 blur-[18px]"
+        style={{ background: `linear-gradient(145deg, ${palette[2]}, ${palette[1]})` }}
+        animate={reduce ? { x: 0, y: 0, scale: 1 } : { x: [0, 18, -8, 0], y: [0, -12, 8, 0], scale: [1, 1.12, 0.96, 1] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+      />
+      <motion.div
+        className="absolute right-[12%] bottom-[17%] h-[18%] w-[22%] rounded-full opacity-75 blur-[9px]"
+        style={{ background: palette[0] }}
+        animate={reduce ? { scale: 1 } : { scale: [1, 1.2, 0.92, 1], opacity: [0.55, 0.8, 0.55] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+      />
+      <motion.div
         className="absolute right-[8%] top-[12%] h-[36%] w-[34%] rounded-full border border-white/55 opacity-70"
         style={{ borderColor: `${palette[0]}55` }}
         animate={reduce ? { rotate: 0 } : { rotate: [0, 360] }}
@@ -761,6 +773,17 @@ function AbstractArtwork({
           strokeOpacity=".32"
           strokeWidth="1.5"
           strokeDasharray="3 9"
+        />
+        <motion.path
+          d="M12 90C76 260 184 14 292 202"
+          stroke={palette[1]}
+          strokeOpacity=".6"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeDasharray="1 13"
+          initial={reduce ? { pathLength: 1, opacity: 0.6 } : { pathLength: 0, opacity: 0 }}
+          animate={reduce ? { pathLength: 1, opacity: 0.6 } : { pathLength: [0, 1, 1], opacity: [0, 0.75, 0.2] }}
+          transition={{ duration: 4.5, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
         />
       </motion.svg>
       {dots.map((dot, i) => (
@@ -809,12 +832,27 @@ function DesktopWalkthrough({
   const reduce = useReducedMotion() ?? false;
   return (
     <div className="relative">
-      {/* The stage stays pinned while the section-level wheel handler advances
-          the card deck in place. */}
-      <div className="sticky top-0 z-10 -mb-[100svh] grid h-svh grid-cols-[minmax(0,7fr)_minmax(0,8fr)] gap-10 overflow-hidden lg:gap-16">
+      {/* The stage stays pinned below the fixed navigation while the native
+          scroll track advances the card deck. */}
+      <div className="sticky top-[92px] z-10 -mb-[calc(100svh-92px)] grid h-[calc(100svh-92px)] grid-cols-[48px_minmax(0,7fr)_minmax(0,8fr)] gap-8 overflow-hidden lg:gap-14">
+        {/* Continuous progress rail beside the card deck. */}
+        <div className="relative flex items-start justify-center pt-[20vh]">
+          <div className="relative h-[300px] w-[3px] overflow-hidden rounded-full bg-pebble">
+            <motion.div
+              className="absolute inset-x-0 top-0 h-full origin-top rounded-full bg-gradient-to-b from-violet via-violet to-cornflower"
+              animate={{ scaleY: (active + 1) / STEPS.length }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            />
+            <motion.span
+              className="absolute left-1/2 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-white bg-violet shadow-pill"
+              animate={{ top: `${((active + 0.5) / STEPS.length) * 100}%` }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
+        </div>
         {/* Left: the card "stack" — all six sit on top of each other and the
             active one rises forward as the scroll advances. */}
-        <div className="mx-auto flex w-full max-w-[560px] flex-col justify-center">
+        <div className="mx-auto flex w-full max-w-[620px] flex-col justify-start pt-[16vh]">
           <div className="mb-7 flex items-center gap-2.5">
             <span className="text-[13px] font-bold tabular-nums text-violet">
               {STEPS[active]?.number ?? ""}
@@ -825,22 +863,21 @@ function DesktopWalkthrough({
             </span>
           </div>
 
-          <div className="relative h-[380px]" style={{ perspective: 1200 }}>
+          <div className="relative h-[410px]" style={{ perspective: 1200 }}>
             {STEPS.map((step, i) => (
               <motion.div
                 key={step.number}
                 className="absolute inset-x-0 top-0"
                 initial={false}
                 animate={{
-                  opacity: active === i ? 1 : 0.45,
-                  y: active === i ? 0 : i < active ? -30 : 30,
-                  scale: active === i ? 1 : 0.94,
+                  opacity: active === i ? 1 : 0,
+                  y: active === i ? 0 : i < active ? -34 : 34,
+                  scale: active === i ? 1 : 0.96,
                   rotateX: active === i ? 0 : 5,
-                  filter: active === i ? "blur(0px)" : "blur(2px)",
-                  // Keep the active card above the receded deck. Without an
-                  // explicit stacking order, later inactive cards paint over
-                  // the active card and make its copy look washed out.
-                  zIndex: active === i ? 20 : i < active ? 1 : 0,
+                  filter: active === i ? "blur(0px)" : "blur(1px)",
+                  zIndex: active === i ? 20 : 0,
+                  visibility: active === i ? "visible" : "hidden",
+                  pointerEvents: active === i ? "auto" : "none",
                 }}
                 transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                 aria-hidden={active !== i}
