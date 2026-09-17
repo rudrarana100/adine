@@ -16,6 +16,7 @@ import { AuroraField } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 import { Ambient } from "@/components/backgrounds/Ambient";
 import SectionHeading from "@/components/sections/SectionHeading";
+import { useVariants } from "@/lib/motion";
 
 const DESKTOP_MQ = "(min-width: 1024px)";
 
@@ -670,6 +671,133 @@ function StepCard({ step, active, reduce }: { step: Step; active: boolean; reduc
   );
 }
 
+/* ── Abstract pinned artwork ────────────────────────────────────────── */
+
+const ART_PALETTES = [
+  ["#6161ff", "#b9b8ff", "#d8f5ee"],
+  ["#6d70ff", "#b9e8dc", "#ffd7b5"],
+  ["#5259e8", "#b8ddff", "#e0d5ff"],
+  ["#7564ff", "#f0c8e8", "#bdeee1"],
+  ["#5b6cff", "#ffd1a8", "#c9d8ff"],
+  ["#4f62df", "#b9e4f0", "#e7ceff"],
+];
+
+function AbstractArtwork({
+  active,
+  reduce,
+  compact = false,
+}: {
+  active: number;
+  reduce: boolean;
+  compact?: boolean;
+}) {
+  const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0];
+  const dots = Array.from({ length: 18 }, (_, i) => ({
+    x: 12 + ((i * 37) % 76),
+    y: 14 + ((i * 53) % 70),
+    size: 3 + (i % 3),
+    delay: (i % 6) * 0.32,
+  }));
+
+  return (
+    <div
+      className={`relative isolate overflow-hidden rounded-[32px] border border-white/70 bg-white/35 shadow-card backdrop-blur-sm ${compact ? "h-[230px]" : "h-[min(560px,68svh)] min-h-[390px]"}`}
+      aria-label="Abstract animated flow artwork"
+    >
+      <motion.div
+        key={`wash-${active}`}
+        className="absolute -inset-24 rounded-full opacity-70"
+        style={{
+          background: `radial-gradient(circle at 32% 35%, ${palette[1]} 0%, transparent 55%), radial-gradient(circle at 76% 70%, ${palette[2]} 0%, transparent 54%)`,
+        }}
+        initial={reduce ? { opacity: 0.7, scale: 1 } : { opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 0.7, scale: 1.05 }}
+        transition={{ duration: reduce ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <motion.div
+        className="absolute left-[16%] top-[18%] h-[44%] w-[54%] rounded-full opacity-90 blur-[1px]"
+        style={{ background: `linear-gradient(135deg, ${palette[0]}, ${palette[1]})` }}
+        animate={
+          reduce ? { rotate: 0, scale: 1 } : { rotate: [0, 8, -3, 0], scale: [1, 1.08, 0.98, 1] }
+        }
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute right-[8%] top-[12%] h-[36%] w-[34%] rounded-full border border-white/55 opacity-70"
+        style={{ borderColor: `${palette[0]}55` }}
+        animate={reduce ? { rotate: 0 } : { rotate: [0, 360] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.svg
+        className="absolute inset-[13%] h-[74%] w-[74%] overflow-visible opacity-70"
+        viewBox="0 0 300 300"
+        fill="none"
+        aria-hidden="true"
+        animate={reduce ? {} : { rotate: [0, -360] }}
+        transition={{ duration: 38, repeat: Infinity, ease: "linear" }}
+      >
+        <motion.ellipse
+          cx="150"
+          cy="150"
+          rx="132"
+          ry="78"
+          stroke={palette[0]}
+          strokeOpacity=".28"
+          strokeWidth="1.5"
+          transform="rotate(-28 150 150)"
+        />
+        <motion.ellipse
+          cx="150"
+          cy="150"
+          rx="106"
+          ry="54"
+          stroke={palette[0]}
+          strokeOpacity=".18"
+          strokeWidth="1"
+          transform="rotate(38 150 150)"
+        />
+        <motion.path
+          d="M20 191C88 122 152 238 280 104"
+          stroke={palette[0]}
+          strokeOpacity=".32"
+          strokeWidth="1.5"
+          strokeDasharray="3 9"
+        />
+      </motion.svg>
+      {dots.map((dot, i) => (
+        <motion.span
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            left: `${dot.x}%`,
+            top: `${dot.y}%`,
+            width: dot.size,
+            height: dot.size,
+            backgroundColor: i % 3 === 0 ? palette[0] : palette[1],
+          }}
+          animate={
+            reduce
+              ? { opacity: 0.55 }
+              : { opacity: [0.2, 0.8, 0.2], y: [0, -8, 0], scale: [0.8, 1.15, 0.8] }
+          }
+          transition={{
+            duration: 4 + (i % 4),
+            delay: dot.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+      <div className="absolute inset-x-8 bottom-8 flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.22em] text-ink/40">
+        <span>Continuous flow</span>
+        <span className="flex items-center gap-2">
+          <LiveDot reduce={reduce} className="bg-violet" /> Live
+        </span>
+      </div>
+    </div>
+  );
+}
+
 /* ── Desktop: pinned full-viewport stage, only cards/scenes advance ──── */
 
 function DesktopWalkthrough({
@@ -735,26 +863,9 @@ function DesktopWalkthrough({
           </div>
         </div>
 
-        {/* Right: pinned scene that swaps per active step */}
+        {/* Right: pinned abstract artwork that reacts to active step */}
         <div className="relative mx-auto w-full max-w-[520px]">
-          <div className="relative h-[560px] w-full">
-            {STEPS.map((step, i) => (
-              <motion.div
-                key={step.number}
-                className="absolute inset-0"
-                initial={false}
-                animate={{
-                  opacity: active === i ? 1 : 0,
-                  scale: active === i ? 1 : 0.95,
-                  zIndex: active === i ? 1 : 0,
-                }}
-                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                aria-hidden={active !== i}
-              >
-                <step.Visual reduce={reduce} />
-              </motion.div>
-            ))}
-          </div>
+          <AbstractArtwork active={active} reduce={reduce} />
         </div>
       </div>
 
@@ -786,8 +897,8 @@ function MobileWalkthrough() {
           <div key={step.number} className="pl-6">
             <StepCard step={step} active={false} reduce={reduce} />
             <div className="relative mt-5 w-full max-w-[520px]">
-              <div className="mx-auto">
-                <step.Visual reduce={reduce} />
+              <div className="mx-auto px-4">
+                <AbstractArtwork active={i} reduce={reduce} compact />
               </div>
               <span className="pointer-events-none absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[13px] font-bold tabular-nums text-violet">
                 {step.number}
