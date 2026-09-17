@@ -799,13 +799,19 @@ function AbstractArtwork({
 
 /* ── Desktop: pinned full-viewport stage, only cards/scenes advance ──── */
 
-function DesktopWalkthrough({ active }: { active: number }) {
+function DesktopWalkthrough({
+  active,
+  setCardRef,
+}: {
+  active: number;
+  setCardRef: (el: HTMLDivElement | null, i: number) => void;
+}) {
   const reduce = useReducedMotion() ?? false;
   return (
     <div className="relative">
       {/* The stage stays pinned while the section-level wheel handler advances
           the card deck in place. */}
-      <div className="sticky top-0 z-10 grid h-svh grid-cols-[minmax(0,7fr)_minmax(0,8fr)] gap-10 overflow-hidden lg:gap-16">
+      <div className="sticky top-0 z-10 -mb-[100svh] grid h-svh grid-cols-[minmax(0,7fr)_minmax(0,8fr)] gap-10 overflow-hidden lg:gap-16">
         {/* Left: the card "stack" — all six sit on top of each other and the
             active one rises forward as the scroll advances. */}
         <div className="mx-auto flex w-full max-w-[560px] flex-col justify-center">
@@ -849,6 +855,20 @@ function DesktopWalkthrough({ active }: { active: number }) {
         <div className="relative mx-auto w-full max-w-[520px]">
           <AbstractArtwork active={active} reduce={reduce} />
         </div>
+      </div>
+
+      {/* One full viewport marker per step. The markers scroll underneath the
+          pinned stage, so the active card advances naturally as each card's
+          viewport of scroll distance is completed. */}
+      <div className="pointer-events-none" aria-hidden="true">
+        {STEPS.map((step, i) => (
+          <div
+            key={step.number}
+            data-index={i}
+            ref={(el) => setCardRef(el, i)}
+            className="h-svh w-px"
+          />
+        ))}
       </div>
     </div>
   );
