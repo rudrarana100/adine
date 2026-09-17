@@ -681,6 +681,17 @@ const ART_PALETTES = [
   ["#4f62df", "#b9e4f0", "#e7ceff"],
 ];
 
+const FLOW_PATH =
+  "M92 388 C54 350 74 286 128 300 C183 316 150 246 205 228 C256 212 220 154 276 148 C322 142 318 100 288 72";
+const FLOW_FALLBACK_POINTS = [
+  { x: 92, y: 388 },
+  { x: 107, y: 298 },
+  { x: 164, y: 278 },
+  { x: 223, y: 212 },
+  { x: 274, y: 148 },
+  { x: 288, y: 72 },
+];
+
 function AbstractArtwork({
   active,
   reduce,
@@ -691,86 +702,120 @@ function AbstractArtwork({
   compact?: boolean;
 }) {
   const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0]!;
-  const progress = reduce ? 1 : 0.18 + active * 0.16;
-  const nodes = [
-    { x: 322, y: 72 },
-    { x: 276, y: 130 },
-    { x: 180, y: 174 },
-    { x: 94, y: 248 },
-    { x: 130, y: 334 },
-    { x: 74, y: 420 },
-  ];
+  const progress = reduce ? 1 : Math.max(0.015, active / 5);
+  const pathRef = useRef<SVGPathElement>(null);
+  const [nodes, setNodes] = useState(FLOW_FALLBACK_POINTS);
+  const [routeLength, setRouteLength] = useState(1000);
   const iconNames: FeatureIconName[] = ["map", "sheet", "phone", "command", "meet", "kanban"];
+
+  useEffect(() => {
+    const path = pathRef.current;
+    if (!path) return;
+    const total = path.getTotalLength();
+    setRouteLength(total);
+    const measured = Array.from({ length: 6 }, (_, i) => {
+      const point = path.getPointAtLength(total * (i / 5));
+      return { x: point.x, y: point.y };
+    });
+    setNodes(measured);
+  }, []);
 
   return (
     <div
       className={`relative isolate overflow-hidden ${compact ? "h-[230px]" : "h-[min(650px,calc(100svh-132px))] min-h-[390px]"}`}
       aria-label="Progressive workflow route"
     >
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 400 500"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M322 72C309 94 269 101 276 130C283 159 153 136 180 174C207 212 119 209 94 248C70 285 105 296 130 334C152 367 64 378 74 420"
-          stroke="#cfd4e7"
-          strokeWidth="1.25"
-          strokeLinecap="round"
-          strokeDasharray="2 8"
-        />
-        <motion.path
-          d="M322 72C309 94 269 101 276 130C283 159 153 136 180 174C207 212 119 209 94 248C70 285 105 296 130 334C152 367 64 378 74 420"
-          pathLength={1}
-          stroke={palette[0]}
-          strokeOpacity=".7"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeDasharray="0.015 0.035"
-          initial={reduce ? { pathLength: 1, opacity: 0.7 } : { pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: progress, opacity: reduce ? 0.7 : 0.72 }}
-          transition={{ duration: reduce ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
-        />
+      <div className="relative mx-auto h-full aspect-[4/5] max-w-full">
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 400 500"
+          fill="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id={`flow-gradient-${active}`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#6161ff" />
+              <stop offset="0.7" stopColor={palette[0]} />
+              <stop offset="1" stopColor={palette[1]} />
+            </linearGradient>
+          </defs>
+          <path
+            ref={pathRef}
+            d={FLOW_PATH}
+            stroke="#cfd4e7"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray="4 9"
+            strokeOpacity=".7"
+          />
+          <motion.path
+            d={FLOW_PATH}
+            stroke={palette[0]}
+            strokeOpacity=".13"
+            strokeWidth="9"
+            strokeLinecap="round"
+            strokeDasharray={`${routeLength} ${routeLength}`}
+            initial={reduce ? { strokeDashoffset: 0 } : { strokeDashoffset: routeLength }}
+            animate={{ strokeDashoffset: routeLength * (1 - progress) }}
+            transition={{ duration: reduce ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.path
+            d={FLOW_PATH}
+            stroke={`url(#flow-gradient-${active})`}
+            strokeOpacity="1"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeDasharray={`${routeLength} ${routeLength}`}
+            initial={
+              reduce
+                ? { strokeDashoffset: 0, opacity: 0.9 }
+                : { strokeDashoffset: routeLength, opacity: 0 }
+            }
+            animate={{ strokeDashoffset: routeLength * (1 - progress), opacity: reduce ? 0.9 : 1 }}
+            transition={{ duration: reduce ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </svg>
         {nodes.map((node, i) => {
-          const reached = i <= active;
+          const isActive = i === active;
+          const reached = i < active;
           return (
-            <g key={i}>
-              <motion.circle
-                cx={node.x}
-                cy={node.y}
-                r={reached ? 7 : 5}
-                fill={reached ? `${palette[1]}55` : "#ffffff"}
-                stroke={reached ? palette[0] : "#cfd4e7"}
-                strokeWidth={reached ? 1.5 : 1}
-                animate={reduce || !reached ? { r: reached ? 7 : 5 } : { r: [7, 8.5, 7] }}
-                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.12 }}
-              />
-              {reached && <circle cx={node.x} cy={node.y} r="2" fill={palette[0]} />}
-            </g>
+            <span key={`node-${i}`}>
+              {isActive && (
+                <motion.span
+                  className="pointer-events-none absolute h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet/35"
+                  style={{ left: `${(node.x / 400) * 100}%`, top: `${(node.y / 500) * 100}%` }}
+                  initial={reduce ? { scale: 1, opacity: 0.35 } : { scale: 0.8, opacity: 0 }}
+                  animate={
+                    reduce
+                      ? { scale: 1, opacity: 0.35 }
+                      : { scale: [0.9, 1.25, 0.9], opacity: [0.5, 0, 0.5] }
+                  }
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                />
+              )}
+              <motion.span
+                className={`absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur-sm ${
+                  isActive
+                    ? "h-8 w-8 border-violet bg-violet text-white shadow-[0_8px_24px_rgba(97,97,255,0.3)]"
+                    : "h-6 w-6 border-pebble/80 bg-white/80 text-slate/60"
+                }`}
+                style={{ left: `${(node.x / 400) * 100}%`, top: `${(node.y / 500) * 100}%` }}
+                animate={{
+                  scale: isActive ? 1.16 : reached ? 1 : 0.96,
+                  opacity: isActive ? 1 : reached ? 0.65 : 0.52,
+                }}
+                transition={{ duration: reduce ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <AnimatedFeatureIcon
+                  name={iconNames[i]!}
+                  size={isActive ? 15 : 12}
+                  className={isActive ? "text-white" : "text-slate/60"}
+                />
+              </motion.span>
+            </span>
           );
         })}
-      </svg>
-      {nodes.map((node, i) => {
-        const reached = i <= active;
-        return (
-          <motion.span
-            key={`icon-${i}`}
-            className={`absolute flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border bg-white/80 backdrop-blur-sm ${
-              reached ? "border-violet/40" : "border-pebble/70"
-            }`}
-            style={{ left: `${(node.x / 400) * 100}%`, top: `${(node.y / 500) * 100}%` }}
-            animate={{ scale: active === i ? 1.12 : reached ? 0.94 : 0.82, opacity: reached ? 1 : 0.45 }}
-            transition={{ duration: reduce ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <AnimatedFeatureIcon
-              name={iconNames[i]!}
-              size={active === i ? 16 : 13}
-              className={reached ? "text-violet" : "text-slate/50"}
-            />
-          </motion.span>
-        );
-      })}
+      </div>
     </div>
   );
 }
@@ -925,7 +970,7 @@ export default function HowItWorksAdine() {
   }, [isDesktop]);
 
   return (
-    <section ref={sectionRef} id="how" className="relative bg-canvas py-[96px]">
+    <section ref={sectionRef} id="how" className="relative scroll-mt-[104px] bg-canvas py-[96px]">
       {/* Animated backdrop: aurora + the same interactive mesh as the hero */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <AuroraField />

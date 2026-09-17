@@ -53,14 +53,14 @@ export default function NavBarAdine() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4">
+    <header className="fixed inset-x-0 top-0 z-50 flex justify-center bg-canvas/92 px-4 pb-2 pt-4 backdrop-blur-sm">
       <div className="w-full max-w-[1080px]">
         <nav
           aria-label="Primary"
           className={`flex w-full items-center justify-between gap-4 rounded-[40px] px-6 py-3 transition-all duration-300 ${
             scrolled
               ? "border border-pebble/50 bg-card/90 shadow-card backdrop-blur-xl"
-              : "border border-transparent bg-transparent"
+              : "border border-white/70 bg-canvas/90 shadow-card backdrop-blur-xl"
           }`}
         >
           <a
