@@ -803,9 +803,8 @@ function DesktopWalkthrough({ active }: { active: number }) {
   const reduce = useReducedMotion() ?? false;
   return (
     <div className="relative">
-      {/* The stage pins at the top of the viewport and stays put; the track
-          below (six full viewports) is what the page actually scrolls through,
-          so only the cards/scenes appear to advance. */}
+      {/* The stage stays pinned while the section-level wheel handler advances
+          the card deck in place. */}
       <div className="sticky top-0 z-10 grid h-svh grid-cols-[minmax(0,7fr)_minmax(0,8fr)] gap-10 overflow-hidden lg:gap-16">
         {/* Left: the card "stack" — all six sit on top of each other and the
             active one rises forward as the scroll advances. */}
@@ -851,7 +850,6 @@ function DesktopWalkthrough({ active }: { active: number }) {
           <AbstractArtwork active={active} reduce={reduce} />
         </div>
       </div>
-
     </div>
   );
 }
@@ -914,7 +912,12 @@ export default function HowItWorksAdine() {
   };
 
   return (
-    <section ref={sectionRef} id="how" onWheel={handleWheel} className="relative overflow-hidden bg-canvas py-[96px]">
+    <section
+      ref={sectionRef}
+      id="how"
+      onWheel={handleWheel}
+      className="relative overflow-clip bg-canvas py-[96px]"
+    >
       {/* Animated backdrop: aurora + the same interactive mesh as the hero */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <AuroraField />
