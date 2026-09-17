@@ -693,30 +693,35 @@ function AbstractArtwork({
   const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0]!;
   const progress = reduce ? 1 : 0.18 + active * 0.16;
   const nodes = [
-    { x: 74, y: 420 },
-    { x: 130, y: 334 },
-    { x: 94, y: 248 },
-    { x: 180, y: 174 },
-    { x: 276, y: 130 },
     { x: 322, y: 72 },
+    { x: 276, y: 130 },
+    { x: 180, y: 174 },
+    { x: 94, y: 248 },
+    { x: 130, y: 334 },
+    { x: 74, y: 420 },
   ];
-  const focus = nodes[active] ?? nodes[0]!;
+  const iconNames: FeatureIconName[] = ["map", "sheet", "phone", "command", "meet", "kanban"];
 
   return (
     <div
       className={`relative isolate overflow-hidden ${compact ? "h-[230px]" : "h-[min(650px,calc(100svh-132px))] min-h-[390px]"}`}
       aria-label="Progressive workflow route"
     >
-      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 500" fill="none" aria-hidden="true">
+      <svg
+        className="absolute inset-0 h-full w-full"
+        viewBox="0 0 400 500"
+        fill="none"
+        aria-hidden="true"
+      >
         <path
-          d="M74 420C64 378 152 367 130 334C105 296 70 285 94 248C119 209 207 212 180 174C153 136 283 159 276 130C269 101 309 94 322 72"
+          d="M322 72C309 94 269 101 276 130C283 159 153 136 180 174C207 212 119 209 94 248C70 285 105 296 130 334C152 367 64 378 74 420"
           stroke="#cfd4e7"
           strokeWidth="1.25"
           strokeLinecap="round"
           strokeDasharray="2 8"
         />
         <motion.path
-          d="M74 420C64 378 152 367 130 334C105 296 70 285 94 248C119 209 207 212 180 174C153 136 283 159 276 130C269 101 309 94 322 72"
+          d="M322 72C309 94 269 101 276 130C283 159 153 136 180 174C207 212 119 209 94 248C70 285 105 296 130 334C152 367 64 378 74 420"
           pathLength={1}
           stroke={palette[0]}
           strokeOpacity=".7"
@@ -738,21 +743,34 @@ function AbstractArtwork({
                 fill={reached ? `${palette[1]}55` : "#ffffff"}
                 stroke={reached ? palette[0] : "#cfd4e7"}
                 strokeWidth={reached ? 1.5 : 1}
-                animate={reduce || !reached ? { scale: 1 } : { scale: [1, 1.2, 1] }}
+                animate={reduce || !reached ? { r: reached ? 7 : 5 } : { r: [7, 8.5, 7] }}
                 transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.12 }}
               />
               {reached && <circle cx={node.x} cy={node.y} r="2" fill={palette[0]} />}
             </g>
           );
         })}
-        <motion.circle
-          r="4"
-          fill={palette[0]}
-          initial={false}
-          animate={{ cx: focus.x, cy: focus.y }}
-          transition={{ duration: reduce ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] }}
-        />
       </svg>
+      {nodes.map((node, i) => {
+        const reached = i <= active;
+        return (
+          <motion.span
+            key={`icon-${i}`}
+            className={`absolute flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border bg-white/80 backdrop-blur-sm ${
+              reached ? "border-violet/40" : "border-pebble/70"
+            }`}
+            style={{ left: `${(node.x / 400) * 100}%`, top: `${(node.y / 500) * 100}%` }}
+            animate={{ scale: active === i ? 1.12 : reached ? 0.94 : 0.82, opacity: reached ? 1 : 0.45 }}
+            transition={{ duration: reduce ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <AnimatedFeatureIcon
+              name={iconNames[i]!}
+              size={active === i ? 16 : 13}
+              className={reached ? "text-violet" : "text-slate/50"}
+            />
+          </motion.span>
+        );
+      })}
     </div>
   );
 }
