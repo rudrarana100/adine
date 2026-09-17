@@ -907,44 +907,30 @@ export default function HowItWorksAdine() {
   const isDesktop = useIsDesktop();
 
   const sectionRef = useRef<HTMLElement>(null);
-  const wheelLockUntil = useRef(0);
   const [active, setActive] = useState(0);
-  const [isEngaged, setIsEngaged] = useState(false);
 
-  // Arm the viewport lock only while this section is meaningfully visible.
-  // This keeps normal page navigation intact before entering and after leaving.
+  // The markers run behind the sticky stage. This keeps the page's native
+  // scroll physics intact while the observer advances one card per viewport.
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
     if (!isDesktop) return;
-    const section = sectionRef.current;
-    if (!section) return;
+    const els = cardRefs.current.filter((el): el is HTMLDivElement => el !== null);
+    if (els.length === 0) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setIsEngaged(Boolean(entry?.isIntersecting && entry.intersectionRatio > 0.2)),
-      { threshold: [0, 0.2, 0.5] },
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const current = visible[0];
+        if (!current) return;
+        const idx = Number((current.target as HTMLDivElement).dataset["index"]);
+        if (!Number.isNaN(idx)) setActive(idx);
+      },
+      { rootMargin: "-42% 0px -42% 0px", threshold: 0 },
     );
-    observer.observe(section);
+    els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [isDesktop]);
-
-  // Native non-passive listener is intentional: React/browser wheel listeners
-  // may be passive in some environments, which would let the page move behind
-  // the card deck even after an event was prevented.
-  useEffect(() => {
-    if (!isDesktop || !isEngaged) return;
-    const onWheel = (event: globalThis.WheelEvent) => {
-      const direction = event.deltaY > 8 ? 1 : event.deltaY < -8 ? -1 : 0;
-      if (!direction) return;
-      const next = Math.max(0, Math.min(STEPS.length - 1, active + direction));
-      const locked = performance.now() < wheelLockUntil.current;
-      if (next === active && !locked) return;
-      event.preventDefault();
-      if (next !== active && !locked) {
-        setActive(next);
-        wheelLockUntil.current = performance.now() + 520;
-      }
-    };
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, [active, isDesktop, isEngaged]);
 
   return (
     <section ref={sectionRef} id="how" className="relative bg-canvas py-[96px]">
@@ -961,7 +947,16 @@ export default function HowItWorksAdine() {
           subtitle="Six steps. One continuous flow — scrape, build, call, log, book, close — with nothing left to remember."
         />
 
-        {isDesktop ? <DesktopWalkthrough active={active} /> : <MobileWalkthrough />}
+        {isDesktop ? (
+          <DesktopWalkthrough
+            active={active}
+            setCardRef={(el: HTMLDivElement | null, i: number) => {
+              cardRefs.current[i] = el;
+            }}
+          />
+        ) : (
+          <MobileWalkthrough />
+        )}
       </div>
     </section>
   );
