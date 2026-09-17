@@ -700,7 +700,7 @@ function AbstractArtwork({
 
   return (
     <div
-      className={`relative isolate overflow-hidden rounded-[32px] border border-white/70 bg-white/35 shadow-card backdrop-blur-sm ${compact ? "h-[230px]" : "h-[min(560px,68svh)] min-h-[390px]"}`}
+      className={`relative isolate overflow-hidden rounded-[32px] border border-white/70 bg-white/35 shadow-card backdrop-blur-sm ${compact ? "h-[230px]" : "h-[min(700px,calc(100svh-132px))] min-h-[430px]"}`}
       aria-label="Abstract animated flow artwork"
     >
       <motion.div
@@ -724,7 +724,11 @@ function AbstractArtwork({
       <motion.div
         className="absolute -bottom-[10%] -left-[8%] h-[45%] w-[52%] rounded-full opacity-55 blur-[18px]"
         style={{ background: `linear-gradient(145deg, ${palette[2]}, ${palette[1]})` }}
-        animate={reduce ? { x: 0, y: 0, scale: 1 } : { x: [0, 18, -8, 0], y: [0, -12, 8, 0], scale: [1, 1.12, 0.96, 1] }}
+        animate={
+          reduce
+            ? { x: 0, y: 0, scale: 1 }
+            : { x: [0, 18, -8, 0], y: [0, -12, 8, 0], scale: [1, 1.12, 0.96, 1] }
+        }
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
       />
       <motion.div
@@ -782,7 +786,11 @@ function AbstractArtwork({
           strokeLinecap="round"
           strokeDasharray="1 13"
           initial={reduce ? { pathLength: 1, opacity: 0.6 } : { pathLength: 0, opacity: 0 }}
-          animate={reduce ? { pathLength: 1, opacity: 0.6 } : { pathLength: [0, 1, 1], opacity: [0, 0.75, 0.2] }}
+          animate={
+            reduce
+              ? { pathLength: 1, opacity: 0.6 }
+              : { pathLength: [0, 1, 1], opacity: [0, 0.75, 0.2] }
+          }
           transition={{ duration: 4.5, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
         />
       </motion.svg>
