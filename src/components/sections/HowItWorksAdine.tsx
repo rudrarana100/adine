@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import type { ComponentType, ReactNode, WheelEvent } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import type { FeatureIconName } from "@/components/icons/FeatureIcons";
@@ -889,35 +889,45 @@ export default function HowItWorksAdine() {
   const sectionRef = useRef<HTMLElement>(null);
   const wheelLockUntil = useRef(0);
   const [active, setActive] = useState(0);
+  const [isEngaged, setIsEngaged] = useState(false);
 
-  const handleWheel = (event: WheelEvent<HTMLElement>) => {
+  // Arm the viewport lock only while this section is meaningfully visible.
+  // This keeps normal page navigation intact before entering and after leaving.
+  useEffect(() => {
     if (!isDesktop) return;
     const section = sectionRef.current;
     if (!section) return;
-    const bounds = section.getBoundingClientRect();
-    const sectionIsPinned = bounds.top <= 180 && bounds.bottom >= window.innerHeight * 0.2;
-    if (!sectionIsPinned) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsEngaged(Boolean(entry?.isIntersecting && entry.intersectionRatio > 0.2)),
+      { threshold: [0, 0.2, 0.5] },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [isDesktop]);
 
-    const direction = event.deltaY > 8 ? 1 : event.deltaY < -8 ? -1 : 0;
-    if (!direction) return;
-    const next = Math.max(0, Math.min(STEPS.length - 1, active + direction));
-    const locked = performance.now() < wheelLockUntil.current;
-    if (next !== active || locked) {
+  // Native non-passive listener is intentional: React/browser wheel listeners
+  // may be passive in some environments, which would let the page move behind
+  // the card deck even after an event was prevented.
+  useEffect(() => {
+    if (!isDesktop || !isEngaged) return;
+    const onWheel = (event: globalThis.WheelEvent) => {
+      const direction = event.deltaY > 8 ? 1 : event.deltaY < -8 ? -1 : 0;
+      if (!direction) return;
+      const next = Math.max(0, Math.min(STEPS.length - 1, active + direction));
+      const locked = performance.now() < wheelLockUntil.current;
+      if (next === active && !locked) return;
       event.preventDefault();
       if (next !== active && !locked) {
         setActive(next);
         wheelLockUntil.current = performance.now() + 520;
       }
-    }
-  };
+    };
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, [active, isDesktop, isEngaged]);
 
   return (
-    <section
-      ref={sectionRef}
-      id="how"
-      onWheelCapture={handleWheel}
-      className="relative bg-canvas py-[96px]"
-    >
+    <section ref={sectionRef} id="how" className="relative bg-canvas py-[96px]">
       {/* Animated backdrop: aurora + the same interactive mesh as the hero */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <AuroraField />
