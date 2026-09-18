@@ -1,367 +1,312 @@
-import { Fragment } from "react";
-import type { ComponentType } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, MagnifyingGlass } from "@phosphor-icons/react";
-import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
-import { AnimatedFeatureIcon } from "@/components/icons/AnimatedFeatureIcon";
-import { CheckIcon } from "@/components/icons/FeatureIcons";
-import type { FeatureIconName } from "@/components/icons/FeatureIcons";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
 import { Ambient } from "@/components/backgrounds/Ambient";
+import { fadeUp, useVariants } from "@/lib/motion";
 import SectionHeading from "@/components/sections/SectionHeading";
 
-/* The real pipeline stages from the product — used as the pillar-section rail */
+gsap.registerPlugin(ScrollTrigger);
+
 const PIPELINE_STAGES = ["Contacted", "Warm", "Meeting Booked", "Proposal Sent", "Won", "Lost"];
+const DESKTOP_MQ = "(min-width: 1024px)";
 
-const GROUND_IMG = "linear-gradient(90deg, var(--color-violet), var(--color-apricot))";
-
-/* Follow-up outcome branches — folded in from the removed standalone section */
-const OUTCOME_TAGS = [
-  { label: "No Answer", tone: "bg-fog text-iron" },
-  { label: "Callback Requested", tone: "bg-sky text-sky-900" },
-  { label: "Interested", tone: "bg-mint text-green-800" },
-  { label: "Meeting Booked", tone: "bg-apricot/20 text-apricot" },
-];
-
-const CALL_OUTCOMES = [
-  "1 · No Answer",
-  "2 · Invalid",
-  "3 · Gatekeeper",
-  "4 · Callback Requested",
-  "5 · Not Interested",
-  "6 · Interested",
-];
-
-/* ── Mini visuals (one per pillar) ───────────────────────────── */
-
-function ImportVisual() {
-  return (
-    <div aria-hidden="true">
-      <div className="flex items-center justify-between text-[11px] text-slate">
-        <span>Uploading leads.csv — mapping columns</span>
-        <span className="font-semibold text-violet">72%</span>
-      </div>
-      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-pebble/50">
-        <div className="h-full w-[72%] rounded-full" style={{ background: GROUND_IMG }} />
-      </div>
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {["Name", "Phone", "Company", "Email", "City", "Skip row"].map((f) => (
-          <span
-            key={f}
-            className="rounded-full border border-pebble bg-white px-2.5 py-1 text-[11px] font-medium text-slate"
-          >
-            {f}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CallSessionVisual() {
-  return (
-    <div aria-hidden="true" className="space-y-3">
-      <div className="flex items-center justify-between rounded-[14px] border border-pebble bg-canvas px-4 py-3">
-        <div>
-          <p className="text-[13px] font-medium text-ink">Bright Smile Dental</p>
-          <p className="text-[11px] font-light text-slate">Dentist · +91 98…</p>
-        </div>
-        <span className="rounded-full bg-violet/10 px-2.5 py-1 text-[11px] font-semibold text-violet">
-          Warm
-        </span>
-      </div>
-      <div className="flex flex-wrap gap-1.5">
-        {CALL_OUTCOMES.map((o) => (
-          <span
-            key={o}
-            className="rounded-full border border-pebble bg-white px-2.5 py-1 text-[11px] font-medium text-slate"
-          >
-            {o}
-          </span>
-        ))}
-        <span className="rounded-full border border-pebble bg-white px-2.5 py-1 text-[11px] font-medium text-slate">
-          <span className="font-semibold text-iron">S</span> Skip
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function DirectoryVisual() {
-  return (
-    <div aria-hidden="true">
-      <div className="flex items-center gap-2 rounded-full border border-pebble bg-white px-3.5 py-2 text-[12px] text-iron">
-        <MagnifyingGlass size={14} />
-        <span>Search 1,240 leads…</span>
-      </div>
-      <div className="mt-3 space-y-1.5">
-        {["Bright Smile Dental", "Vaishali Clinic", "Rapid Repair Works"].map((name, i) => (
-          <div
-            key={name}
-            className={`flex items-center justify-between rounded-[10px] px-3 py-2 text-[12px] ${
-              i === 0
-                ? "bg-violet/8 font-medium text-ink"
-                : "border border-pebble bg-white text-slate"
-            }`}
-          >
-            <span>{name}</span>
-            <span className="text-[11px] text-iron">Warm</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function FollowUpVisual() {
-  return (
-    <div aria-hidden="true" className="space-y-3">
-      <div className="space-y-1.5">
-        {[
-          "Call Sharma Dental — today",
-          "Re-engage Vaishali Clinic — overdue",
-          "Confirm Meet — tomorrow",
-        ].map((t) => (
-          <div
-            key={t}
-            className="flex items-center gap-2.5 rounded-[10px] border border-pebble bg-white px-3 py-2 text-[12px] text-slate"
-          >
-            <CheckIcon size={14} className="shrink-0 text-green-600" />
-            {t}
-          </div>
-        ))}
-      </div>
-      <div className="flex flex-wrap gap-1.5">
-        {OUTCOME_TAGS.map((o) => (
-          <span
-            key={o.label}
-            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${o.tone}`}
-          >
-            {o.label}
-          </span>
-        ))}
-        <span className="self-center text-[10px] font-light text-iron">
-          → WhatsApp fires the branch
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function KanbanVisual() {
-  return (
-    <div aria-hidden="true" className="grid grid-cols-3 gap-2">
-      {[
-        { label: "Contacted", active: false },
-        { label: "Warm", active: true },
-        { label: "Meeting Booked", active: false },
-      ].map((c) => (
-        <div key={c.label} className="rounded-[14px] border border-pebble bg-canvas p-2.5">
-          <p className="text-center text-[10px] font-semibold uppercase tracking-wider text-iron">
-            {c.label}
-          </p>
-          <div
-            className={`mt-2 flex h-10 items-center justify-between rounded-[8px] px-2 ${
-              c.active ? "bg-violet" : "border border-pebble bg-white"
-            }`}
-          >
-            <span className={`h-1.5 w-1.5 rounded-full ${c.active ? "bg-white" : "bg-pebble"}`} />
-            <span
-              className={`h-1.5 w-1.5 rounded-full ${c.active ? "bg-white/60" : "bg-pebble"}`}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function MeetVisual() {
-  return (
-    <div aria-hidden="true" className="space-y-3">
-      <div className="grid grid-cols-7 gap-1">
-        {["5", "6", "7", "8", "9", "10", "11"].map((day, i) => (
-          <div
-            key={day}
-            className={`flex h-7 items-center justify-center rounded-[6px] text-[10px] ${
-              i === 3
-                ? "bg-violet font-semibold text-white"
-                : "border border-pebble bg-white text-slate"
-            }`}
-          >
-            {day}
-          </div>
-        ))}
-      </div>
-      <div className="flex items-center justify-between rounded-[10px] bg-mint px-3 py-2 text-[11px] font-medium text-green-800">
-        Meeting Booked
-        <CheckIcon size={14} />
-      </div>
-    </div>
-  );
-}
-
-function WhatsAppVisual() {
-  return (
-    <div aria-hidden="true" className="flex justify-start rounded-[14px] bg-sky/20 p-3.5">
-      <div className="max-w-[85%] rounded-2xl rounded-tl-sm border border-pebble bg-white p-3">
-        <p className="text-[12px] leading-snug text-ink">
-          Hi Rohit — booking confirmed for tomorrow 11:30 AM 👋
-        </p>
-        <p className="mt-1 truncate text-[11px] font-semibold text-violet">
-          meet.google.com/abc-defg-hij
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function TasksVisual() {
-  return (
-    <div aria-hidden="true" className="space-y-3">
-      <div className="flex flex-wrap gap-1.5">
-        {["All", "Pending", "Completed"].map((f) => (
-          <span
-            key={f}
-            className="rounded-full border border-pebble bg-white px-2.5 py-1 text-[11px] font-medium text-slate"
-          >
-            {f}
-          </span>
-        ))}
-        <span className="rounded-full bg-apricot/15 px-2.5 py-1 text-[11px] font-semibold text-apricot">
-          High Priority
-        </span>
-      </div>
-      <div className="space-y-1.5">
-        {[
-          {
-            label: "High",
-            t: "Follow up Sharma Dental",
-            due: "Today",
-            tone: "bg-apricot text-white",
-          },
-          {
-            label: "Medium",
-            t: "Prep pitch for Vaishali Clinic",
-            due: "Tomorrow",
-            tone: "bg-sky text-sky-900",
-          },
-          { label: "Low", t: "Refresh stale list", due: "Fri", tone: "bg-mint text-green-800" },
-        ].map((r) => (
-          <div
-            key={r.label}
-            className="flex items-center gap-2.5 rounded-[10px] border border-pebble bg-white px-3 py-2 text-[12px] text-slate"
-          >
-            <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${r.tone}`}>
-              {r.label}
-            </span>
-            <span className="flex-1 truncate">{r.t}</span>
-            <span className="text-[11px] text-iron">{r.due}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ── Pillar cards ────────────────────────────────────────────── */
-
-type Pillar = {
+type WorkflowItem = {
   title: string;
-  text: string;
-  icon: FeatureIconName;
-  iconBg: string;
-  iconColor: string;
-  card: string;
-  anchorId?: string;
-  Visual: ComponentType;
+  eyebrow: string;
+  caption: string;
+  image: string;
+  alt: string;
+  accent: string;
+  inset?: string;
 };
 
-const CARD_BASE = "group relative overflow-hidden rounded-[24px] shadow-card";
-
-const PILLARS: Pillar[] = [
+const WORKFLOW_ITEMS: WorkflowItem[] = [
   {
-    title: "CSV Lead Import",
-    text: "Your list, in the CRM in a minute. Upload a CSV with automatic column mapping and a validation preview, so bad rows never slip through. Duplicates are skipped and every phone is formatted for dialing before you ever open the queue.",
-    icon: "sheet",
-    iconBg: "bg-mint/50",
-    iconColor: "text-green-700",
-    card: `${CARD_BASE} border border-pebble bg-mint/25`,
-    Visual: ImportVisual,
+    title: "Leads Directory",
+    eyebrow: "01 — LEADS DIRECTORY",
+    caption: "Every prospect, searchable and ready.",
+    image: "/screenshots/workflow/lead-directory.png",
+    inset: "/screenshots/workflow/lead-scraper.png",
+    alt: "Adine Leads Directory with searchable lead records",
+    accent: "#6161ff",
   },
   {
-    title: "Sequential Call Session",
-    text: "One lead. One decision. Then the next. A distraction-free queue shows only the lead in front of you, the context beside it, and one-click outcomes. Keys 1–6 log No Answer, Invalid, Gatekeeper, Callback Requested, Not Interested, or Interested, with a separate Skip — every call books a meeting, queues a callback, or moves on. Nothing sits in limbo.",
-    icon: "phone",
-    iconBg: "bg-violet/10",
-    iconColor: "text-violet",
-    card: `${CARD_BASE} border border-pebble bg-periwinkle/70`,
-    anchorId: "calls",
-    Visual: CallSessionVisual,
+    title: "Call Session",
+    eyebrow: "02 — CALL SESSION",
+    caption: "One lead. One decision. Then the next.",
+    image: "/screenshots/workflow/call-session.png",
+    alt: "Adine Call Session with lead details and outcome controls",
+    accent: "#9450fd",
   },
   {
-    title: "Lead Directory & 360° Inspector",
-    text: "Every prospect, fully visible. Table or card views with instant full-text search, CSV bulk import with column mapping and a validation preview, and a complete notes timeline and activity log for every lead.",
-    icon: "command",
-    iconBg: "bg-sky/40",
-    iconColor: "text-sky-700",
-    card: `${CARD_BASE} border border-pebble bg-sky/30`,
-    Visual: DirectoryVisual,
+    title: "Follow-ups",
+    eyebrow: "03 — FOLLOW-UPS",
+    caption: "Turn every conversation into the next action.",
+    image: "/screenshots/workflow/follow-ups.png",
+    alt: "Adine Follow-ups view with scheduled actions",
+    accent: "#7c6cff",
   },
   {
-    title: "Follow-Up Hub",
-    text: "Nothing falls through. Overdue, Today, and Upcoming tabs with a step-by-step execution queue, so follow-ups get worked without leaving the screen. Every call outcome sets its own next step — No Answer books a callback, Interested books the meeting — and each one fires over WhatsApp automatically.",
-    icon: "bell",
-    iconBg: "bg-lavender",
-    iconColor: "text-ultraviolet",
-    card: `${CARD_BASE} border border-pebble bg-lavender/60`,
-    Visual: FollowUpVisual,
+    title: "Sales Pipeline",
+    eyebrow: "04 — SALES PIPELINE",
+    caption: "Move deals from contact to closed won.",
+    image: "/screenshots/workflow/sales-pipeline.png",
+    alt: "Adine Sales Pipeline Kanban board",
+    accent: "#5f7eff",
   },
   {
-    title: "Pipeline (Kanban)",
-    text: "Watch the deal move. Drag-and-drop across Contacted, Warm, Meeting Booked, Proposal Sent, Won, and Lost — with live deal counts and total value per stage, so you always know which deals are actually moving.",
-    icon: "kanban",
-    iconBg: "bg-aqua/50",
-    iconColor: "text-cyan-700",
-    card: `${CARD_BASE} border border-pebble bg-aqua/35`,
-    Visual: KanbanVisual,
+    title: "Tasks",
+    eyebrow: "05 — TASKS",
+    caption: "Keep the day ordered around what matters.",
+    image: "/screenshots/workflow/tasks.png",
+    alt: "Adine Tasks view with priorities and due dates",
+    accent: "#7767ff",
   },
   {
-    title: "Calendar & Google Meet",
-    text: "The meeting books itself. One click flags the lead as Meeting Booked and opens a real Google Meet slot through your calendar — and a full monthly view keeps every callback, meeting, and follow-up in one place.",
-    icon: "meet",
-    iconBg: "bg-cornflower/30",
-    iconColor: "text-blue-700",
-    card: `${CARD_BASE} border border-pebble bg-cornflower/25`,
-    Visual: MeetVisual,
+    title: "Calendar",
+    eyebrow: "06 — CALENDAR",
+    caption: "Calls, meetings, and follow-ups in one view.",
+    image: "/screenshots/workflow/calendar.png",
+    alt: "Adine Calendar with scheduled calls and meetings",
+    accent: "#668dff",
   },
   {
-    title: "WhatsApp Automation",
-    text: "Follow-up that sends itself. Phone numbers auto-format to international, and templated messages fire for meeting confirmations, first outreach, and reminders — no copy-pasting, ever.",
-    icon: "chat",
-    iconBg: "bg-peony/50",
-    iconColor: "text-pink-700",
-    card: `${CARD_BASE} border-2 border-cotton-candy bg-card`,
-    Visual: WhatsAppVisual,
-  },
-  {
-    title: "Task Management",
-    text: "The day, ordered. Priority tags for High, Medium, and Low, with filtered views for All, Pending, Completed, and High Priority. Due dates live on specific leads, so nothing important slides.",
-    icon: "check",
-    iconBg: "bg-periwinkle-wash",
-    iconColor: "text-violet",
-    card: `${CARD_BASE} border border-pebble bg-peony/60`,
-    Visual: TasksVisual,
+    title: "Analytics",
+    eyebrow: "07 — ANALYTICS",
+    caption: "See the activity that turns into revenue.",
+    image: "/screenshots/workflow/analytics.png",
+    alt: "Adine Sales Analytics and Performance Dashboard",
+    accent: "#6161ff",
   },
 ];
+
+function useIsDesktop() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia(DESKTOP_MQ);
+      query.addEventListener("change", onChange);
+      return () => query.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(DESKTOP_MQ).matches,
+    () => false,
+  );
+}
+
+function clamp(value: number, min = 0, max = 1) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function WorkflowCard({
+  item,
+  index,
+  cardRef,
+  reduce,
+  progress,
+}: {
+  item: WorkflowItem;
+  index: number;
+  cardRef?: (node: HTMLDivElement | null) => void;
+  reduce: boolean;
+  progress?: number;
+}) {
+  const focused = progress === undefined || Math.abs(index - progress) < 0.4;
+  return (
+    <article className="flex w-[min(760px,calc(100vw-72px))] shrink-0 snap-center flex-col items-center">
+      <div
+        ref={cardRef}
+        className="relative h-[min(500px,calc(100svh-220px))] w-full will-change-transform"
+        style={{ transformOrigin: "center center" }}
+      >
+        <div
+          className={`relative h-full w-full overflow-hidden rounded-[24px] border border-pebble bg-white p-4 shadow-card md:p-5 ${focused && !reduce ? "workflow-card-float" : ""}`}
+          style={{ borderTopColor: item.accent }}
+        >
+          <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[16px] bg-canvas">
+            <img
+              src={item.image}
+              alt={item.alt}
+              className="block h-auto max-h-full max-w-full object-contain"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              draggable="false"
+            />
+            {item.inset && (
+              <div className="absolute bottom-4 right-4 w-[25%] overflow-hidden rounded-[14px] border-2 border-white bg-white shadow-elevated">
+                <img
+                  src={item.inset}
+                  alt="Lead Scraper opened from the Leads Directory"
+                  className="block h-auto w-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-5 text-center">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-violet">
+          {item.eyebrow}
+        </p>
+        <p className="mt-1 text-[14px] font-light text-slate">{item.caption}</p>
+      </div>
+    </article>
+  );
+}
+
+function ProgressDots({ progress }: { progress: number }) {
+  const activeIndex = Math.round(progress * (WORKFLOW_ITEMS.length - 1));
+  return (
+    <div className="absolute bottom-7 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/80 bg-white/80 px-3 py-2 shadow-card backdrop-blur-md">
+      {WORKFLOW_ITEMS.map((item, index) => (
+        <span
+          key={item.title}
+          className="block h-1.5 rounded-full bg-violet"
+          style={{
+            width: index === activeIndex ? 22 : 6,
+            opacity: index === activeIndex ? 1 : 0.32,
+          }}
+          aria-hidden="true"
+        />
+      ))}
+      <span className="sr-only">
+        Step {activeIndex + 1} of {WORKFLOW_ITEMS.length}: {WORKFLOW_ITEMS[activeIndex]?.title}
+      </span>
+    </div>
+  );
+}
+
+function DesktopWorkflowShowcase() {
+  const reduce = useReducedMotion() ?? false;
+  const isDesktop = useIsDesktop();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+    const section = sectionRef.current;
+    const stage = stageRef.current;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!section || !stage || !viewport || !track) return;
+
+    const context = gsap.context(() => {
+      const updateCardDepth = (scrollProgress: number) => {
+        const focusIndex = scrollProgress * (WORKFLOW_ITEMS.length - 1);
+        cardRefs.current.forEach((card, index) => {
+          if (!card) return;
+          const distance = Math.abs(index - focusIndex);
+          const focus = clamp(1 - distance);
+          gsap.set(card, {
+            scale: 0.85 + focus * 0.15,
+            opacity: 0.5 + focus * 0.5,
+            filter: reduce ? "blur(0px)" : `blur(${Math.min(1.5, distance * 1.5)}px)`,
+          });
+        });
+      };
+
+      const horizontalTween = gsap.to(track, {
+        x: () => -(track.scrollWidth - viewport.clientWidth),
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          pin: stage,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            setProgress(self.progress);
+            updateCardDepth(self.progress);
+            if (!reduce) {
+              const wash = stage.querySelector("[data-workflow-wash]");
+              if (wash) gsap.set(wash, { xPercent: (self.progress - 0.5) * 16 });
+            }
+          },
+        },
+      });
+
+      updateCardDepth(0);
+      ScrollTrigger.refresh();
+      return () => horizontalTween.kill();
+    }, section);
+
+    return () => context.revert();
+  }, [isDesktop, reduce]);
+
+  if (!isDesktop) return null;
+
+  return (
+    <div
+      ref={sectionRef}
+      className="relative hidden lg:block"
+      style={{ height: `${WORKFLOW_ITEMS.length * 100}svh` }}
+    >
+      <div ref={stageRef} className="relative flex h-svh w-full items-center overflow-hidden">
+        <div
+          data-workflow-wash
+          className="pointer-events-none absolute inset-[-18%] opacity-60 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle at 25% 50%, rgba(97,97,255,.14), transparent 30%), radial-gradient(circle at 78% 42%, rgba(189,254,144,.11), transparent 27%), radial-gradient(circle at 52% 80%, rgba(147,190,255,.12), transparent 32%)",
+          }}
+          aria-hidden="true"
+        />
+
+        <div ref={viewportRef} className="relative w-full overflow-hidden px-6 pb-20 pt-6">
+          <div
+            ref={trackRef}
+            className="flex w-max items-start gap-8 px-[max(24px,calc((100vw-min(760px,calc(100vw-72px)))/2))]"
+          >
+            {WORKFLOW_ITEMS.map((item, index) => (
+              <WorkflowCard
+                key={item.title}
+                item={item}
+                index={index}
+                reduce={reduce}
+                progress={progress * (WORKFLOW_ITEMS.length - 1)}
+                cardRef={(node) => {
+                  cardRefs.current[index] = node;
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <ProgressDots progress={progress} />
+      </div>
+    </div>
+  );
+}
+
+function MobileWorkflowCarousel() {
+  const reduce = useReducedMotion() ?? false;
+  return (
+    <div className="-mx-6 overflow-x-auto overscroll-x-contain px-6 pb-4 [scrollbar-width:none] snap-x snap-mandatory [&::-webkit-scrollbar]:hidden">
+      <div className="flex w-max items-start gap-6">
+        {WORKFLOW_ITEMS.map((item, index) => (
+          <WorkflowCard key={item.title} item={item} index={index} reduce={reduce} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function FeatureShowcaseAdine() {
   const v = useVariants();
-  const reduce = useReducedMotion() ?? false;
 
   return (
     <section id="features" className="relative bg-card py-[96px]">
-      {/* Soft animated accent background (paused off-screen) */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <DotGrid className="opacity-50" />
       </Ambient>
@@ -373,7 +318,6 @@ export default function FeatureShowcaseAdine() {
           subtitle="Eight pillars that cover the whole outbound arc — and the workday that keeps it moving."
         />
 
-        {/* Real pipeline stages as a horizontal rail */}
         <motion.div
           variants={v(fadeUp)}
           initial="hidden"
@@ -395,52 +339,12 @@ export default function FeatureShowcaseAdine() {
           ))}
         </motion.div>
 
-        <motion.div
-          variants={v(staggerContainer)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
-          className="mx-auto mt-14 grid max-w-[1080px] grid-cols-1 gap-6 md:grid-cols-2"
-        >
-          {PILLARS.map(({ title, text, icon, iconBg, iconColor, card, anchorId, Visual }) => (
-            <motion.div
-              key={title}
-              id={anchorId}
-              className={`${card} scroll-mt-28`}
-              variants={v(fadeUp)}
-              {...(!reduce ? { whileHover: { y: -6, transition: { duration: 0.2 } } } : {})}
-            >
-              {/* hover spotlight */}
-              <div
-                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={{
-                  background:
-                    "radial-gradient(320px circle at 0% 0%, rgba(97,97,255,0.07), transparent 70%)",
-                }}
-                aria-hidden="true"
-              />
-              <div className="group relative flex items-start gap-4 px-6 pt-6">
-                <div
-                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[18px] ${iconBg} transition-transform duration-200 group-hover:scale-110`}
-                >
-                  <AnimatedFeatureIcon name={icon} size={26} className={iconColor} />
-                </div>
-                <h3 className="mt-1 text-[18px] font-medium leading-snug text-ink">{title}</h3>
-              </div>
-
-              <div className="relative px-6 pt-3">
-                <p className="text-[14px] font-light leading-[1.65] text-slate">{text}</p>
-              </div>
-
-              <div className="relative px-6 pt-5 pb-6">
-                <div className="rounded-[16px] border border-pebble bg-white p-4">
-                  <Visual />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="mx-auto mt-14 lg:hidden">
+          <MobileWorkflowCarousel />
+        </div>
       </div>
+
+      <DesktopWorkflowShowcase />
     </section>
   );
 }

@@ -65,7 +65,7 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
 function CallSessionMock({ reduce }: { reduce: boolean }) {
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[640px]"
+      className="relative mx-auto w-full max-w-[520px]"
       animate={reduce ? {} : { y: [0, -6, 0] }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     >
@@ -331,7 +331,7 @@ export default function HeroAdine() {
           >
             <motion.div
               variants={v(badgePop)}
-              className="relative mx-auto mt-12 w-full max-w-[640px] lg:mt-0"
+              className="relative mx-auto mt-12 w-full max-w-[520px] lg:mt-0"
             >
               <CallSessionMock reduce={reduce} />
               <FloatingBadges reduce={reduce} />
