@@ -696,13 +696,17 @@ function AbstractArtwork({
   active,
   reduce,
   compact = false,
+  scrollProgress,
 }: {
   active: number;
   reduce: boolean;
   compact?: boolean;
+  scrollProgress?: number;
 }) {
   const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0]!;
-  const progress = reduce ? 1 : Math.max(0.015, active / 5);
+  const progress = reduce
+    ? 1
+    : Math.min(1, Math.max(0.015, scrollProgress ?? active / 5));
   const pathRef = useRef<SVGPathElement>(null);
   const [nodes, setNodes] = useState(FLOW_FALLBACK_POINTS);
   const [routeLength, setRouteLength] = useState(1000);
@@ -754,10 +758,11 @@ function AbstractArtwork({
             strokeOpacity=".13"
             strokeWidth="9"
             strokeLinecap="round"
-            strokeDasharray={`${routeLength} ${routeLength}`}
-            initial={reduce ? { strokeDashoffset: 0 } : { strokeDashoffset: routeLength }}
-            animate={{ strokeDashoffset: routeLength * (1 - progress) }}
-            transition={{ duration: reduce ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
+            strokeDasharray={`${routeLength * progress} ${routeLength}`}
+            strokeDashoffset="0"
+            initial={false}
+            animate={{ strokeDasharray: `${routeLength * progress} ${routeLength}` }}
+            transition={{ duration: reduce ? 0 : 0.08, ease: "linear" }}
           />
           <motion.path
             d={FLOW_PATH}
@@ -765,14 +770,14 @@ function AbstractArtwork({
             strokeOpacity="1"
             strokeWidth="3"
             strokeLinecap="round"
-            strokeDasharray={`${routeLength} ${routeLength}`}
-            initial={
-              reduce
-                ? { strokeDashoffset: 0, opacity: 0.9 }
-                : { strokeDashoffset: routeLength, opacity: 0 }
-            }
-            animate={{ strokeDashoffset: routeLength * (1 - progress), opacity: reduce ? 0.9 : 1 }}
-            transition={{ duration: reduce ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
+            strokeDasharray={`${routeLength * progress} ${routeLength}`}
+            strokeDashoffset="0"
+            initial={false}
+            animate={{
+              strokeDasharray: `${routeLength * progress} ${routeLength}`,
+              opacity: reduce ? 0.9 : 1,
+            }}
+            transition={{ duration: reduce ? 0 : 0.08, ease: "linear" }}
           />
         </svg>
         {nodes.map((node, i) => {
@@ -824,9 +829,11 @@ function AbstractArtwork({
 
 function DesktopWalkthrough({
   active,
+  scrollProgress,
   setCardRef,
 }: {
   active: number;
+  scrollProgress: number;
   setCardRef: (el: HTMLDivElement | null, i: number) => void;
 }) {
   const reduce = useReducedMotion() ?? false;
@@ -890,7 +897,7 @@ function DesktopWalkthrough({
 
         {/* Right: pinned abstract artwork that reacts to active step */}
         <div className="relative mx-auto w-full max-w-[520px]">
-          <AbstractArtwork active={active} reduce={reduce} />
+          <AbstractArtwork active={active} reduce={reduce} scrollProgress={scrollProgress} />
         </div>
       </div>
 
@@ -945,6 +952,7 @@ export default function HowItWorksAdine() {
 
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   // The markers run behind the sticky stage. This keeps the page's native
   // scroll physics intact while the observer advances one card per viewport.
@@ -953,6 +961,29 @@ export default function HowItWorksAdine() {
     if (!isDesktop) return;
     const els = cardRefs.current.filter((el): el is HTMLDivElement => el !== null);
     if (els.length === 0) return;
+
+    let frame = 0;
+    const updateProgress = () => {
+      frame = 0;
+      const markerTops = els.map((el) => el.getBoundingClientRect().top + window.scrollY);
+      const first = markerTops[0];
+      const last = markerTops[markerTops.length - 1];
+      if (first === undefined || last === undefined || last <= first) return;
+
+      // Match the observer's visual midpoint: the route advances continuously
+      // as the viewport center travels from the first marker to the last.
+      const viewportCenter = window.scrollY + window.innerHeight / 2;
+      const nextProgress = Math.min(1, Math.max(0, (viewportCenter - first) / (last - first)));
+      setScrollProgress(nextProgress);
+    };
+    const onScroll = () => {
+      if (frame === 0) frame = window.requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -966,7 +997,12 @@ export default function HowItWorksAdine() {
       { rootMargin: "-42% 0px -42% 0px", threshold: 0 },
     );
     els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame !== 0) window.cancelAnimationFrame(frame);
+    };
   }, [isDesktop]);
 
   return (
@@ -990,6 +1026,7 @@ export default function HowItWorksAdine() {
         {isDesktop ? (
           <DesktopWalkthrough
             active={active}
+            scrollProgress={scrollProgress}
             setCardRef={(el: HTMLDivElement | null, i: number) => {
               cardRefs.current[i] = el;
             }}
