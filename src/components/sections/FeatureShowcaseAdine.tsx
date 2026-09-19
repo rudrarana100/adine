@@ -1,10 +1,20 @@
-import { Fragment, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+"use client";
+
+import { Fragment, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { ArrowRight } from "@phosphor-icons/react";
+import { motion, useReducedMotion } from "framer-motion";
 import { DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
 import { Ambient } from "@/components/backgrounds/Ambient";
 import { fadeUp, useVariants } from "@/lib/motion";
 import SectionHeading from "@/components/sections/SectionHeading";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register ScrollTrigger to avoid warnings and ensure it works with GSAP
+gsap.registerPlugin(ScrollTrigger);
+
+// Utility function that was missing
+const clamp = (val: number, min = 0, max = 1) => Math.min(Math.max(val, min), max);
 
 const PIPELINE_STAGES = ["Contacted", "Warm", "Meeting Booked", "Proposal Sent", "Won", "Lost"];
 const DESKTOP_MQ = "(min-width: 1024px)";
@@ -79,15 +89,17 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
 ];
 
+// Updated to be SSR-safe (e.g. for Next.js)
 function useIsDesktop() {
   return useSyncExternalStore(
     (onChange) => {
+      if (typeof window === "undefined") return () => {};
       const query = window.matchMedia(DESKTOP_MQ);
       query.addEventListener("change", onChange);
       return () => query.removeEventListener("change", onChange);
     },
-    () => window.matchMedia(DESKTOP_MQ).matches,
-    () => false,
+    () => (typeof window !== "undefined" ? window.matchMedia(DESKTOP_MQ).matches : false),
+    () => false
   );
 }
 
@@ -204,36 +216,37 @@ function DesktopWorkflowShowcase() {
       const horizontalTween = gsap.to(track, {
         x: () => -(track.scrollWidth - viewport.clientWidth),
         ease: "none",
-scrollTrigger: {
-            trigger: section,
-            start: "top 92px",
-            end: "bottom bottom",
-            scrub: 1,
-            pin: stage,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              setProgress(self.progress);
-              updateCardDepth(self.progress);
-              if (!reduce) {
-                const wash = stage.querySelector("[data-workflow-wash]");
-                if (wash) gsap.set(wash, { xPercent: (self.progress - 0.5) * 16 });
-              }
-            },
-            onRefresh: (self) => updateCardDepth(self.progress),
+        scrollTrigger: {
+          trigger: section,
+          start: "top 92px",
+          end: "bottom bottom",
+          scrub: 1,
+          pin: stage,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            setProgress(self.progress);
+            updateCardDepth(self.progress);
+            if (!reduce) {
+              const wash = stage.querySelector("[data-workflow-wash]");
+              if (wash) gsap.set(wash, { xPercent: (self.progress - 0.5) * 16 });
+            }
           },
-        });
+          onRefresh: (self) => updateCardDepth(self.progress),
+        },
+      });
 
-        updateCardDepth(0);
+      updateCardDepth(0);
 
-        const refreshOnLoad = () => ScrollTrigger.refresh();
-        window.addEventListener("load", refreshOnLoad);
-        const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
-        ScrollTrigger.refresh();
-        return () => {
-          cancelAnimationFrame(raf);
-          window.removeEventListener("load", refreshOnLoad);
-          horizontalTween.kill();
-        };
+      const refreshOnLoad = () => ScrollTrigger.refresh();
+      window.addEventListener("load", refreshOnLoad);
+      const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+      ScrollTrigger.refresh();
+      
+      return () => {
+        cancelAnimationFrame(raf);
+        window.removeEventListener("load", refreshOnLoad);
+        horizontalTween.kill();
+      };
     }, section);
 
     return () => context.revert();
