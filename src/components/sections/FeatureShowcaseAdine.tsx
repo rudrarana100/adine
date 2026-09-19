@@ -105,19 +105,21 @@ function WorkflowCard({
   cardRef,
   reduce,
   progress,
+  heightClass = "h-[min(500px,calc(100svh-156px))]",
 }: {
   item: WorkflowItem;
   index: number;
   cardRef?: (node: HTMLDivElement | null) => void;
   reduce: boolean;
   progress?: number;
+  heightClass?: string;
 }) {
   const focused = progress === undefined || Math.abs(index - progress) < 0.4;
   return (
     <article className="flex w-[min(760px,calc(100vw-72px))] shrink-0 snap-center flex-col items-center">
       <div
         ref={cardRef}
-        className="relative h-[min(500px,calc(100svh-220px))] w-full will-change-transform"
+        className={`relative ${heightClass} w-full will-change-transform`}
         style={{ transformOrigin: "center center" }}
       >
         <div
@@ -219,7 +221,7 @@ function DesktopWorkflowShowcase() {
         ease: "none",
         scrollTrigger: {
           trigger: section,
-          start: "top top",
+          start: "top 92px",
           end: "bottom bottom",
           scrub: 1,
           pin: stage,
@@ -252,7 +254,10 @@ function DesktopWorkflowShowcase() {
       className="relative hidden lg:block"
       style={{ height: `${WORKFLOW_ITEMS.length * 100}svh` }}
     >
-      <div ref={stageRef} className="relative flex h-svh w-full items-center overflow-hidden">
+      <div
+        ref={stageRef}
+        className="relative flex h-[calc(100svh-92px)] w-full items-start overflow-hidden"
+      >
         <div
           data-workflow-wash
           className="pointer-events-none absolute inset-[-18%] opacity-60 blur-3xl"
@@ -263,7 +268,7 @@ function DesktopWorkflowShowcase() {
           aria-hidden="true"
         />
 
-        <div ref={viewportRef} className="relative w-full overflow-hidden px-6 pb-20 pt-6">
+        <div ref={viewportRef} className="relative w-full overflow-hidden px-6 pb-4 pt-3">
           <div
             ref={trackRef}
             className="flex w-max items-start gap-8 px-[max(24px,calc((100vw-min(760px,calc(100vw-72px)))/2))]"
@@ -275,6 +280,7 @@ function DesktopWorkflowShowcase() {
                 index={index}
                 reduce={reduce}
                 progress={progress * (WORKFLOW_ITEMS.length - 1)}
+                heightClass="h-[min(500px,calc(100svh-200px))]"
                 cardRef={(node) => {
                   cardRefs.current[index] = node;
                 }}
