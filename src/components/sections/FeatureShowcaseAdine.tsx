@@ -105,50 +105,43 @@ function WorkflowCard({
   cardRef,
   reduce,
   progress,
-  heightClass = "h-[min(500px,calc(100svh-156px))]",
+  widthClass = "w-[min(760px,calc(100vw-72px))]",
 }: {
   item: WorkflowItem;
   index: number;
   cardRef?: (node: HTMLDivElement | null) => void;
   reduce: boolean;
   progress?: number;
-  heightClass?: string;
+  widthClass?: string;
 }) {
   const focused = progress === undefined || Math.abs(index - progress) < 0.4;
   return (
-    <article className="flex w-[min(760px,calc(100vw-72px))] shrink-0 snap-center flex-col items-center">
+    <article className={`relative flex ${widthClass} shrink-0 snap-center flex-col items-center`}>
       <div
         ref={cardRef}
-        className={`relative ${heightClass} w-full will-change-transform`}
+        className={`relative w-full will-change-transform ${focused && !reduce ? "workflow-card-float" : ""}`}
         style={{ transformOrigin: "center center" }}
       >
-        <div
-          className={`relative h-full w-full overflow-hidden rounded-[24px] border border-pebble bg-white p-4 shadow-card md:p-5 ${focused && !reduce ? "workflow-card-float" : ""}`}
-          style={{ borderTopColor: item.accent }}
-        >
-          <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[16px] bg-canvas">
+        <img
+          src={item.image}
+          alt={item.alt}
+          className="block h-auto w-full select-none"
+          loading={index === 0 ? "eager" : "lazy"}
+          decoding="async"
+          draggable="false"
+        />
+        {item.inset && (
+          <div className="absolute bottom-4 right-4 w-[25%] overflow-hidden rounded-[8px] shadow-elevated">
             <img
-              src={item.image}
-              alt={item.alt}
-              className="block h-auto max-h-full max-w-full object-contain"
-              loading={index === 0 ? "eager" : "lazy"}
+              src={item.inset}
+              alt="Lead Scraper opened from the Leads Directory"
+              className="block h-auto w-full"
+              loading="lazy"
               decoding="async"
               draggable="false"
             />
-            {item.inset && (
-              <div className="absolute bottom-4 right-4 w-[25%] overflow-hidden rounded-[14px] border-2 border-white bg-white shadow-elevated">
-                <img
-                  src={item.inset}
-                  alt="Lead Scraper opened from the Leads Directory"
-                  className="block h-auto w-full object-contain"
-                  loading="lazy"
-                  decoding="async"
-                  draggable="false"
-                />
-              </div>
-            )}
           </div>
-        </div>
+        )}
       </div>
 
       <div className="mt-5 text-center">
@@ -283,7 +276,7 @@ function DesktopWorkflowShowcase() {
                 index={index}
                 reduce={reduce}
                 progress={progress * (WORKFLOW_ITEMS.length - 1)}
-                heightClass="h-[min(460px,calc(100svh-280px))]"
+                widthClass="w-[min(760px,calc((100svh-253px)*1.5),calc(100vw-72px))]"
                 cardRef={(node) => {
                   cardRefs.current[index] = node;
                 }}
