@@ -256,7 +256,7 @@ function DesktopWorkflowShowcase() {
     >
       <div
         ref={stageRef}
-        className="relative flex h-[calc(100svh-92px)] w-full items-start overflow-hidden"
+        className="relative flex h-[calc(100svh-92px)] w-full flex-col items-center overflow-hidden"
       >
         <div
           data-workflow-wash
@@ -268,7 +268,10 @@ function DesktopWorkflowShowcase() {
           aria-hidden="true"
         />
 
-        <div ref={viewportRef} className="relative w-full overflow-hidden px-6 pb-4 pt-3">
+        <div
+          ref={viewportRef}
+          className="relative z-10 mt-[84px] w-full flex-1 min-h-0 overflow-hidden px-6 pb-4"
+        >
           <div
             ref={trackRef}
             className="flex w-max items-start gap-8 px-[max(24px,calc((100vw-min(760px,calc(100vw-72px)))/2))]"
@@ -280,7 +283,7 @@ function DesktopWorkflowShowcase() {
                 index={index}
                 reduce={reduce}
                 progress={progress * (WORKFLOW_ITEMS.length - 1)}
-                heightClass="h-[min(500px,calc(100svh-200px))]"
+                heightClass="h-[min(460px,calc(100svh-280px))]"
                 cardRef={(node) => {
                   cardRefs.current[index] = node;
                 }}
@@ -329,7 +332,7 @@ export default function FeatureShowcaseAdine() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.6 }}
-          className="mx-auto mt-10 flex max-w-[780px] flex-wrap items-center justify-center gap-2"
+          className="mx-auto mt-10 flex max-w-[780px] flex-wrap items-center justify-center gap-2 lg:hidden"
         >
           {PIPELINE_STAGES.map((stage, i) => (
             <Fragment key={stage}>
@@ -345,7 +348,7 @@ export default function FeatureShowcaseAdine() {
           ))}
         </motion.div>
 
-        <div className="mx-auto mt-14 lg:hidden">
+        <div className="mx-auto mt-20 lg:hidden">
           <MobileWorkflowCarousel />
         </div>
       </div>
