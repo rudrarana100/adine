@@ -1,14 +1,10 @@
 import { Fragment, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react";
-import { motion, useReducedMotion } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
 import { Ambient } from "@/components/backgrounds/Ambient";
 import { fadeUp, useVariants } from "@/lib/motion";
 import SectionHeading from "@/components/sections/SectionHeading";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const PIPELINE_STAGES = ["Contacted", "Warm", "Meeting Booked", "Proposal Sent", "Won", "Lost"];
 const DESKTOP_MQ = "(min-width: 1024px)";
@@ -95,10 +91,6 @@ function useIsDesktop() {
   );
 }
 
-function clamp(value: number, min = 0, max = 1) {
-  return Math.min(max, Math.max(min, value));
-}
-
 function WorkflowCard({
   item,
   index,
@@ -144,7 +136,7 @@ function WorkflowCard({
         )}
       </div>
 
-      <div className="mt-5 text-center">
+      <div className="mt-3 text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-violet">
           {item.eyebrow}
         </p>
@@ -271,7 +263,7 @@ scrollTrigger: {
 
         <div
           ref={viewportRef}
-          className="relative z-10 mt-[84px] w-full flex-1 min-h-0 overflow-hidden px-6 pb-4"
+          className="relative z-10 mt-10 w-full flex-1 min-h-0 overflow-hidden px-6 pb-4"
         >
           <div
             ref={trackRef}
@@ -284,7 +276,7 @@ scrollTrigger: {
                 index={index}
                 reduce={reduce}
                 progress={progress * (WORKFLOW_ITEMS.length - 1)}
-                widthClass="w-[min(760px,calc((100svh-253px)*1.5),calc(100vw-72px))]"
+                widthClass="w-[min(860px,calc((100svh-200px)*1.5),calc(100vw-72px))]"
                 cardRef={(node) => {
                   cardRefs.current[index] = node;
                 }}
