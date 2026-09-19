@@ -212,28 +212,36 @@ function DesktopWorkflowShowcase() {
       const horizontalTween = gsap.to(track, {
         x: () => -(track.scrollWidth - viewport.clientWidth),
         ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 92px",
-          end: "bottom bottom",
-          scrub: 1,
-          pin: stage,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            setProgress(self.progress);
-            updateCardDepth(self.progress);
-            if (!reduce) {
-              const wash = stage.querySelector("[data-workflow-wash]");
-              if (wash) gsap.set(wash, { xPercent: (self.progress - 0.5) * 16 });
-            }
+scrollTrigger: {
+            trigger: section,
+            start: "top 92px",
+            end: "bottom bottom",
+            scrub: 1,
+            pin: stage,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              setProgress(self.progress);
+              updateCardDepth(self.progress);
+              if (!reduce) {
+                const wash = stage.querySelector("[data-workflow-wash]");
+                if (wash) gsap.set(wash, { xPercent: (self.progress - 0.5) * 16 });
+              }
+            },
+            onRefresh: (self) => updateCardDepth(self.progress),
           },
-        },
-      });
+        });
 
-      updateCardDepth(0);
-      ScrollTrigger.refresh();
-      return () => horizontalTween.kill();
+        updateCardDepth(0);
+
+        const refreshOnLoad = () => ScrollTrigger.refresh();
+        window.addEventListener("load", refreshOnLoad);
+        const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+        ScrollTrigger.refresh();
+        return () => {
+          cancelAnimationFrame(raf);
+          window.removeEventListener("load", refreshOnLoad);
+          horizontalTween.kill();
+        };
     }, section);
 
     return () => context.revert();
