@@ -298,7 +298,6 @@ function DesktopWorkflowShowcase() {
           </div>
         </div>
 
-        <ProgressDots progress={progress} />
       </div>
     </div>
   );
