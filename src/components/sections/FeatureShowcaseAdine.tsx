@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Fragment, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowRight } from "@phosphor-icons/react";
@@ -32,7 +32,7 @@ type WorkflowItem = {
 const WORKFLOW_ITEMS: WorkflowItem[] = [
   {
     title: "Leads Directory",
-    eyebrow: "01 — LEADS DIRECTORY",
+    eyebrow: "01 â€” LEADS DIRECTORY",
     caption: "Every prospect, searchable and ready.",
     image: "/screenshots/workflow/lead-directory.png",
     inset: "/screenshots/workflow/lead-scraper.png",
@@ -41,7 +41,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Call Session",
-    eyebrow: "02 — CALL SESSION",
+    eyebrow: "02 â€” CALL SESSION",
     caption: "One lead. One decision. Then the next.",
     image: "/screenshots/workflow/call-session.png",
     alt: "Adine Call Session with lead details and outcome controls",
@@ -49,7 +49,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Follow-ups",
-    eyebrow: "03 — FOLLOW-UPS",
+    eyebrow: "03 â€” FOLLOW-UPS",
     caption: "Turn every conversation into the next action.",
     image: "/screenshots/workflow/follow-ups.png",
     alt: "Adine Follow-ups view with scheduled actions",
@@ -57,7 +57,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Sales Pipeline",
-    eyebrow: "04 — SALES PIPELINE",
+    eyebrow: "04 â€” SALES PIPELINE",
     caption: "Move deals from contact to closed won.",
     image: "/screenshots/workflow/sales-pipeline.png",
     alt: "Adine Sales Pipeline Kanban board",
@@ -65,7 +65,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Tasks",
-    eyebrow: "05 — TASKS",
+    eyebrow: "05 â€” TASKS",
     caption: "Keep the day ordered around what matters.",
     image: "/screenshots/workflow/tasks.png",
     alt: "Adine Tasks view with priorities and due dates",
@@ -73,7 +73,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Calendar",
-    eyebrow: "06 — CALENDAR",
+    eyebrow: "06 â€” CALENDAR",
     caption: "Calls, meetings, and follow-ups in one view.",
     image: "/screenshots/workflow/calendar.png",
     alt: "Adine Calendar with scheduled calls and meetings",
@@ -81,7 +81,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Analytics",
-    eyebrow: "07 — ANALYTICS",
+    eyebrow: "07 â€” ANALYTICS",
     caption: "See the activity that turns into revenue.",
     image: "/screenshots/workflow/analytics.png",
     alt: "Adine Sales Analytics and Performance Dashboard",
@@ -99,7 +99,7 @@ function useIsDesktop() {
       return () => query.removeEventListener("change", onChange);
     },
     () => (typeof window !== "undefined" ? window.matchMedia(DESKTOP_MQ).matches : false),
-    () => false
+    () => false,
   );
 }
 
@@ -155,28 +155,6 @@ function WorkflowCard({
         <p className="mt-1 text-[14px] font-light text-slate">{item.caption}</p>
       </div>
     </article>
-  );
-}
-
-function ProgressDots({ progress }: { progress: number }) {
-  const activeIndex = Math.round(progress * (WORKFLOW_ITEMS.length - 1));
-  return (
-    <div className="absolute bottom-7 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/80 bg-white/80 px-3 py-2 shadow-card backdrop-blur-md">
-      {WORKFLOW_ITEMS.map((item, index) => (
-        <span
-          key={item.title}
-          className="block h-1.5 rounded-full bg-violet"
-          style={{
-            width: index === activeIndex ? 22 : 6,
-            opacity: index === activeIndex ? 1 : 0.32,
-          }}
-          aria-hidden="true"
-        />
-      ))}
-      <span className="sr-only">
-        Step {activeIndex + 1} of {WORKFLOW_ITEMS.length}: {WORKFLOW_ITEMS[activeIndex]?.title}
-      </span>
-    </div>
   );
 }
 
@@ -241,7 +219,7 @@ function DesktopWorkflowShowcase() {
       window.addEventListener("load", refreshOnLoad);
       const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
       ScrollTrigger.refresh();
-      
+
       return () => {
         cancelAnimationFrame(raf);
         window.removeEventListener("load", refreshOnLoad);
@@ -297,7 +275,6 @@ function DesktopWorkflowShowcase() {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
@@ -328,8 +305,8 @@ export default function FeatureShowcaseAdine() {
       <div className="shell relative z-10">
         <SectionHeading
           eyebrow="The Workflow"
-          title="From first lead to booked meeting — one continuous line."
-          subtitle="Eight pillars that cover the whole outbound arc — and the workday that keeps it moving."
+          title="From first lead to booked meeting â€” one continuous line."
+          subtitle="Eight pillars that cover the whole outbound arc â€” and the workday that keeps it moving."
         />
 
         <motion.div
