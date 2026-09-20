@@ -312,7 +312,7 @@ export default function FeatureShowcaseAdine() {
         <motion.div
           variants={v(fadeUp)}
           initial="hidden"
-          whileInView="visible" 
+          whileInView="visible"
           viewport={{ once: true, amount: 0.6 }}
           className="mx-auto mt-10 flex max-w-[780px] flex-wrap items-center justify-center gap-2 lg:hidden"
         >
