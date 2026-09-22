@@ -916,24 +916,22 @@ function DesktopWalkthrough({
   );
 }
 
-/* ── Mobile/tablet: simple stacked cards, each followed by its visual ── */
+/* ── Section ─────────────────────────────────────────────────────────── */
+
+/* ── Mobile/tablet: keep the step cards, without the connecting path ── */
 
 function MobileWalkthrough() {
   const reduce = useReducedMotion() ?? false;
   return (
     <div className="relative mt-16">
-      <div className="absolute bottom-0 left-[52px] top-0 w-[2px] -translate-x-1/2 rounded-full bg-pebble" />
       <div className="flex flex-col space-y-16">
         {STEPS.map((step, i) => (
-          <div key={step.number} className="pl-6">
+          <div key={step.number}>
             <StepCard step={step} active={false} reduce={reduce} />
             <div className="relative mt-5 w-full max-w-[520px]">
               <div className="mx-auto px-4">
                 <AbstractArtwork active={i} reduce={reduce} compact />
               </div>
-              <span className="pointer-events-none absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[13px] font-bold tabular-nums text-violet">
-                {step.number}
-              </span>
             </div>
           </div>
         ))}
@@ -941,8 +939,6 @@ function MobileWalkthrough() {
     </div>
   );
 }
-
-/* ── Section ─────────────────────────────────────────────────────────── */
 
 export default function HowItWorksAdine() {
   const reduce = useReducedMotion() ?? false;
