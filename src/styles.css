@@ -322,9 +322,13 @@
 }
 
 @media (max-width: 640px) {
-  :root { --section-gap: 56px; }
+  :root {
+    --section-gap: 56px;
+  }
 
-  .shell { padding-inline: 16px; }
+  .shell {
+    padding-inline: 16px;
+  }
 
   .btn-pill,
   .btn-ghost-pill {
@@ -333,5 +337,7 @@
   }
 
   img,
-  svg { max-width: 100%; }
+  svg {
+    max-width: 100%;
+  }
 }

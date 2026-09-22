@@ -704,9 +704,7 @@ function AbstractArtwork({
   scrollProgress?: number;
 }) {
   const palette = ART_PALETTES[active % ART_PALETTES.length] ?? ART_PALETTES[0]!;
-  const progress = reduce
-    ? 1
-    : Math.min(1, Math.max(0.015, scrollProgress ?? active / 5));
+  const progress = reduce ? 1 : Math.min(1, Math.max(0.015, scrollProgress ?? active / 5));
   const pathRef = useRef<SVGPathElement>(null);
   const [nodes, setNodes] = useState(FLOW_FALLBACK_POINTS);
   const [routeLength, setRouteLength] = useState(1000);
@@ -1006,7 +1004,11 @@ export default function HowItWorksAdine() {
   }, [isDesktop]);
 
   return (
-    <section ref={sectionRef} id="how" className="relative scroll-mt-[104px] bg-canvas py-16 sm:py-[96px]">
+    <section
+      ref={sectionRef}
+      id="how"
+      className="relative scroll-mt-[104px] bg-canvas py-16 sm:py-[96px]"
+    >
       {/* Animated backdrop: aurora + the same interactive mesh as the hero */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <AuroraField />
