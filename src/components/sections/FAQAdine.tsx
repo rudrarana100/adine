@@ -10,7 +10,7 @@ export default function FAQAdine() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-canvas py-[96px]">
+    <section id="faq" className="bg-canvas py-16 sm:py-[96px]">
       <div className="shell">
         <SectionHeading eyebrow="FAQ" title="Questions we get every day." align="center" />
 
@@ -31,7 +31,7 @@ export default function FAQAdine() {
                   aria-expanded={isOpen}
                   aria-controls={`faq-panel-${i}`}
                   id={`faq-trigger-${i}`}
-                  className="flex min-h-[48px] w-full items-center justify-between gap-6 py-5 text-left"
+                  className="flex min-h-[48px] w-full items-center justify-between gap-4 py-5 text-left sm:gap-6"
                 >
                   <h3 className="text-[17px] font-medium tracking-[-0.01em] text-ink">{item.q}</h3>
                   {isOpen ? (

@@ -67,7 +67,7 @@ export default function ContrastAdine() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <section className="relative overflow-hidden bg-violet py-[96px] text-white">
+    <section className="relative overflow-hidden bg-violet py-16 sm:py-[96px] text-white">
       {/* Soft white glow auras — shared pattern with AnalyticsAdine */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -132,7 +132,7 @@ export default function ContrastAdine() {
           {/* Old Way */}
           <motion.div
             variants={v(fadeUp)}
-            className="rounded-[24px] border border-white/15 bg-white p-8 shadow-[0px_5px_55px_rgba(0,0,0,0.35)]"
+            className="rounded-[24px] border border-white/15 bg-white p-5 shadow-[0px_5px_55px_rgba(0,0,0,0.35)] sm:p-8"
           >
             <h3 className="mb-6 text-[18px] font-medium text-iron">The Old Way</h3>
             <ul className="flex flex-col gap-4">
@@ -155,7 +155,7 @@ export default function ContrastAdine() {
           <motion.div
             variants={v(fadeUp)}
             {...(!reduce ? { whileHover: { y: -4, transition: { duration: 0.2 } } } : {})}
-            className="rounded-[24px] border border-violet/20 bg-mint p-8 shadow-[0px_5px_55px_rgba(0,0,0,0.35)]"
+            className="rounded-[24px] border border-violet/20 bg-mint p-5 shadow-[0px_5px_55px_rgba(0,0,0,0.35)] sm:p-8"
           >
             <h3 className="mb-6 text-[18px] font-medium text-ink">Adine</h3>
             <ul className="flex flex-col gap-4">

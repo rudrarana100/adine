@@ -155,7 +155,7 @@
   width: 100%;
   max-width: var(--page-max-width);
   margin-inline: auto;
-  padding-inline: 24px;
+  padding-inline: clamp(16px, 4vw, 24px);
 }
 
 @utility btn-pill {
@@ -319,4 +319,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+@media (max-width: 640px) {
+  :root { --section-gap: 56px; }
+
+  .shell { padding-inline: 16px; }
+
+  .btn-pill,
+  .btn-ghost-pill {
+    min-height: 50px;
+    padding-inline: 22px;
+  }
+
+  img,
+  svg { max-width: 100%; }
 }

@@ -49,14 +49,14 @@ export default function FinalCTAAdine() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <section className="bg-canvas py-[96px]">
+    <section className="bg-canvas py-16 sm:py-[96px]">
       <div className="shell">
         <motion.div
           variants={v(staggerContainer)}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="relative overflow-hidden rounded-[40px] bg-violet px-8 py-[80px] text-center md:px-16"
+          className="relative overflow-hidden rounded-[28px] bg-violet px-5 py-14 text-center sm:rounded-[40px] sm:px-8 sm:py-[80px] md:px-16"
         >
           <Ambient className="absolute inset-0 overflow-hidden">
             <CtaBackdrop reduce={reduce} />

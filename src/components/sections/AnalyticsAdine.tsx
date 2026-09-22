@@ -217,7 +217,7 @@ export default function AnalyticsAdine() {
     <section
       id="analytics"
       ref={sectionRef}
-      className="relative overflow-hidden bg-violet py-[96px] text-white"
+      className="relative overflow-hidden bg-violet py-16 sm:py-[96px] text-white"
     >
       {/* Glow aura + animated white glyphs — only mounted near the viewport */}
       <Ambient className="absolute inset-0 overflow-hidden">
@@ -299,7 +299,7 @@ export default function AnalyticsAdine() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-col gap-5 rounded-[28px] bg-white/10 p-6 backdrop-blur-sm"
+            className="flex flex-col gap-5 rounded-[28px] bg-white/10 p-4 sm:p-6 backdrop-blur-sm"
           >
             {/* stat / streak row */}
             <motion.div variants={v(fadeUp)} className="grid grid-cols-2 gap-3 sm:grid-cols-4">

@@ -297,7 +297,7 @@ export default function FeatureShowcaseAdine() {
   const v = useVariants();
 
   return (
-    <section id="features" className="relative bg-card py-[96px]">
+    <section id="features" className="relative bg-card py-16 sm:py-[96px]">
       <Ambient className="absolute inset-0 overflow-hidden">
         <DotGrid className="opacity-50" />
       </Ambient>
@@ -330,7 +330,7 @@ export default function FeatureShowcaseAdine() {
           ))}
         </motion.div>
 
-        <div className="mx-auto mt-20 lg:hidden">
+        <div className="mx-auto mt-12 sm:mt-20 lg:hidden">
           <MobileWorkflowCarousel />
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function PricingAdine() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <section id="pricing" className="bg-card py-[96px]">
+    <section id="pricing" className="bg-card py-16 sm:py-[96px]">
       <div className="shell">
         <SectionHeading
           eyebrow="Pricing"
@@ -34,7 +34,7 @@ export default function PricingAdine() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           {...(!reduce ? { whileHover: { y: -6, transition: { duration: 0.2 } } } : {})}
-          className="relative mx-auto mt-16 max-w-[560px] rounded-[24px] border-2 border-violet bg-white p-8 shadow-elevated"
+          className="relative mx-auto mt-12 max-w-[560px] rounded-[24px] border-2 border-violet bg-white p-5 shadow-elevated sm:mt-16 sm:p-8"
         >
           <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-periwinkle-wash px-3.5 py-1 text-[12px] font-semibold text-violet">
             Early access

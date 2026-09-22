@@ -1006,7 +1006,7 @@ export default function HowItWorksAdine() {
   }, [isDesktop]);
 
   return (
-    <section ref={sectionRef} id="how" className="relative scroll-mt-[104px] bg-canvas py-[96px]">
+    <section ref={sectionRef} id="how" className="relative scroll-mt-[104px] bg-canvas py-16 sm:py-[96px]">
       {/* Animated backdrop: aurora + the same interactive mesh as the hero */}
       <Ambient className="absolute inset-0 overflow-hidden">
         <AuroraField />

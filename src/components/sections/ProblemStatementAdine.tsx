@@ -33,7 +33,7 @@ export default function ProblemStatementAdine() {
   const v = useVariants();
 
   return (
-    <section className="bg-canvas py-[80px]">
+    <section className="bg-canvas py-16 sm:py-[80px]">
       <div className="shell">
         <motion.div
           variants={v(staggerContainer)}
@@ -62,7 +62,7 @@ export default function ProblemStatementAdine() {
             between an imported list and an actual dial.
           </motion.p>
 
-          <motion.ul variants={v(fadeUp)} className="mt-8 flex items-center justify-center gap-8">
+          <motion.ul variants={v(fadeUp)} className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 sm:gap-8">
             {TOOLS.map(({ Icon, label }) => (
               <li key={label} className="flex flex-col items-center gap-2 text-iron/45">
                 <Icon size={26} aria-hidden={true} />

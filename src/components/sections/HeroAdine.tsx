@@ -217,7 +217,7 @@ export default function HeroAdine() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-[144px] pb-32"
+      className="relative overflow-hidden pt-[112px] pb-16 sm:pt-[144px] sm:pb-32"
       ref={heroRef}
       onMouseMove={handleMouseMove}
     >
@@ -277,7 +277,7 @@ export default function HeroAdine() {
                 {/* Headline: brand + gradient typewriter accent */}
                 <motion.h1
                   variants={v(heroWordContainer)}
-                  className="mt-6 text-[clamp(36px,5vw,60px)] font-light leading-[1.12] tracking-[-0.03em] lg:text-[clamp(32px,3.4vw,48px)]"
+                  className="mt-5 text-[clamp(34px,9vw,52px)] font-light leading-[1.12] tracking-[-0.03em] sm:mt-6 sm:text-[clamp(36px,5vw,60px)] lg:text-[clamp(32px,3.4vw,48px)]"
                 >
                   {["Adine", "makes", "the"].map((word, i) => (
                     <motion.span
@@ -294,7 +294,7 @@ export default function HeroAdine() {
 
                 <motion.p
                   variants={v(fadeUp)}
-                  className="mx-auto mt-8 max-w-[560px] text-[18px] font-light leading-[1.6] text-slate lg:mx-0"
+                  className="mx-auto mt-6 max-w-[560px] text-[16px] font-light leading-[1.6] text-slate sm:mt-8 sm:text-[18px] lg:mx-0"
                 >
                   One keypress after every hang-up logs the call, queues the next lead, and
                   schedules the follow-up — the moment that used to kill your momentum just ends.
@@ -302,7 +302,7 @@ export default function HeroAdine() {
 
                 <motion.div
                   variants={v(fadeUp)}
-                  className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start"
+                  className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-10 sm:flex-row sm:items-center lg:justify-start"
                 >
                   <a
                     href="https://salestrackercrm.vercel.app/"
