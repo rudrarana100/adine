@@ -32,7 +32,7 @@ type WorkflowItem = {
 const WORKFLOW_ITEMS: WorkflowItem[] = [
   {
     title: "Leads Directory",
-    eyebrow: "01 â€” LEADS DIRECTORY",
+    eyebrow: "01 — LEADS DIRECTORY",
     caption: "Every prospect, searchable and ready.",
     image: "/screenshots/workflow/lead-directory.png",
     inset: "/screenshots/workflow/lead-scraper.png",
@@ -41,7 +41,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Call Session",
-    eyebrow: "02 â€” CALL SESSION",
+    eyebrow: "02 — CALL SESSION",
     caption: "One lead. One decision. Then the next.",
     image: "/screenshots/workflow/call-session.png",
     alt: "Adine Call Session with lead details and outcome controls",
@@ -49,7 +49,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Follow-ups",
-    eyebrow: "03 â€” FOLLOW-UPS",
+    eyebrow: "03 — FOLLOW-UPS",
     caption: "Turn every conversation into the next action.",
     image: "/screenshots/workflow/follow-ups.png",
     alt: "Adine Follow-ups view with scheduled actions",
@@ -57,7 +57,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Sales Pipeline",
-    eyebrow: "04 â€” SALES PIPELINE",
+    eyebrow: "04 — SALES PIPELINE",
     caption: "Move deals from contact to closed won.",
     image: "/screenshots/workflow/sales-pipeline.png",
     alt: "Adine Sales Pipeline Kanban board",
@@ -65,7 +65,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Tasks",
-    eyebrow: "05 â€” TASKS",
+    eyebrow: "05 — TASKS",
     caption: "Keep the day ordered around what matters.",
     image: "/screenshots/workflow/tasks.png",
     alt: "Adine Tasks view with priorities and due dates",
@@ -73,7 +73,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Calendar",
-    eyebrow: "06 â€” CALENDAR",
+    eyebrow: "06 — CALENDAR",
     caption: "Calls, meetings, and follow-ups in one view.",
     image: "/screenshots/workflow/calendar.png",
     alt: "Adine Calendar with scheduled calls and meetings",
@@ -81,7 +81,7 @@ const WORKFLOW_ITEMS: WorkflowItem[] = [
   },
   {
     title: "Analytics",
-    eyebrow: "07 â€” ANALYTICS",
+    eyebrow: "07 — ANALYTICS",
     caption: "See the activity that turns into revenue.",
     image: "/screenshots/workflow/analytics.png",
     alt: "Adine Sales Analytics and Performance Dashboard",
@@ -305,8 +305,8 @@ export default function FeatureShowcaseAdine() {
       <div className="shell relative z-10">
         <SectionHeading
           eyebrow="The Workflow"
-          title="From first lead to booked meeting â€” one continuous line."
-          subtitle="Eight pillars that cover the whole outbound arc â€” and the workday that keeps it moving."
+          title="From first lead to booked meeting — one continuous line."
+          subtitle="Eight pillars that cover the whole outbound arc — and the workday that keeps it moving."
         />
 
         <motion.div
