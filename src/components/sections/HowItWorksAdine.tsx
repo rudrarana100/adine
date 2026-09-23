@@ -924,16 +924,9 @@ function MobileWalkthrough() {
   const reduce = useReducedMotion() ?? false;
   return (
     <div className="relative mt-16">
-      <div className="flex flex-col space-y-16">
-        {STEPS.map((step, i) => (
-          <div key={step.number}>
-            <StepCard step={step} active={false} reduce={reduce} />
-            <div className="relative mt-5 w-full max-w-[520px]">
-              <div className="mx-auto px-4">
-                <AbstractArtwork active={i} reduce={reduce} compact />
-              </div>
-            </div>
-          </div>
+      <div className="flex flex-col space-y-8">
+        {STEPS.map((step) => (
+          <StepCard key={step.number} step={step} active={false} reduce={reduce} />
         ))}
       </div>
     </div>

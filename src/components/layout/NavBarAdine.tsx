@@ -53,7 +53,7 @@ export default function NavBarAdine() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex justify-center bg-canvas/92 px-4 pb-2 pt-4 backdrop-blur-sm">
+    <header className="fixed inset-x-0 top-0 z-50 flex justify-center bg-transparent px-4 pb-2 pt-4">
       <div className="w-full max-w-[1080px]">
         <nav
           aria-label="Primary"
