@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
-import { fadeUp, heroWord, heroWordContainer, badgePop, staggerContainer } from "@/lib/motion";
+import { fadeUp, heroWord, heroWordContainer, staggerContainer } from "@/lib/motion";
 import { AuroraField, GlowOrb } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
@@ -101,68 +101,6 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
 
       {/* Soft ground shadow */}
       <div className="absolute -bottom-6 left-[8%] right-[8%] h-12 rounded-full bg-violet/10 blur-2xl" />
-    </motion.div>
-  );
-}
-
-/* Interactive SVG orbit: replaces the old status badges with a lighter,
-   product-agnostic visual cue for the lead-to-follow-up workflow. */
-function WorkflowOrbit({ reduce }: { reduce: boolean }) {
-  return (
-    <motion.div
-      variants={badgePop}
-      className="pointer-events-none absolute -inset-x-10 -inset-y-12 z-20 hidden md:block"
-      aria-hidden="true"
-    >
-      <svg viewBox="0 0 620 430" className="h-full w-full overflow-visible" fill="none">
-        <defs>
-          <linearGradient id="workflow-arc" x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="#6161ff" stopOpacity="0.05" />
-            <stop offset="0.5" stopColor="#6161ff" stopOpacity="0.48" />
-            <stop offset="1" stopColor="#3ac9ff" stopOpacity="0.08" />
-          </linearGradient>
-          <filter id="workflow-glow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="5" />
-          </filter>
-        </defs>
-        <path
-          d="M34 302C70 64 470 16 588 184C634 252 576 371 420 389C258 408 101 379 34 302Z"
-          stroke="url(#workflow-arc)"
-          strokeWidth="1.5"
-          strokeDasharray="5 9"
-        />
-        <path
-          d="M66 322C137 140 394 72 548 176"
-          stroke="url(#workflow-arc)"
-          strokeWidth="10"
-          opacity="0.16"
-          filter="url(#workflow-glow)"
-        />
-        {[{ cx: 82, cy: 292, r: 5 }, { cx: 522, cy: 148, r: 6 }, { cx: 430, cy: 382, r: 4 }].map(
-          ({ cx, cy, r }, index) => (
-            <motion.circle
-              key={`${cx}-${cy}`}
-              cx={cx}
-              cy={cy}
-              r={r}
-              fill={index === 1 ? "#3ac9ff" : "#6161ff"}
-              animate={
-                reduce
-                  ? { opacity: 0.8 }
-                  : { opacity: [0.35, 1, 0.35], scale: [1, 1.55, 1] }
-              }
-              transition={{ duration: 2.8, repeat: Infinity, delay: index * 0.7 }}
-              style={{ transformOrigin: `${cx}px ${cy}px` }}
-            />
-          ),
-        )}
-      </svg>
-      <motion.div
-        className="absolute right-0 top-2 rounded-full border border-white/70 bg-white/70 px-3 py-1.5 text-[10px] font-medium tracking-[0.12em] text-violet shadow-card backdrop-blur-md"
-        whileHover={{ scale: 1.06, y: -2 }}
-      >
-        MOMENTUM LOOP
-      </motion.div>
     </motion.div>
   );
 }
@@ -313,7 +251,6 @@ export default function HeroAdine() {
               className="relative mx-auto mt-12 w-full max-w-[520px] lg:mt-0"
             >
               <CallSessionMock reduce={reduce} />
-              <WorkflowOrbit reduce={reduce} />
             </motion.div>
           </motion.div>
         </div>
