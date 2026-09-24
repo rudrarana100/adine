@@ -297,7 +297,7 @@ export default function FeatureShowcaseAdine() {
   const v = useVariants();
 
   return (
-    <section id="features" className="relative bg-card py-16 sm:py-[96px]">
+    <section id="features" className="relative bg-card pb-16 pt-8 sm:pb-[96px] sm:pt-[64px]">
       <Ambient className="absolute inset-0 overflow-hidden">
         <DotGrid className="opacity-50" />
       </Ambient>
