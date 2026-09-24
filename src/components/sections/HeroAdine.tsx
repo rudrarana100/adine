@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
-import { fadeUp, heroWord, heroWordContainer, staggerContainer } from "@/lib/motion";
+import { badgePop, fadeUp, heroWord, heroWordContainer, staggerContainer } from "@/lib/motion";
 import { AuroraField, GlowOrb } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
