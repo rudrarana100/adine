@@ -15,7 +15,7 @@ import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
 
 /* Typewriter gradient accent — the after-call moment Adine protects */
 const accentWords = [
-  "after-call paperwork disappear.",
+  "after-call admin disappear.",
   "follow-up write itself.",
   "momentum outlast the call.",
 ];
@@ -45,14 +45,18 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
     return () => clearTimeout(t);
   }, [charIdx, deleting, wordIdx, reduce]);
 
-  const text = reduce ? accentWords[0] : getWord(wordIdx).slice(0, charIdx);
   const word = getWord(wordIdx);
+  const typed = word.slice(0, charIdx);
+  /* First paint and reduced motion always show a complete phrase, never a
+     half-typed stub. The typewriter only takes over once it has the full word. */
+  const isTyping = charIdx > 0 && charIdx < word.length;
+  const text = reduce || !isTyping ? word : typed;
 
   return (
-    <span className="mt-2 block min-h-[2em] text-[clamp(26px,4.8vw,54px)] font-light leading-[1.16] tracking-[-0.03em] gradient-text sm:min-h-[1.2em] sm:text-[clamp(34px,4.8vw,54px)] lg:min-h-[1.15em] lg:text-[clamp(24px,3vw,38px)]">
+    <span className="mt-2 block min-h-[1.2em] text-[clamp(26px,4.8vw,54px)] font-light leading-[1.16] tracking-[-0.03em] gradient-text sm:text-[clamp(34px,4.8vw,54px)] lg:text-[clamp(24px,3vw,38px)]">
       {text}
       {/* Caret only while the word is mid-typing — never left behind at rest */}
-      {!reduce && charIdx < word.length && (
+      {isTyping && (
         <span className="ml-0.5 inline-block h-[1em] w-[3px] align-middle bg-violet opacity-60 animate-pulse" />
       )}
     </span>
@@ -92,7 +96,7 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
       >
         <img
           src="/screenshots/hero-mockup.png"
-          alt="Adine — the live call session in the app"
+          alt="Adine: the live call session in the app"
           className="block h-auto w-full select-none"
           loading="eager"
           decoding="async"
@@ -214,7 +218,7 @@ export default function HeroAdine() {
                   className="mx-auto mt-6 max-w-[560px] text-[16px] font-light leading-[1.6] text-slate sm:mt-8 sm:text-[18px] lg:mx-0"
                 >
                   One keypress after every hang-up logs the call, queues the next lead, and
-                  schedules the follow-up — the moment that used to kill your momentum just ends.
+                  schedules the follow-up. The moment that used to kill your momentum just ends.
                 </motion.p>
 
                 <motion.div

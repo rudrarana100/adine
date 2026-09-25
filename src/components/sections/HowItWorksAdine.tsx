@@ -570,7 +570,7 @@ const STEPS: Step[] = [
     number: "02",
     title: "Build your list",
     description:
-      "Save into a named collection, or upload a CSV that auto-maps columns and de-duplicates phone numbers — clean and ready to dial, no manual staging.",
+      "Save into a named collection, or upload a CSV that auto-maps columns and de-duplicates phone numbers. Clean and ready to dial, no manual staging.",
     icon: "sheet",
     iconBg: "bg-mint/40",
     iconTxt: "text-green-700",
@@ -580,7 +580,7 @@ const STEPS: Step[] = [
     number: "03",
     title: "Run a call session",
     description:
-      "Work a single-lead-at-a-time queue with one-tap call, website, Maps, email, and WhatsApp actions — no tab-hopping while a prospect waits.",
+      "Work a single-lead-at-a-time queue with one-tap call, website, Maps, email, and WhatsApp actions. No tab-hopping while a prospect waits.",
     icon: "phone",
     iconBg: "bg-sky/40",
     iconTxt: "text-sky-700",
@@ -590,7 +590,7 @@ const STEPS: Step[] = [
     number: "04",
     title: "Log with one keypress",
     description:
-      "Every outcome lives on the number keys 1–6 (No Answer, Invalid, Gatekeeper, Callback Requested, Not Interested, Interested) plus Skip — hands never leave the keyboard.",
+      "Every outcome lives on the number keys 1–6 (No Answer, Invalid, Gatekeeper, Callback Requested, Not Interested, Interested) plus Skip. Your hands never leave the keyboard.",
     icon: "command",
     iconBg: "bg-lavender/50",
     iconTxt: "text-ultraviolet",

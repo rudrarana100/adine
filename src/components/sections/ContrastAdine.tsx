@@ -5,7 +5,7 @@ import { Ambient } from "@/components/backgrounds/Ambient";
 const ROWS: { oldWay: string; adine: string }[] = [
   {
     oldWay: "Leads scattered across a spreadsheet, a notes app, and WhatsApp",
-    adine: "Every lead, every note, every message — one screen",
+    adine: "Every lead, every note, every message: one screen",
   },
   {
     oldWay: "Manually dialing down a list, losing your place",
@@ -117,7 +117,7 @@ export default function ContrastAdine() {
             variants={v(fadeUp)}
             className="mx-auto mt-5 max-w-[480px] text-[17px] font-light leading-[1.6] text-white/75"
           >
-            Same leads, same phone — one system instead of five.
+            Same leads, same phone. One system instead of five.
           </motion.p>
         </motion.div>
 

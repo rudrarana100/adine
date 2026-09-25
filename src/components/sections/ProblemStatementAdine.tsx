@@ -23,10 +23,10 @@ function NoteIcon({ size = 26, ...props }: SVGProps<SVGSVGElement> & { size?: nu
   );
 }
 
-const TOOLS: { Icon: typeof SheetIcon; label: string }[] = [
-  { Icon: SheetIcon, label: "Spreadsheet" },
-  { Icon: NoteIcon, label: "Sticky notes" },
-  { Icon: ChatIcon, label: "WhatsApp" },
+const TOOLS: { Icon: typeof SheetIcon; label: string; role: string }[] = [
+  { Icon: SheetIcon, label: "Spreadsheet", role: "for your leads" },
+  { Icon: NoteIcon, label: "Sticky notes", role: "for your reminders" },
+  { Icon: ChatIcon, label: "WhatsApp", role: "for your follow-ups" },
 ];
 
 export default function ProblemStatementAdine() {
@@ -62,14 +62,22 @@ export default function ProblemStatementAdine() {
             between an imported list and an actual dial.
           </motion.p>
 
+          <motion.p
+            variants={v(fadeUp)}
+            className="mt-8 text-[13px] font-medium uppercase tracking-[0.12em] text-iron/50"
+          >
+            Right now that means juggling three disconnected tools
+          </motion.p>
+
           <motion.ul
             variants={v(fadeUp)}
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 sm:gap-8"
+            className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-5 sm:gap-x-12"
           >
-            {TOOLS.map(({ Icon, label }) => (
+            {TOOLS.map(({ Icon, label, role }) => (
               <li key={label} className="flex flex-col items-center gap-2 text-iron/45">
                 <Icon size={26} aria-hidden={true} />
-                <span className="text-[12px] font-medium">{label}</span>
+                <span className="text-[12px] font-medium text-ink/70">{label}</span>
+                <span className="text-[11px] font-light text-iron/60">{role}</span>
               </li>
             ))}
           </motion.ul>

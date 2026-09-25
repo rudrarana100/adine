@@ -66,7 +66,7 @@ export default function FinalCTAAdine() {
             variants={v(fadeUp)}
             className="relative z-10 mb-6 inline-block rounded-full bg-white/15 px-5 py-2 text-[13px] font-medium text-white/80"
           >
-            Start free — no credit card
+            Start free, no credit card
           </motion.span>
 
           <motion.h2
@@ -80,16 +80,16 @@ export default function FinalCTAAdine() {
             variants={v(fadeUp)}
             className="relative z-10 mx-auto mt-5 max-w-[480px] text-[17px] font-light leading-[1.6] text-white/70"
           >
-            Import your list, connect your Google account, and dial your first lead within minutes —
-            not setup spreadsheets.
+            Import your list, connect your Google account, and dial your first lead within minutes.
+            No spreadsheet setup required.
           </motion.p>
 
           <motion.p
             variants={v(fadeUp)}
             className="relative z-10 mx-auto mt-4 max-w-[480px] text-[14px] font-light leading-[1.6] text-white/60"
           >
-            Slow follow-up is the most expensive thing you have — every day a warm lead goes cold is
-            a deal you'll never get back.
+            Slow follow-up is the most expensive thing you have. Every day a warm lead goes cold is
+            a deal you&apos;ll never get back.
           </motion.p>
 
           <motion.div

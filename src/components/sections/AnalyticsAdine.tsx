@@ -4,7 +4,9 @@ import { fadeUp, staggerContainer, useVariants } from "@/lib/motion";
 import { Ambient } from "@/components/backgrounds/Ambient";
 import { FlameIcon, CheckIcon } from "@/components/icons/FeatureIcons";
 
-/* Count-up number that animates 0 → value when it scrolls into view (~800ms) */
+/* Count-up number that animates 0 → value when it scrolls into view (~800ms).
+   The real value is the static default, so the card never renders as 0 if the
+   IntersectionObserver never fires (SSR, no-JS, or a missed threshold). */
 function Counter({
   value,
   reduce,
@@ -15,11 +17,12 @@ function Counter({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  const [display, setDisplay] = useState(reduce ? String(value) : "0");
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+  const [display, setDisplay] = useState(String(value));
 
   useEffect(() => {
     if (reduce || !inView) return;
+    setDisplay("0");
     const controls = animate(0, value, {
       duration: 0.8,
       ease: "easeOut",
@@ -161,7 +164,7 @@ function ConversionTrend({ reduce }: { reduce: boolean }) {
       fill="none"
       className="w-full"
       role="img"
-      aria-label="Weekly conversion trend — meetings booked and warm prospects rising week over week"
+      aria-label="Weekly conversion trend: meetings booked and warm prospects rising week over week"
     >
       {[32, 54, 76].map((y) => (
         <line
@@ -269,10 +272,10 @@ export default function AnalyticsAdine() {
               variants={v(fadeUp)}
               className="mt-5 max-w-[460px] text-[17px] font-light leading-[1.6] text-white/75"
             >
-              Solo dialing is a black box — 50 calls in, you can&apos;t tell whether you&apos;re
+              Solo dialing is a black box. Fifty calls in, you can&apos;t tell whether you&apos;re
               improving or just tired. Adine makes the grind visible: a daily goal, a streak to
               protect, and a 90-day heatmap that proves the work is compounding. Hit your target and
-              a celebration fires — the days stop blurring into one.
+              a celebration fires. The days stop blurring into one.
             </motion.p>
 
             <motion.ul variants={v(fadeUp)} className="mt-6 space-y-3">

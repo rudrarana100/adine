@@ -305,8 +305,8 @@ export default function FeatureShowcaseAdine() {
       <div className="shell relative z-10">
         <SectionHeading
           eyebrow="The Workflow"
-          title="From first lead to booked meeting — one continuous line."
-          subtitle="Eight pillars that cover the whole outbound arc — and the workday that keeps it moving."
+          title="From first lead to booked meeting, one continuous line."
+          subtitle="Eight pillars that cover the whole outbound arc, and the workday that keeps it moving."
         />
 
         <motion.div

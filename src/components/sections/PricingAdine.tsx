@@ -7,7 +7,7 @@ import SectionHeading from "@/components/sections/SectionHeading";
 const APP_URL = "https://salestrackercrm.vercel.app/";
 
 const FREE_FEATURES = [
-  "Full feature access — every tool unlocked",
+  "Full feature access: every tool unlocked",
   "CSV lead import",
   "Sequential call sessions with one-keypress logging",
   "WhatsApp + Google Meet automation",
@@ -25,7 +25,7 @@ export default function PricingAdine() {
         <SectionHeading
           eyebrow="Pricing"
           title="Free for early users."
-          subtitle="Adine is free right now, completely. Paid plans come later — early users keep the free side of the deal."
+          subtitle="Adine is free right now, completely. Paid plans come later, and early users keep the free side of the deal."
         />
 
         <motion.div

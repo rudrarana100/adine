@@ -10,27 +10,27 @@ export const FAQ_ITEMS = [
   },
   {
     q: "How do cold call sessions work?",
-    a: "Leads play one at a time in a clean queue — one tap to dial, with website, Maps, and WhatsApp one click away. After each call you press a number key to log the outcome, and the queue auto-advances, so you never stop to type while a prospect waits.",
+    a: "Leads appear one at a time in a clean queue that you can filter down to a specific collection. Each card gives you one-tap actions for calling, opening the website, pulling up their Google Maps listing, emailing, or messaging on WhatsApp, so you never hunt for another tab mid-call. Log the outcome and the next lead loads on its own.",
   },
   {
     q: "How does outcome logging work?",
-    a: "Keys 1–6 log No Answer, Invalid, Gatekeeper, Callback Requested, Not Interested, or Interested — with a separate Skip. Each call is stamped with the outcome and timestamp automatically, and interested leads book a meeting with a WhatsApp confirmation — so your CRM stays current without manual data entry.",
+    a: "Number keys 1 through 6 map to No Answer, Invalid Number, Gatekeeper, Callback Requested, Not Interested, and Interested, with a separate key for Skip. Every call is stamped with its outcome and a timestamp the moment you press the key. No Answers are automatically rescheduled as a retry for the next day, so callbacks find their way back to you.",
   },
   {
     q: "How does the WhatsApp follow-up work?",
-    a: "After a call, send a templated WhatsApp message with one click — meeting confirmations, first outreach, or reminders. Phone numbers are auto-formatted to international, and the sent status is tracked on the lead.",
+    a: "Book a Google Meet straight from an Interested lead and Adine sends the WhatsApp confirmation for you, with the time and meeting link already filled in. When the meeting wraps, mark the outcome as Closed, Ghosted, Follow-up, or Rescheduled, and the matching re-engagement template goes out automatically. Phone numbers are formatted to international automatically, and the sent status shows on the lead.",
   },
   {
     q: "Can I import leads I already have?",
-    a: "Yes. Upload a CSV with automatic column mapping and de-duplication — name, phone, company, email, and city map in seconds, and every phone is formatted for dialing before it reaches the queue.",
+    a: "Yes. Upload a CSV and Adine matches your column headers against common synonyms, so headers like Phone, Mobile, and Cell all map to the right field for you. You get a preview of exactly what is about to import before anything is saved, and phone numbers are de-duplicated as they come in.",
   },
   {
     q: "Is Adine really free?",
-    a: "Yes. Adine is free for early users today — every feature, no credit card required. When paid plans arrive, early users keep the favorable free side of the deal.",
+    a: "Adine is free during early access, with the full feature set unlocked and no credit card required to get started. Paid plans are on the way, and early users keep the favorable side of the deal when they arrive.",
   },
   {
     q: "Who is Adine built for?",
-    a: "Agency founders, solo reps, and small outbound teams making 50+ calls a week. The queue, keypress logging, and follow-up hub are built around one person working a list, so the solo rep gets the full experience.",
+    a: "Agency founders and solo salespeople running high-volume outbound and cold calling. The queue, one-keypress logging, and the follow-up hub are all built around one person working a list. It is not a team-based enterprise sales platform.",
   },
 ];
 
