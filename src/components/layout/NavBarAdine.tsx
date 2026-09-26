@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { List, X } from "@phosphor-icons/react";
 
@@ -80,10 +80,10 @@ export default function NavBarAdine() {
       ref={headerRef}
       className="fixed inset-x-0 top-0 z-50 flex justify-center bg-transparent px-4 pb-2 pt-4"
     >
-      <div className="w-full max-w-[1080px]">
+      <div className="w-full max-w-[67.5rem]">
         <nav
           aria-label="Primary"
-          className={`flex w-full items-center justify-between gap-4 rounded-[40px] px-6 py-3 transition-all duration-300 ${
+          className={`flex w-full items-center justify-between gap-4 rounded-[2.5rem] px-6 py-3 transition-all duration-300 ${
             scrolled
               ? "border border-pebble/50 bg-card/90 shadow-card backdrop-blur-xl"
               : "border border-white/70 bg-canvas/90 shadow-card backdrop-blur-xl"
@@ -91,7 +91,7 @@ export default function NavBarAdine() {
         >
           <a
             href="#top"
-            className="text-[20px] font-semibold tracking-[-0.02em] text-ink"
+            className="text-[1.25rem] font-semibold tracking-[-0.02em] text-ink"
             aria-label="Adine home"
           >
             Adine<span className="text-violet">.</span>
@@ -111,7 +111,7 @@ export default function NavBarAdine() {
                   )}
                   <a
                     href={link.href}
-                    className={`relative z-10 block rounded-full px-4 py-2 text-[15px] font-medium transition-colors duration-200 ${
+                    className={`relative z-10 block rounded-full px-4 py-2 text-[0.9375rem] font-medium transition-colors duration-200 ${
                       isActive ? "text-violet" : "text-slate hover:bg-violet-soft hover:text-violet"
                     }`}
                   >
@@ -127,7 +127,7 @@ export default function NavBarAdine() {
               href={APP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-pill !min-h-0 !px-6 !py-2.5 !text-[14px] hidden md:inline-flex"
+              className="btn-pill !min-h-0 !px-6 !py-2.5 !text-[0.875rem] hidden md:inline-flex"
             >
               Start Free
             </a>
@@ -135,7 +135,7 @@ export default function NavBarAdine() {
               href={APP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-pill !min-h-0 !px-5 !py-2.5 !text-[14px] md:hidden"
+              className="btn-pill !min-h-0 !px-5 !py-2.5 !text-[0.875rem] md:hidden"
             >
               Start Free
             </a>
@@ -164,7 +164,7 @@ export default function NavBarAdine() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="mt-2 rounded-[24px] border border-pebble/60 bg-card/95 p-3 shadow-elevated backdrop-blur-xl md:hidden"
+              className="mt-2 rounded-[1.5rem] border border-pebble/60 bg-card/95 p-3 shadow-elevated backdrop-blur-xl md:hidden"
             >
               <ul className="flex flex-col gap-1">
                 {NAV_LINKS.map((link) => (
@@ -172,7 +172,7 @@ export default function NavBarAdine() {
                     <a
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
-                      className="block rounded-[14px] px-4 py-3 text-[15px] font-medium text-slate transition-colors hover:bg-violet-soft hover:text-violet"
+                      className="block rounded-[0.875rem] px-4 py-3 text-[0.9375rem] font-medium text-slate transition-colors hover:bg-violet-soft hover:text-violet"
                     >
                       {link.label}
                     </a>

@@ -192,7 +192,7 @@ export function ConicSheen({ className = "" }: { className?: string }) {
     >
       {reduce ? null : (
         <motion.div
-          className="absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/2 h-[min(56.25rem,120vmin)] w-[min(56.25rem,120vmin)] -translate-x-1/2 -translate-y-1/2"
           style={{
             background:
               "conic-gradient(from 0deg, transparent 0deg, rgba(97,97,255,0.10) 40deg, transparent 90deg, transparent 180deg, rgba(237,223,247,0.35) 220deg, transparent 270deg)",
@@ -271,7 +271,7 @@ export function SignalRings({ className = "", reduce }: { className?: string; re
       {rings.map((d, i) => (
         <motion.div
           key={i}
-          className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet/25"
+          className="absolute left-1/2 top-1/2 h-[min(18.75rem,42vmin)] w-[min(18.75rem,42vmin)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet/25"
           animate={{ scale: [1, 1.7], opacity: [0.5, 0] }}
           transition={{
             duration: 3,
