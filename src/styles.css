@@ -89,6 +89,10 @@
   --ring: #6161ff;
 
   --shadow-card: 0px 2px 48px rgba(205, 208, 223, 0.4);
+
+  /* Live height of the fixed header, written by NavBarAdine's ResizeObserver.
+     Falls back to the mobile header height until first measurement. */
+  --nav-h: 5.75rem;
 }
 
 @layer base {
@@ -253,6 +257,32 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ── Hero type scale ──
+   Sized in cqi so the headline tracks the width of its own column rather than
+   the viewport. The hero is one column on mobile and two on desktop, so a
+   vw-only scale would visibly jump the moment the grid splits. The vw line
+   is a fallback for engines without container-query units. */
+@utility hero-title {
+  font-size: clamp(2rem, 7.4vw, 3.5rem);
+  font-size: clamp(2rem, 7.4cqi, 3.5rem);
+  line-height: 1.1;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+
+/* The accent is a child of the h1, so em keeps it locked to the title at any
+   viewport without carrying its own breakpoint ladder. */
+@utility hero-accent {
+  font-size: 0.84em;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+@utility hero-lede {
+  font-size: clamp(1rem, 4.4vw, 1.125rem);
+  line-height: 1.62;
 }
 
 /* Keyboard shortcut key chip */

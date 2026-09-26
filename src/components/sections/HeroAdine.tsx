@@ -21,44 +21,65 @@ const accentWords = [
 ];
 const getWord = (i: number) => accentWords[i % accentWords.length]!;
 
+/* The accent wraps to more than one line on narrow viewports. This copy is
+   never seen — it only reserves the tallest wrapped height the accent can
+   ever occupy, so the paragraph below never jumps mid-type. */
+const longestAccent = accentWords.reduce((a, b) => (b.length > a.length ? b : a));
+
+const HOLD_MS = 2000;
+const TYPE_MS = 58;
+const ERASE_MS = 28;
+
+type AccentPhase = "hold" | "type" | "erase";
+
 function TypewriterAccent({ reduce }: { reduce: boolean }) {
   const [wordIdx, setWordIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [deleting, setDeleting] = useState(false);
+  const [charIdx, setCharIdx] = useState(accentWords[0]!.length);
+  const [phase, setPhase] = useState<AccentPhase>("hold");
 
   useEffect(() => {
     if (reduce) return;
     const word = getWord(wordIdx);
-    if (!deleting && charIdx === word.length) {
-      const t = setTimeout(() => setDeleting(true), 1800);
+
+    if (phase === "hold") {
+      const t = setTimeout(() => setPhase("erase"), HOLD_MS);
       return () => clearTimeout(t);
     }
-    if (deleting && charIdx === 0) {
-      setDeleting(false);
+
+    if (phase === "type") {
+      if (charIdx >= word.length) {
+        const t = setTimeout(() => setPhase("hold"), HOLD_MS);
+        return () => clearTimeout(t);
+      }
+      const t = setTimeout(() => setCharIdx((c) => c + 1), TYPE_MS);
+      return () => clearTimeout(t);
+    }
+
+    if (charIdx <= 0) {
       setWordIdx((i) => (i + 1) % accentWords.length);
+      setPhase("type");
       return;
     }
-    const speed = deleting ? 30 : 60;
-    const t = setTimeout(() => {
-      setCharIdx((c) => c + (deleting ? -1 : 1));
-    }, speed);
+    const t = setTimeout(() => setCharIdx((c) => c - 1), ERASE_MS);
     return () => clearTimeout(t);
-  }, [charIdx, deleting, wordIdx, reduce]);
+  }, [charIdx, phase, wordIdx, reduce]);
 
   const word = getWord(wordIdx);
-  const typed = word.slice(0, charIdx);
-  /* First paint and reduced motion always show a complete phrase, never a
-     half-typed stub. The typewriter only takes over once it has the full word. */
-  const isTyping = charIdx > 0 && charIdx < word.length;
-  const text = reduce || !isTyping ? word : typed;
+  const text = word.slice(0, charIdx);
+  const showCaret = !reduce && phase !== "hold";
 
   return (
-    <span className="mt-2 block min-h-[1.2em] text-[clamp(26px,4.8vw,54px)] font-light leading-[1.16] tracking-[-0.03em] gradient-text sm:text-[clamp(34px,4.8vw,54px)] lg:text-[clamp(24px,3vw,38px)]">
-      {text}
-      {/* Caret only while the word is mid-typing — never left behind at rest */}
-      {isTyping && (
-        <span className="ml-0.5 inline-block h-[1em] w-[3px] align-middle bg-violet opacity-60 animate-pulse" />
-      )}
+    <span className="hero-accent mt-[0.4em] grid">
+      <span aria-hidden className="invisible col-start-1 row-start-1 select-none">
+        {longestAccent}
+        <span className="ml-[0.12em] inline-block h-[1em] w-[0.09em] align-middle" />
+      </span>
+      <span className="col-start-1 row-start-1 gradient-text">
+        {text}
+        {showCaret && (
+          <span className="ml-[0.12em] inline-block h-[1em] w-[0.09em] align-middle bg-violet opacity-60 animate-pulse" />
+        )}
+      </span>
     </span>
   );
 }
@@ -68,13 +89,13 @@ function TypewriterAccent({ reduce }: { reduce: boolean }) {
 function CallSessionMock({ reduce }: { reduce: boolean }) {
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[520px]"
+      className="relative mx-auto w-full max-w-[32rem]"
       animate={reduce ? {} : { y: [0, -6, 0] }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     >
       {/* Ambient glow behind the card — recedes into the background */}
       <div
-        className="pointer-events-none absolute -inset-8 -z-10 rounded-[48px] opacity-70 blur-3xl"
+        className="pointer-events-none absolute -inset-[clamp(1rem,4vw,2rem)] -z-10 rounded-[3rem] opacity-70 blur-3xl"
         style={{
           background:
             "radial-gradient(60% 60% at 20% 15%, rgba(97,97,255,0.28), transparent 70%), radial-gradient(55% 55% at 85% 90%, rgba(56,189,248,0.18), transparent 70%)",
@@ -84,27 +105,29 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
 
       {/* Ghost backdrop panel — layered depth behind the primary card */}
       <div
-        className="pointer-events-none absolute inset-x-6 inset-y-8 -z-10 rounded-[32px] border border-white/5 bg-gradient-to-br from-white/10 to-transparent shadow-card backdrop-blur-sm"
+        className="pointer-events-none absolute inset-x-[clamp(1rem,4vw,1.5rem)] inset-y-[clamp(1rem,4vw,2rem)] -z-10 rounded-[2rem] border border-white/5 bg-gradient-to-br from-white/10 to-transparent shadow-card backdrop-blur-sm"
         aria-hidden="true"
       />
 
       {/* The screenshot itself — gentle breathing scale so it feels alive */}
       <motion.div
-        className="card-surface relative z-10 overflow-hidden rounded-[24px] shadow-elevated ring-1 ring-white/10"
+        className="card-surface relative z-10 overflow-hidden rounded-[1.5rem] shadow-elevated ring-1 ring-white/10"
         animate={reduce ? {} : { scale: [1, 1.012, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
         <img
           src="/screenshots/hero-mockup.png"
           alt="Adine: the live call session in the app"
-          className="block h-auto w-full select-none"
+          width={1536}
+          height={1024}
+          className="block aspect-[3/2] h-auto w-full select-none"
           loading="eager"
           decoding="async"
         />
       </motion.div>
 
       {/* Soft ground shadow */}
-      <div className="absolute -bottom-6 left-[8%] right-[8%] h-12 rounded-full bg-violet/10 blur-2xl" />
+      <div className="absolute -bottom-6 left-[8%] right-[8%] h-[3rem] rounded-full bg-violet/10 blur-2xl" />
     </motion.div>
   );
 }
@@ -138,7 +161,7 @@ export default function HeroAdine() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden pt-[112px] pb-16 sm:pt-[144px] sm:pb-32"
+      className="relative overflow-hidden pt-[calc(var(--nav-h,5.75rem)+clamp(1rem,3vw,2.75rem))] pb-[clamp(3.5rem,8vw,7rem)]"
       ref={heroRef}
       onMouseMove={handleMouseMove}
     >
@@ -154,21 +177,25 @@ export default function HeroAdine() {
 
       {/* Glow orbs — fade as you scroll */}
       <motion.div style={{ opacity: glowOpacity }} className="pointer-events-none absolute inset-0">
-        <GlowOrb className="left-[8%] top-[12%]" />
-        <GlowOrb className="right-[4%] top-[30%]" color="rgba(233,141,254,0.16)" size={360} />
+        <GlowOrb className="left-[8%] top-[12%]" size="min(30rem,72vmin)" />
+        <GlowOrb
+          className="right-[4%] top-[30%]"
+          color="rgba(233,141,254,0.16)"
+          size="min(24rem,60vmin)"
+        />
       </motion.div>
 
       {/* Mouse spotlight — translate-only layer, no repaints */}
       {!reduce && (
         <motion.div
-          className="pointer-events-none absolute left-0 top-0 z-[1] h-[600px] w-[600px] rounded-full"
+          className="pointer-events-none absolute left-0 top-0 z-[1] h-[min(62rem,78vmin)] w-[min(62rem,78vmin)] rounded-full"
           style={{
             x: smoothX,
             y: smoothY,
             translateX: "-50%",
             translateY: "-50%",
             background:
-              "radial-gradient(600px circle at 50% 50%, rgba(97,97,255,0.06), transparent 60%)",
+              "radial-gradient(circle at 50% 50%, rgba(97,97,255,0.06), transparent 60%)",
           }}
           aria-hidden="true"
         />
@@ -176,11 +203,11 @@ export default function HeroAdine() {
 
       {/* Content */}
       <div className="shell relative z-10">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+        <div className="grid items-center gap-[clamp(2.75rem,7vw,5.5rem)] lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-[clamp(2.5rem,3vw,4rem)]">
           {/* Left: copy */}
           <motion.div
             {...(reduce ? {} : { style: { y: contentY } })}
-            className="mx-auto max-w-[820px] text-center lg:mx-0 lg:max-w-none lg:text-left"
+            className="@container mx-auto w-full max-w-[51.25rem] text-center lg:mx-0 lg:max-w-none lg:text-left"
           >
             <motion.div
               variants={v(staggerContainer)}
@@ -196,10 +223,7 @@ export default function HeroAdine() {
                 </motion.div>
 
                 {/* Headline: brand + gradient typewriter accent */}
-                <motion.h1
-                  variants={v(heroWordContainer)}
-                  className="mt-5 text-[clamp(34px,9vw,52px)] font-light leading-[1.12] tracking-[-0.03em] sm:mt-6 sm:text-[clamp(36px,5vw,60px)] lg:text-[clamp(32px,3.4vw,48px)]"
-                >
+                <motion.h1 variants={v(heroWordContainer)} className="hero-title mt-[clamp(1.25rem,3vw,1.5rem)]">
                   {["Adine", "makes", "the"].map((word, i) => (
                     <motion.span
                       key={i}
@@ -215,7 +239,7 @@ export default function HeroAdine() {
 
                 <motion.p
                   variants={v(fadeUp)}
-                  className="mx-auto mt-6 max-w-[560px] text-[16px] font-light leading-[1.6] text-slate sm:mt-8 sm:text-[18px] lg:mx-0"
+                  className="hero-lede mx-auto mt-[clamp(1.5rem,3vw,2rem)] max-w-[35rem] text-slate lg:mx-0"
                 >
                   One keypress after every hang-up logs the call, queues the next lead, and
                   schedules the follow-up. The moment that used to kill your momentum just ends.
@@ -223,7 +247,7 @@ export default function HeroAdine() {
 
                 <motion.div
                   variants={v(fadeUp)}
-                  className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-10 sm:flex-row sm:items-center lg:justify-start"
+                  className="mt-[clamp(2rem,4vw,2.5rem)] flex flex-wrap flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center lg:justify-start"
                 >
                   <a
                     href="https://salestrackercrm.vercel.app/"
@@ -252,7 +276,7 @@ export default function HeroAdine() {
           >
             <motion.div
               variants={v(badgePop)}
-              className="relative mx-auto mt-12 w-full max-w-[520px] lg:mt-0"
+              className="relative mx-auto mt-[clamp(2.5rem,7vw,4.5rem)] w-full max-w-[32rem] lg:mt-0"
             >
               <CallSessionMock reduce={reduce} />
             </motion.div>

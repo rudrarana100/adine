@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { List, X } from "@phosphor-icons/react";
 
@@ -15,6 +15,7 @@ export default function NavBarAdine() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -52,8 +53,33 @@ export default function NavBarAdine() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  /* Publish the real header height so the hero can clear it exactly. Measuring
+     beats a hardcoded offset: it stays correct under browser text zoom, a
+     200% zoom, orientation change, and mobile browser chrome resizing. */
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const root = document.documentElement;
+
+    const publish = () => {
+      const h = header.getBoundingClientRect().height;
+      if (h > 0) root.style.setProperty("--nav-h", `${Math.ceil(h)}px`);
+    };
+
+    publish();
+    const ro = new ResizeObserver(publish);
+    ro.observe(header);
+    return () => {
+      ro.disconnect();
+      root.style.removeProperty("--nav-h");
+    };
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex justify-center bg-transparent px-4 pb-2 pt-4">
+    <header
+      ref={headerRef}
+      className="fixed inset-x-0 top-0 z-50 flex justify-center bg-transparent px-4 pb-2 pt-4"
+    >
       <div className="w-full max-w-[1080px]">
         <nav
           aria-label="Primary"

@@ -9,7 +9,7 @@ import type { ReactNode } from "react";
 
 const AURORA_PANES = [
   {
-    className: "-top-[240px] left-[4%] h-[620px] w-[620px]",
+    className: "-top-[min(15rem,28vmin)] left-[4%] h-[min(38.75rem,72vmin)] w-[min(38.75rem,72vmin)]",
     color: "radial-gradient(circle at 30% 30%, rgba(97,97,255,0.16), transparent 62%)",
     scale: [1, 1.16, 1],
     rotate: [0, 9, 0],
@@ -17,7 +17,7 @@ const AURORA_PANES = [
     delay: 0,
   },
   {
-    className: "top-[30px] right-[2%] h-[520px] w-[520px]",
+    className: "right-[2%] top-[clamp(0.5rem,2vw,1.875rem)] h-[min(32.5rem,62vmin)] w-[min(32.5rem,62vmin)]",
     color: "radial-gradient(circle at 70% 40%, rgba(237,223,247,0.6), transparent 60%)",
     scale: [1, 1.1, 0.96, 1],
     rotate: [0, -7, 5, 0],
@@ -25,7 +25,7 @@ const AURORA_PANES = [
     delay: 1.6,
   },
   {
-    className: "bottom-[4%] left-[26%] h-[460px] w-[460px]",
+    className: "bottom-[4%] left-[26%] h-[min(28.75rem,55vmin)] w-[min(28.75rem,55vmin)]",
     color: "radial-gradient(circle at 50% 50%, rgba(171,240,255,0.4), transparent 62%)",
     scale: [1, 1.14, 0.96, 1],
     rotate: [0, 6, -5, 0],
@@ -33,7 +33,7 @@ const AURORA_PANES = [
     delay: 3,
   },
   {
-    className: "top-[48%] left-[44%] h-[360px] w-[360px]",
+    className: "left-[44%] top-[48%] h-[min(22.5rem,45vmin)] w-[min(22.5rem,45vmin)]",
     color: "radial-gradient(circle at 50% 50%, rgba(233,141,254,0.14), transparent 60%)",
     scale: [1, 1.24, 0.92, 1],
     rotate: [0, -11, 7, 0],
@@ -290,11 +290,11 @@ export function SignalRings({ className = "", reduce }: { className?: string; re
 export function GlowOrb({
   className = "",
   color = "rgba(97,97,255,0.22)",
-  size = 420,
+  size = "26.25rem",
 }: {
   className?: string;
   color?: string;
-  size?: number;
+  size?: string;
 }) {
   const reduce = useReducedMotion() ?? false;
   return (
