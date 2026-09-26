@@ -12,6 +12,16 @@ export default defineConfig({
       port: 3000,
     },
   },
+  nitro: {
+    routeRules: {
+      // Screenshot filenames are stable rather than content-hashed, so they get a
+      // long cache instead of `immutable`. Repeat visits then skip the transfer
+      // entirely, which matters most on mobile data.
+      "/screenshots/**": {
+        headers: { "cache-control": "public, max-age=2592000, stale-while-revalidate=86400" },
+      },
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

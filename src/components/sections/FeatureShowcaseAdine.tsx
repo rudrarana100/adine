@@ -132,7 +132,7 @@ function WorkflowCard({
           alt={item.alt}
           width={1536}
           height={1024}
-          sizes="(min-width: 832px) 760px, calc(100vw - 36px)"
+          sizes="(min-width: 1024px) 860px, calc(100vw - 72px)"
           className="block aspect-[3/2] h-auto w-full select-none"
           draggable={false}
         />
@@ -143,7 +143,7 @@ function WorkflowCard({
               alt="Lead Scraper opened from the Leads Directory"
               width={1536}
               height={1024}
-              sizes="(min-width: 832px) 190px, calc((100vw - 36px) / 4)"
+              sizes="(min-width: 1024px) 215px, calc((100vw - 72px) / 4)"
               className="block aspect-[3/2] h-auto w-full"
               draggable={false}
             />
