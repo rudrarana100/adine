@@ -5,6 +5,7 @@ import { ArrowRight } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "framer-motion";
 import { DotGrid } from "@/components/backgrounds/AnimatedBackgrounds";
 import { Ambient } from "@/components/backgrounds/Ambient";
+import Screenshot from "@/components/Screenshot";
 import { fadeUp, useVariants } from "@/lib/motion";
 import SectionHeading from "@/components/sections/SectionHeading";
 import { gsap } from "gsap";
@@ -126,23 +127,25 @@ function WorkflowCard({
         className={`relative w-full will-change-transform ${focused && !reduce ? "workflow-card-float" : ""}`}
         style={{ transformOrigin: "center center" }}
       >
-        <img
+        <Screenshot
           src={item.image}
           alt={item.alt}
-          className="block h-auto w-full select-none"
-          loading={index === 0 ? "eager" : "lazy"}
-          decoding="async"
-          draggable="false"
+          width={1536}
+          height={1024}
+          sizes="(min-width: 832px) 760px, calc(100vw - 36px)"
+          className="block aspect-[3/2] h-auto w-full select-none"
+          draggable={false}
         />
         {item.inset && (
           <div className="absolute bottom-4 right-4 w-[25%] overflow-hidden rounded-[8px] shadow-elevated">
-            <img
+            <Screenshot
               src={item.inset}
               alt="Lead Scraper opened from the Leads Directory"
-              className="block h-auto w-full"
-              loading="lazy"
-              decoding="async"
-              draggable="false"
+              width={1536}
+              height={1024}
+              sizes="(min-width: 832px) 190px, calc((100vw - 36px) / 4)"
+              className="block aspect-[3/2] h-auto w-full"
+              draggable={false}
             />
           </div>
         )}

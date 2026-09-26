@@ -12,6 +12,7 @@ import { ArrowRight } from "@phosphor-icons/react";
 import { badgePop, fadeUp, heroWord, heroWordContainer, staggerContainer } from "@/lib/motion";
 import { AuroraField, GlowOrb } from "@/components/backgrounds/AnimatedBackgrounds";
 import { InteractiveMesh } from "@/components/backgrounds/InteractiveMesh";
+import Screenshot from "@/components/Screenshot";
 
 /* Typewriter gradient accent — the after-call moment Adine protects */
 const accentWords = [
@@ -115,14 +116,14 @@ function CallSessionMock({ reduce }: { reduce: boolean }) {
         animate={reduce ? {} : { scale: [1, 1.012, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img
+        <Screenshot
           src="/screenshots/hero-mockup.png"
           alt="Adine: the live call session in the app"
           width={1536}
           height={1024}
+          sizes="(min-width: 544px) 512px, calc(100vw - 32px)"
+          priority
           className="block aspect-[3/2] h-auto w-full select-none"
-          loading="eager"
-          decoding="async"
         />
       </motion.div>
 
