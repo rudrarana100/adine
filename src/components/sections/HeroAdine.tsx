@@ -194,8 +194,7 @@ export default function HeroAdine() {
             y: smoothY,
             translateX: "-50%",
             translateY: "-50%",
-            background:
-              "radial-gradient(circle at 50% 50%, rgba(97,97,255,0.06), transparent 60%)",
+            background: "radial-gradient(circle at 50% 50%, rgba(97,97,255,0.06), transparent 60%)",
           }}
           aria-hidden="true"
         />
@@ -223,7 +222,10 @@ export default function HeroAdine() {
                 </motion.div>
 
                 {/* Headline: brand + gradient typewriter accent */}
-                <motion.h1 variants={v(heroWordContainer)} className="hero-title mt-[clamp(1.25rem,3vw,1.5rem)]">
+                <motion.h1
+                  variants={v(heroWordContainer)}
+                  className="hero-title mt-[clamp(1.25rem,3vw,1.5rem)]"
+                >
                   {["Adine", "makes", "the"].map((word, i) => (
                     <motion.span
                       key={i}

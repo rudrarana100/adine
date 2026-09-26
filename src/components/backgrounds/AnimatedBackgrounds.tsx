@@ -9,7 +9,8 @@ import type { ReactNode } from "react";
 
 const AURORA_PANES = [
   {
-    className: "-top-[min(15rem,28vmin)] left-[4%] h-[min(38.75rem,72vmin)] w-[min(38.75rem,72vmin)]",
+    className:
+      "-top-[min(15rem,28vmin)] left-[4%] h-[min(38.75rem,72vmin)] w-[min(38.75rem,72vmin)]",
     color: "radial-gradient(circle at 30% 30%, rgba(97,97,255,0.16), transparent 62%)",
     scale: [1, 1.16, 1],
     rotate: [0, 9, 0],
@@ -17,7 +18,8 @@ const AURORA_PANES = [
     delay: 0,
   },
   {
-    className: "right-[2%] top-[clamp(0.5rem,2vw,1.875rem)] h-[min(32.5rem,62vmin)] w-[min(32.5rem,62vmin)]",
+    className:
+      "right-[2%] top-[clamp(0.5rem,2vw,1.875rem)] h-[min(32.5rem,62vmin)] w-[min(32.5rem,62vmin)]",
     color: "radial-gradient(circle at 70% 40%, rgba(237,223,247,0.6), transparent 60%)",
     scale: [1, 1.1, 0.96, 1],
     rotate: [0, -7, 5, 0],
